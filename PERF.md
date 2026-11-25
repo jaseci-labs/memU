@@ -146,13 +146,16 @@ suite gives 1,576 passed and the same 4 environmental failures as the original.
 
 ### Where the Jac is still slower, and why
 
-- **`memu commit`: 1.15× wall, 1.17× CPU.** Profiles of the two sides make the same 2.3M
-  SQLAlchemy calls, with the same SQL, the same 143–147 GC collections and the same heap. Nearly
-  all of commit is SQLAlchemy (a `session.refresh` per inserted row; removing it would change
-  the timestamps in the output), JSON and SQLite. The Jac's own overhead is one extra float pass
-  over the 1.1M embedded floats (`resolve`, to honour the typed `list[list[float]]`), plus the
-  `held`/`convert` checks below: about 0.2–0.4 s. The rest of the 1 s median gap is within this
-  machine's noise. Single commit runs measured 5.7–11 s on the same side.
+- **`memu commit`: 1.15× wall, 1.17× CPU in the table above; 1.02× CPU after `5e83c58`.**
+  Profiles of the two sides make the same 2.3M SQLAlchemy calls, with the same SQL, the same
+  143–147 GC collections and the same heap. The two venvs are not the cause either: the
+  original's code ran at the same speed on the Jac venv's interpreter and packages (5
+  alternating runs). Nearly all of commit is SQLAlchemy (a `session.refresh` per inserted row;
+  removing it would change the timestamps in the output), JSON and SQLite. The Jac's own extra
+  work is one typed float pass over the 1.1M embedded floats (`resolve`, to honour
+  `list[list[float]]`), plus the `held`/`convert` checks below. `5e83c58` builds that pass with
+  `list(map(float, v))`. In a re-measure of 7 alternating runs (load 55–75), commit's median
+  CPU was 11.59 s for the original and 11.87 s for the Jac, a ratio of **1.02**.
 - **In-process retrieve: 1.13–1.18×.** Every value read through an `any` is wrapped in
   `_jac.held` (0.34 µs a call), and every value returned as a typed class goes through
   `_jac.convert` (0.79 µs). Python's attribute read costs 0.05 µs. The SQLite row mapper

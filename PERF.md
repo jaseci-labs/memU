@@ -124,8 +124,10 @@ numbers were in line with the final run.
    - The backends parse the same way, and `embed` calls its backend through a typed local.
    - The SDK client returns the SDK's lists untouched, as the original does.
 
-   Commits `d8ffb2e`, `a412b1a`, `f615aeb`, and `5e83c58` for the `map(float)` form. Effect (first run): inmemory retrieve 14.6 s → 2.0 s, sqlite
-   retrieve 13.0 s → 9.7 s, inmemory commit 1.09 s → 0.59 s, whole-process CPU 38.3 s → 23.7 s.
+   Commits `d8ffb2e`, `a412b1a` and `f615aeb`. Their effect in the first run: inmemory retrieve
+   14.6 s → 2.0 s, sqlite retrieve 13.0 s → 9.7 s, inmemory commit 1.09 s → 0.59 s,
+   whole-process CPU 38.3 s → 23.7 s. `5e83c58` then built the batch's float pass with
+   `list(map(float, v))`, which took `memu commit` from 1.17× to 1.04× of the original's CPU.
 2. **Start-up: the OpenAI SDK is imported when a client is built (`fcc8dfb`).** `import openai`
    was about half the start-up of every `memu` entry point, `--help` and `list-files` included.
    `openai_sdk.jac` now imports it inside `init`. Its annotations stay text

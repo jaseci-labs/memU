@@ -1,8 +1,17 @@
+import importlib;
 import builtins;
 import os;
 import time;
 import from collections.abc { Collection }
 import from typing { Any }
+glob build_agentic_memory_backend_from_env: any;
+
+with entry {
+    build_agentic_memory_backend_from_env = importlib.import_module(
+        "memu.env"
+    ).build_agentic_memory_backend_from_env;
+}
+
 glob MAX_JOBS = 10;
 async def prepare(
     source: TranscriptSource,

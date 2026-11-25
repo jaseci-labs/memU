@@ -16,6 +16,14 @@ import from dataclasses { dataclass, field }
 import from importlib.resources { files }
 import from pathlib { Path }
 import from typing { Any, Literal, Optional }
+glob commit: any,
+     prepare: any;
+
+with entry {
+    commit = importlib.import_module("memu.hosts.bridging").commit;
+    prepare = importlib.import_module("memu.hosts.bridging").prepare;
+}
+
 glob ScheduleBackend = Literal["os", "native", "external", "hook"];
 
 with entry {}

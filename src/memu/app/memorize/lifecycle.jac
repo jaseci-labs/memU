@@ -1,8 +1,19 @@
+import importlib;
 import builtins;
 import json;
 import from dataclasses { dataclass }
 import from pathlib { Path }
 import from typing { Any }
+
+glob _atomic_write_text: any,
+     snapshot_tracked: any;
+
+with entry {
+    _atomic_write_text = importlib.import_module(
+        "memu.app.memorize.materialize"
+    )._atomic_write_text;
+    snapshot_tracked = importlib.import_module("memu.hosts.bridging.manifest").snapshot_tracked;
+}
 
 @dataclass(frozen=True)
 class MemorizeWorkspace {

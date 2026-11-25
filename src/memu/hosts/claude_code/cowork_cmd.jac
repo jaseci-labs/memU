@@ -1,3 +1,4 @@
+import importlib;
 import builtins;
 import argparse;
 import hashlib;
@@ -9,6 +10,12 @@ import from enum { IntEnum }
 import from itertools { pairwise }
 import from pathlib { Path }
 import from typing { Any }
+
+glob SESSION_DIR: any;
+
+with entry {
+    SESSION_DIR = importlib.import_module("memu.hosts.claude_code.sessions").SESSION_DIR;
+}
 
 class _Status(IntEnum) {
     static has PASS: any = 0,

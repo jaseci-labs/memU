@@ -58,19 +58,13 @@ graph import {
         commit_memorize,
         prepare_memorize,
     }
-    src.memu.app.memorize.lifecycle ++> src.memu.cli {
-        MemorizeWorkspace,
-        PreparedMemorizeRun,
-        commit_memorize,
-        prepare_memorize,
-    }
+    src.memu.app.memorize.lifecycle ++> src.memu.cli { MemorizeWorkspace, PreparedMemorizeRun }
     include src.memu.app.memorize.materialize ++> src.memu.app.memorize {
         MaterializedConversation,
         materialize_memorize_input,
     }
     src.memu.app.memorize.materialize ++> src.memu.app.memorize.lifecycle {
         MaterializedConversation,
-        _atomic_write_text,
         materialize_memorize_inputs,
     }
     include src.memu.app.service ++> src.memu { MemoryService }
@@ -113,9 +107,6 @@ graph import {
         InMemoryFileSegmentRepository,
         InMemoryRecallFileRepository,
         InMemoryResourceRepository,
-    }
-    src.memu.database.inmemory.repositories.filter ++> src.memu.database.inmemory.repositories.recall_file_repo {
-        matches_where,
     }
     src.memu.database.inmemory.repositories.filter ++> src.memu.database.inmemory.repositories.recall_file_segment_repo {
         matches_where,
@@ -486,22 +477,16 @@ graph import {
         proxy_bypass_mounts,
     }
     include src.memu.embedding.openai_sdk ++> src.memu.embedding { OpenAIEmbeddingSDKClient }
-    src.memu.env ++> src.memu.cli { build_agentic_memory_backend_from_env, embedding_provider, env }
+    src.memu.env ++> src.memu.cli { embedding_provider, env }
     src.memu.env ++> src.memu.cloud { env }
     src.memu.env ++> src.memu.config_file { CONFIG_ENV, read_config }
     src.memu.env ++> src.memu.events { env, env_declared, memory_mode, reload }
-    src.memu.env ++> src.memu.hosts.bridging.pipeline { build_agentic_memory_backend_from_env }
     src.memu.env ++> src.memu.hosts.claude_code.prompt_hook { LONG_QUERY_CHARS }
     src.memu.env ++> src.memu.hosts.codex.prompt_hook { LONG_QUERY_CHARS }
     src.memu.env as env_module ++> src.memu.hosts.config_cmd;
     src.memu.env ++> src.memu.hosts.pi.prompt_hook { LONG_QUERY_CHARS }
     src.memu.env ++> src.memu.hosts.query_extraction { LONG_QUERY_CHARS }
-    src.memu.env ++> src.memu.hosts.retrieval {
-        LONG_QUERY_CHARS,
-        QueryKind,
-        build_agentic_memory_backend_from_env,
-        retrieval_min_score,
-    }
+    src.memu.env ++> src.memu.hosts.retrieval { LONG_QUERY_CHARS, QueryKind, retrieval_min_score }
     src.memu.events as events ++> src.memu.cli;
     src.memu.events as events ++> src.memu.hosts.bridging.pipeline;
     src.memu.events as events ++> src.memu.hosts.config_cmd;
@@ -551,7 +536,7 @@ graph import {
     include src.memu.hosts.bridging ++> src.memu.hosts.hooks { Layout }
     src.memu.hosts.bridging ++> src.memu.hosts.hooks.admission { Layout }
     src.memu.hosts.bridging ++> src.memu.hosts.hooks.worker { Layout }
-    src.memu.hosts.bridging ++> src.memu.hosts.host_cli { Layout, commit, prepare }
+    src.memu.hosts.bridging ++> src.memu.hosts.host_cli { Layout }
     src.memu.hosts.bridging ++> src.memu.hosts.pi.memorize_hook { Layout }
     type src.memu.hosts.bridging ++> src.memu.hosts.scheduling.windows { Layout }
     src.memu.hosts.bridging.instructions ++> src.memu.app.memorize.lifecycle {
@@ -568,12 +553,9 @@ graph import {
     include src.memu.hosts.bridging.layout ++> src.memu.hosts.bridging { Layout }
     src.memu.hosts.bridging.layout ++> src.memu.hosts.bridging.pipeline { TRACK_DIRS, Layout }
     src.memu.hosts.bridging.layout ++> src.memu.hosts.openclaw.cron_identity { Layout }
-    src.memu.hosts.bridging.layout ++> src.memu.hosts.retrieval { BASE_DIR, TRACK_DIRS }
+    src.memu.hosts.bridging.layout ++> src.memu.hosts.retrieval { TRACK_DIRS }
     src.memu.hosts.bridging.layout ++> src.memu.hosts.templates { BASE_DIR }
-    src.memu.hosts.bridging.manifest ++> src.memu.app.memorize.lifecycle {
-        diff_tracked,
-        snapshot_tracked,
-    }
+    src.memu.hosts.bridging.manifest ++> src.memu.app.memorize.lifecycle { diff_tracked }
     src.memu.hosts.bridging.manifest ++> src.memu.hosts.bridging.pipeline {
         diff_tracked,
         snapshot_tracked,
@@ -593,14 +575,12 @@ graph import {
     src.memu.hosts.bridging.recall_files ++> src.memu.hosts.hermes.hook_install {
         _atomic_write_text,
     }
-    src.memu.hosts.bridging.recall_files ++> src.memu.hosts.hooks.admission { _atomic_write_text }
     src.memu.hosts.bridging.recall_files ++> src.memu.hosts.retrieval { write_recall_file }
     src.memu.hosts.bridging.resources ++> src.memu.app.memorize.lifecycle {
         RESOURCE_JOB_TEMPLATE,
         prepare_resource_job,
         read_resources,
     }
-    src.memu.hosts.bridging.resources ++> src.memu.cli { verify_resource_log }
     src.memu.hosts.bridging.resources ++> src.memu.hosts.bridging.pipeline {
         RESOURCE_JOB_TEMPLATE,
         prepare_resource_job,
@@ -640,15 +620,11 @@ graph import {
     src.memu.hosts.claude_code.install as install ++> src.memu.hosts.claude_code.cli;
     src.memu.hosts.claude_code.memorize_hook as memorize_hook ++> src.memu.hosts.claude_code.cli;
     src.memu.hosts.claude_code.prompt_hook as prompt_hook ++> src.memu.hosts.claude_code.cli;
-    src.memu.hosts.claude_code.query_extraction ++> src.memu.hosts.claude_code.prompt_hook {
-        select_query,
-    }
     include src.memu.hosts.claude_code.sessions ++> src.memu.hosts.claude_code {
         ClaudeCodeTranscriptSource,
     }
     src.memu.hosts.claude_code.sessions ++> src.memu.hosts.claude_code.cli { SESSION_DIR }
     src.memu.hosts.claude_code.sessions ++> src.memu.hosts.claude_code.cowork_cmd {
-        SESSION_DIR,
         ClaudeCodeTranscriptSource,
     }
     src.memu.hosts.claude_code.sessions ++> src.memu.hosts.claude_code.desktop_sessions {
@@ -682,7 +658,6 @@ graph import {
     src.memu.hosts.codex.prompt_hook_install as prompt_hook_install ++> src.memu.hosts.codex.doctor;
     src.memu.hosts.codex.prompt_hook_install as prompt_hook_install ++> src.memu.hosts.codex.install;
     src.memu.hosts.codex.prompt_hook_install as hooks ++> src.memu.hosts.codex.uninstall;
-    src.memu.hosts.codex.query_extraction ++> src.memu.hosts.codex.prompt_hook { select_query }
     include src.memu.hosts.codex.sessions ++> src.memu.hosts.codex { CodexTranscriptSource }
     src.memu.hosts.codex.sessions ++> src.memu.hosts.codex.cli {
         SESSION_DIR,
@@ -806,11 +781,7 @@ graph import {
     }
     src.memu.hosts.retrieval ++> src.memu.hosts.codex.prompt_hook { render_context }
     src.memu.hosts.retrieval as retrieval ++> src.memu.hosts.host_cli;
-    src.memu.hosts.retrieval ++> src.memu.hosts.pi.prompt_hook {
-        QueryKind,
-        render_context,
-        retrieve,
-    }
+    src.memu.hosts.retrieval ++> src.memu.hosts.pi.prompt_hook { QueryKind, render_context }
     src.memu.hosts.scheduling.prompt ++> src.memu.hosts.scheduling.windows {
         bridging_pipeline_prompt,
     }
@@ -818,7 +789,6 @@ graph import {
         cleanup,
         install,
         status,
-        uninstall,
         verify,
     }
     src.memu.hosts.templates as templates ++> src.memu.app.memorize.lifecycle;

@@ -1,8 +1,17 @@
+import importlib;
 import from typing { Type, Optional }
 import uuid;
 import from collections.abc { Mapping }
 import from typing { Any }
 import pendulum;
+
+glob matches_where: any;
+
+with entry {
+    matches_where = importlib.import_module(
+        "memu.database.inmemory.repositories.filter"
+    ).matches_where;
+}
 
 class InMemoryRecallFileRepository(RecallFileRepoProtocol) {
     has recall_files: dict[str, RecallFile],

@@ -135,7 +135,7 @@ impl _remap_trust(data: bytes, updates: dict[str, str | None]) -> bytes {
         } except tomllib.TOMLDecodeError {
             parsed = {};
         }
-        keys = affected.intersection(parsed);
+        keys = affected.intersection(set(parsed));
         if not keys {
             result.append(section);
             continue;

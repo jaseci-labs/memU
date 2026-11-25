@@ -657,11 +657,13 @@ def test_only_retrieve_delivers_inline(reporting: pathlib.Path) -> None:
     what the tripwire guards is which command may spend a POST per turn, not how
     many branches of that command do.
     """
-    root = pathlib.Path(events.__file__).parent
+    # The package's source, Python or Jac (a Jac module's bodies live in its impl/ annex);
+    # a module is named by its file's first stem, so retrieval.impl.jac is "retrieval".
+    root = pathlib.Path(__file__).resolve().parents[1] / "src" / "memu"
     callers = sorted(
-        path.name
-        for path in root.rglob("*.py")
-        if path.name != "events.py"
+        path.name.split(".")[0]
+        for path in [*root.rglob("*.py"), *root.rglob("*.jac")]
+        if path.name.split(".")[0] != "events"
         # Comment lines are skipped so that *explaining* this path — which several
         # docstrings around the codebase now do — cannot trip a tripwire meant for
         # a second caller.
@@ -670,7 +672,7 @@ def test_only_retrieve_delivers_inline(reporting: pathlib.Path) -> None:
             for line in path.read_text(encoding="utf-8").splitlines()
         )
     )
-    assert callers == ["retrieval.py"]
+    assert callers == ["retrieval"]
 
 
 def test_delivering_an_event_posts_it_alone_and_never_drains_the_spool(

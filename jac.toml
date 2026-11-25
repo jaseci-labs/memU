@@ -222,7 +222,7 @@ files = [
     "memu/database/interfaces.jac",
     "memu/database/models.jac",
     "memu/database/postgres/__init__.jac",
-    "memu/database/postgres/migration.jac",
+    "memu/database/postgres/migration.py",
     "memu/database/postgres/migrations/__init__.jac",
     "memu/database/postgres/migrations/env.py",
     "memu/database/postgres/migrations/script.py.mako",

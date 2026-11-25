@@ -816,4 +816,5 @@ graph import {
     src.memu.vector ++> src.memu.database.postgres.repositories.resource_repo { cosine_topk }
     src.memu.vector ++> src.memu.database.repositories.recall_file_segment { cosine_topk }
     src.memu.vector ++> src.memu.database.sqlite.repositories.resource_repo { cosine_topk }
+    src.memu.database.postgres.schema --> src.memu.database.postgres.migration { get_metadata }
 }

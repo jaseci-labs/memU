@@ -200,7 +200,8 @@ impl run(
                 return 2;
             }
             events.record(events.CLI_INSTALL_STARTED, host=host);
-            for stage in range(1, len(stages) + 1) {
+            for current in range(1, len(stages) + 1) {
+                stage = current;
                 emit("started");
                 diagnostics = io.StringIO();
                 try {

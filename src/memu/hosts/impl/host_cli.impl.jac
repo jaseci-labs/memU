@@ -6,20 +6,20 @@ impl _task_name_pattern(names: tuple[str, ...]) -> str {
     return "|".join((re.escape(name) for name in names));
 }
 
-impl HostSpec.postinit {
-    if not _TASK_NAME_RE.fullmatch(self.task_name) {
-        msg = f"invalid task_name: {self.task_name!r}";
+impl _check_host_spec(spec: any) {
+    if not _TASK_NAME_RE.fullmatch(spec.task_name) {
+        msg = f"invalid task_name: {spec.task_name!r}";
         raise ValueError(msg);
     }
-    if self.task_name in self.former_task_names {
+    if spec.task_name in spec.former_task_names {
         msg = "task_name must not also appear in former_task_names";
         raise ValueError(msg);
     }
-    if len(set(self.former_task_names)) != len(self.former_task_names) {
+    if len(set(spec.former_task_names)) != len(spec.former_task_names) {
         msg = "former_task_names must not contain duplicates";
         raise ValueError(msg);
     }
-    if any((not name.strip() for name in self.former_task_names)) {
+    if any((not name.strip() for name in spec.former_task_names)) {
         msg = "former_task_names must not contain empty names";
         raise ValueError(msg);
     }

@@ -47,6 +47,8 @@ glob GUIDE_EVENTS = {
 
 with entry {}
 
+def _check_host_spec(spec: any);
+
 @dataclass(frozen=True)
 class HostSpec {
     has host: str,
@@ -72,7 +74,7 @@ class HostSpec {
         register_extra: Callable[[Any], None] | None = None,
         resolve_self_sessions: Callable[[TranscriptSource, Layout], list[str]] | None = None,
         hook: Any = None;
-    def postinit;
+    static has __post_init__: any = _check_host_spec;
 
     has binary: str {
         getter {
@@ -107,6 +109,7 @@ class HostSpec {
 
     def render_doc(text: str) -> str;
 }
+
 
 def _layout(spec: HostSpec, args: argparse.Namespace) -> Layout;
 def _refresh_retrieval(spec: HostSpec);

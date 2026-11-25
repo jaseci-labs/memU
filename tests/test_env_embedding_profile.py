@@ -63,3 +63,22 @@ def test_absent_batch_size_leaves_provider_default(config_file: pathlib.Path) ->
     menv.reload()
 
     assert "embed_batch_size" not in menv.embedding_profile()
+
+
+def test_service_built_from_profile_aliases_embedding(config_file: pathlib.Path) -> None:
+    """The CLI hands only a ``default`` profile; commit and retrieve ask for ``embedding``.
+
+    ``EmbeddingProfilesConfig``'s before-validator adds that alias. Without it the
+    real ``memu commit``/``memu retrieve`` fail with "Unknown embedding profile".
+    """
+    from memu.app.settings import EmbeddingProfilesConfig
+
+    profiles = EmbeddingProfilesConfig.model_validate({"default": {"provider": "openai"}}).profiles
+    assert set(profiles) == {"default", "embedding"}
+    assert profiles["embedding"] == profiles["default"]
+
+    backend = menv.build_agentic_memory_backend_from_env(
+        local_embedding_profile={"provider": "openai", "api_key": "sk-test"},
+        local_database=":memory:",
+    )
+    assert backend._get_embedding_client("embedding") is not None

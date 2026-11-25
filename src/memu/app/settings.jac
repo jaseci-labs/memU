@@ -1,3 +1,4 @@
+import builtins;
 import importlib;
 import from typing { Type, Optional, Annotated, Any, Literal }
 import from pydantic {
@@ -113,6 +114,7 @@ class EmbeddingProfilesConfig(_ProfilesBase) {
     }
 
     @model_validator(mode="before")
+    @builtins.classmethod
     class def ensure_default(data: Any) -> Any {
         if data is None {
             data = {};

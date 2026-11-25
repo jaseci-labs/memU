@@ -69,7 +69,7 @@ impl _read_all(source: TranscriptSource, paths: list[Path]) -> tuple[dict[Path, 
 }
 
 impl _root_counts(source: CoworkTranscriptSource, paths: list[Path]) -> list[tuple[Path, int]] {
-    return [(`root, sum((path.is_relative_to(`root) for path in paths))) for `root in source.roots];
+    return [(`root, sum([path.is_relative_to(`root) for path in paths])) for `root in source.roots];
 }
 
 impl _readable_check(
@@ -168,7 +168,7 @@ impl _timeline_check(
     unique = len(set(resolved)) == len(resolved);
     ordered = all((left >= right for (left, right) in pairwise(mtimes)));
     labels = [
-        "cowork" if any((path.is_relative_to(`root) for `root in roots)) else "code"
+        "cowork" if any([path.is_relative_to(`root) for `root in roots]) else "code"
         for path in composite
     ];
     transitions = sum((left != right for (left, right) in pairwise(labels)));

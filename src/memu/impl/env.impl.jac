@@ -169,7 +169,7 @@ impl cloud_api_key -> str {
 
 impl build_agentic_memory_backend_from_env(
     *, local_database: str | None = None, local_embedding_profile: Optional[dict[str, Any]] = None
-) -> dyn AgenticMemoryBackend {
+) -> any {
     if memory_mode() == "cloud" {
         CloudMemoryClient = importlib.import_module("memu.cloud").CloudMemoryClient;
         return CloudMemoryClient(base_url=cloud_base_url(), api_key=cloud_api_key()) as any;

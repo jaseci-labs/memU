@@ -268,7 +268,7 @@ files = [
     "memu/env.jac",
     "memu/events.jac",
     "memu/hosts/__init__.jac",
-    "memu/hosts/_extraction_runner.jac",
+    "memu/hosts/_extraction_runner.py",
     "memu/hosts/_extraction_windows_job.jac",
     "memu/hosts/base.jac",
     "memu/hosts/bridging/__init__.jac",

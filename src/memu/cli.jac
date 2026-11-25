@@ -14,7 +14,7 @@ glob MEMORIZE_WORKSPACE = "~/.memu/developer",
      MAX_MEMORIZE_SESSIONS = 10;
 def _env(name: str, `default: str) -> str;
 def _add_common_options(parser: argparse.ArgumentParser);
-def _build_backend(args: argparse.Namespace) -> dyn AgenticMemoryBackend;
+def _build_backend(args: argparse.Namespace) -> any;
 def _print_json(payload: Any);
 async def _cmd_retrieve(args: argparse.Namespace) -> int;
 async def _cmd_list_files(args: argparse.Namespace) -> int;

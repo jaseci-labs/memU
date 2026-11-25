@@ -32,7 +32,7 @@ impl _add_common_options(parser: argparse.ArgumentParser) {
     parser.add_argument("--json", action="store_true", help="Print the raw JSON response");
 }
 
-impl _build_backend(args: argparse.Namespace) -> dyn AgenticMemoryBackend {
+impl _build_backend(args: argparse.Namespace) -> any {
     profile: dict[str, Any] = {"provider": args.provider};
     if args.embed_model {
         profile["embed_model"] = args.embed_model;

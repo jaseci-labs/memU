@@ -494,14 +494,6 @@ graph import {
     src.memu.env ++> src.memu.hosts.claude_code.prompt_hook { LONG_QUERY_CHARS }
     src.memu.env ++> src.memu.hosts.codex.prompt_hook { LONG_QUERY_CHARS }
     src.memu.env as env_module ++> src.memu.hosts.config_cmd;
-    src.memu.env ++> src.memu.hosts.host_cli {
-        ConfigError,
-        CONFIG_ENV,
-        cloud_base_url,
-        embedding_provider,
-        env,
-        memory_mode,
-    }
     src.memu.env ++> src.memu.hosts.pi.prompt_hook { LONG_QUERY_CHARS }
     src.memu.env ++> src.memu.hosts.query_extraction { LONG_QUERY_CHARS }
     src.memu.env ++> src.memu.hosts.retrieval {
@@ -516,9 +508,6 @@ graph import {
     src.memu.events as events ++> src.memu.hosts.host_cli;
     src.memu.events as events ++> src.memu.hosts.installation;
     src.memu.events as events ++> src.memu.hosts.retrieval;
-    src.memu.hosts._extraction_windows_job ++> src.memu.hosts.query_extraction {
-        WindowsExtractionJob,
-    }
     src.memu.hosts.base ++> src.memu.hosts.bridging.pipeline { TranscriptSource }
     src.memu.hosts.base ++> src.memu.hosts.bridging.transcripts {
         RecordKind,
@@ -629,9 +618,6 @@ graph import {
     src.memu.hosts.bridging.transcripts ++> src.memu.hosts.bridging.pipeline { prepare_transcripts }
     src.memu.hosts.claude_code.auth as auth ++> src.memu.hosts.claude_code.cli;
     src.memu.hosts.claude_code.auth as auth ++> src.memu.hosts.claude_code.install;
-    src.memu.hosts.claude_code.cli ++> src.memu.hosts.claude_code.memorize_hook {
-        main as claude_main,
-    }
     src.memu.hosts.claude_code.cli_prepare as cli_prepare ++> src.memu.hosts.claude_code.auth;
     src.memu.hosts.claude_code.cli_prepare as cli_prepare ++> src.memu.hosts.claude_code.doctor;
     src.memu.hosts.claude_code.cli_prepare as cli_prepare ++> src.memu.hosts.claude_code.install;

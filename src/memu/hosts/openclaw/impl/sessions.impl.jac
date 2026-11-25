@@ -149,7 +149,7 @@ impl OpenClawTranscriptSource.discover -> list[Path] {
     files: list[tuple[float, any]] = [
         (path.stat().st_mtime, path)
         for path in super.discover()
-        if not any((marker in path.name for marker in _SIDECAR_MARKERS))
+        if not any([marker in path.name for marker in _SIDECAR_MARKERS])
             and _IMPORT_ARCHIVE_DIR not in path.parts
             and (path not in claimed)
     ];

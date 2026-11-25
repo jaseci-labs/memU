@@ -15,7 +15,7 @@ impl ClaudeDesktopTranscriptSource.exists -> bool {
 
 impl ClaudeDesktopTranscriptSource._source(path: Path) -> TranscriptSource {
     return self._cowork
-        if any((path.is_relative_to(`root) for `root in self._cowork.roots))
+        if any([path.is_relative_to(`root) for `root in self._cowork.roots])
         else self._code;
 }
 

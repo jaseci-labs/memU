@@ -79,14 +79,12 @@ class PreparedMemorizeRun {
 }
 
 def _numeric_path_key(path: Path) -> int;
-async def _mirror_recall_files(backend: dyn AgenticMemoryBackend, workspace: MemorizeWorkspace);
+async def _mirror_recall_files(backend: any, workspace: MemorizeWorkspace);
 async def prepare_memorize(
     memorize_input: list[MemorizeInput] | MemorizeInput,
     workspace: MemorizeWorkspace,
-    backend: dyn AgenticMemoryBackend,
+    backend: any,
     *,
     verify_command: str,
 ) -> PreparedMemorizeRun;
-async def commit_memorize(
-    workspace: MemorizeWorkspace, backend: dyn AgenticMemoryBackend
-) -> dict[str, Any];
+async def commit_memorize(workspace: MemorizeWorkspace, backend: any) -> dict[str, Any];

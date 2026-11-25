@@ -14,7 +14,7 @@ impl _numeric_path_key(path: Path) -> int {
     return int(path.stem);
 }
 
-impl _mirror_recall_files(backend: dyn AgenticMemoryBackend, workspace: MemorizeWorkspace) {
+impl _mirror_recall_files(backend: any, workspace: MemorizeWorkspace) {
     cursor: str | None = None;
     while True {
         result = await backend.list_all_recall_files(cursor=cursor);
@@ -34,7 +34,7 @@ impl _mirror_recall_files(backend: dyn AgenticMemoryBackend, workspace: Memorize
 impl prepare_memorize(
     memorize_input: list[MemorizeInput] | MemorizeInput,
     workspace: MemorizeWorkspace,
-    backend: dyn AgenticMemoryBackend,
+    backend: any,
     *,
     verify_command: str,
 ) -> PreparedMemorizeRun {
@@ -82,9 +82,7 @@ impl prepare_memorize(
     return PreparedMemorizeRun(transcript=transcripts, jobs=jobs);
 }
 
-impl commit_memorize(
-    workspace: MemorizeWorkspace, backend: dyn AgenticMemoryBackend
-) -> dict[str, Any] {
+impl commit_memorize(workspace: MemorizeWorkspace, backend: any) -> dict[str, Any] {
     if not workspace.active_run.is_file() {
         msg = "memorize workspace has no active run";
         raise RuntimeError(msg);

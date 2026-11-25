@@ -56,8 +56,10 @@ run_extraction([sys.executable, '-c', sys.argv[2], sys.argv[1], 'wait'], b'',
 
 
 def _environment() -> dict[str, str]:
-    # Subprocesses must exercise this checkout even when pytest uses an editable install elsewhere.
-    return {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}
+    # Subprocesses must import the memu this run is testing: its package's parent directory.
+    import memu
+
+    return {**os.environ, "PYTHONPATH": str(Path(memu.__file__).resolve().parents[1])}
 
 
 def _tree_pids(marker: Path) -> list[int]:

@@ -376,7 +376,7 @@ files = [
     "memu/hosts/workbuddy/sessions.py",
     "memu/retry.jac",
     "memu/trust.jac",
-    "memu/vector.py",
+    "memu/vector.jac",
 ]
 
 [wheel.".".metadata]

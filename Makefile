@@ -1,22 +1,16 @@
 .PHONY: install
 install:
-	@echo "🚀 Creating virtual environment using uv"
-	@uv sync
-	@uv run pre-commit install
+	@echo "🚀 Installing the project's packages with neojac"
+	@neojac install
 
 .PHONY: check
 check:
-	@echo "🚀 Checking lock file consistency with 'pyproject.toml'"
-	@uv lock --locked
-	@echo "🚀 Linting code: Running pre-commit"
-	@uv run pre-commit run -a
-	@echo "🚀 Static type checking: Running mypy"
-	@uv run mypy
-	@echo "🚀 Checking for obsolete dependencies: Running deptry"
-	@uv run deptry src
-
+	@echo "🚀 Checking format: neojac fmt --check"
+	@neojac fmt --check src archwire.jac
+	@echo "🚀 Checking the package: neojac check"
+	@neojac check --space memu
 
 .PHONY: test
 test:
-	@echo "🚀 Testing code: Running pytest"
-	@uv run python -m pytest --cov --cov-config=pyproject.toml --cov-report=xml
+	@echo "🚀 Building the package and running its suite: neojac test"
+	@neojac test

@@ -50,12 +50,12 @@ If a repository method, model field, filter behavior, or vector search contract 
 
 ## Testing And Validation
 
-Use `uv` for local runs.
+Use `neojac` for local runs (ADR 0026).
 
-- Setup: `make install`
-- Run all tests: `make test`
-- Run focused tests: `uv run python -m pytest tests/<target_test>.py`
-- Full quality checks: `make check`
+- Setup: `make install` (`neojac install`)
+- Run all tests: `make test` (`neojac test`: builds the package, then runs pytest against the build)
+- Run focused tests: `neojac build pyproject.toml`, then `PYTHONPATH=$PWD/.jac/build/pypi/top/site .jac/venv/bin/python -m pytest --import-mode=append tests/<target_test>.py`
+- Full quality checks: `make check` (`neojac fmt --check` and `neojac check --space memu`)
 
 Useful focused areas:
 

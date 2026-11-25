@@ -4,6 +4,10 @@ graph layers {
 
 graph spaces {
     space memu_cli: node { "npm"; }
+    space memu: cpython { "."; }
+
+    package memu { ship memu; }
+    space memu_dev: cpython { scripts.* | tests | tests.*; }
 }
 
 graph import {

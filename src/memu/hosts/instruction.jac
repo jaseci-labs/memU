@@ -91,20 +91,18 @@ def _body(binary: str, skill_text: str | None) -> str {
 }
 
 def skill_document(binary: str, *, skill_text: str | None = None) -> str {
-    if skill_text is not None {
-        return skill_text.format(binary=binary);
-    }
-    return SKILL_TEMPLATE.format(name=SKILL_NAME, body=_body(binary, None));
+    return skill_text.format(binary=binary)
+        if skill_text is not None
+        else SKILL_TEMPLATE.format(name=SKILL_NAME, body=_body(binary, None));
 }
 
 def instruction(binary: str, *, skill: bool = False, skill_text: str | None = None) -> str {
     if binary == "memu-hermes" {
         return HERMES_INSTRUCTION_TEMPLATE.format(body=RETRIEVAL_BODY.format(binary=binary));
     }
-    if skill {
-        return SKILL_INSTRUCTION_TEMPLATE.format(skill=SKILL_NAME, binary=binary);
-    }
-    return INSTRUCTION_TEMPLATE.format(body=_body(binary, skill_text));
+    return SKILL_INSTRUCTION_TEMPLATE.format(skill=SKILL_NAME, binary=binary)
+        if skill
+        else INSTRUCTION_TEMPLATE.format(body=_body(binary, skill_text));
 }
 
 def block(binary: str, *, skill: bool = False, skill_text: str | None = None) -> str {

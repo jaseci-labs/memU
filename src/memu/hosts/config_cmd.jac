@@ -36,15 +36,9 @@ def _effective_mode(values: dict[str, str]) -> str {
 
 def _protection(values: dict[str, str]) -> str | None {
     if _effective_mode(values) == "cloud" {
-        if values.get("MEMU_CLOUD_API_KEY") {
-            return "a memU Cloud key is already stored";
-        }
-        return None;
+        return "a memU Cloud key is already stored" if values.get("MEMU_CLOUD_API_KEY") else None;
     }
-    if values.get("MEMU_DB") {
-        return "a local store is already configured (MEMU_DB)";
-    }
-    return None;
+    return "a local store is already configured (MEMU_DB)" if values.get("MEMU_DB") else None;
 }
 
 def _client_id(values: dict[str, str]) -> tuple[dict[str, str], str, bool] {

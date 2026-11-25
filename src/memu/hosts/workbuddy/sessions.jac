@@ -41,10 +41,7 @@ class WorkBuddyTranscriptSource(TranscriptSource) {
                 return RecordKind.MESSAGE;
             }
         }
-        if typ in _TOOL_TYPES {
-            return RecordKind.TOOL;
-        }
-        return RecordKind.OTHER;
+        return RecordKind.TOOL if typ in _TOOL_TYPES else RecordKind.OTHER;
     }
 
     def timestamp(record: str) -> str | None {

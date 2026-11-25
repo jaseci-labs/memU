@@ -80,10 +80,7 @@ def platform_data_roots -> list[Path] {
     if sys.platform == "darwin" {
         return macos_data_roots();
     }
-    if sys.platform.startswith("linux") {
-        return linux_data_roots();
-    }
-    return [];
+    return linux_data_roots() if sys.platform.startswith("linux") else [];
 }
 
 def _default_root -> Path {

@@ -14,10 +14,9 @@ class InMemoryFileSegmentRepository(RecallFileSegmentRepo) {
     }
 
     def list_segments(where: Mapping[str, Any] | None = None) -> list[RecallFileSegment] {
-        if not where {
-            return list(self.segments);
-        }
-        return [seg for seg in self.segments if matches_where(seg, where)];
+        return list(self.segments)
+            if not where
+            else ([seg for seg in self.segments if matches_where(seg, where)]);
     }
 
     def list_segments_for_file(recall_file_id: str) -> list[RecallFileSegment] {

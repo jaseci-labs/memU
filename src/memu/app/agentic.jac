@@ -9,10 +9,9 @@ import from pydantic { BaseModel }
 glob DEFAULT_PAGE_LIMIT = 50;
 
 def _encode_cursor(after: Optional[tuple[str, str, str]]) -> str | None {
-    if after is None {
-        return None;
-    }
-    return base64.urlsafe_b64encode(json.dumps(list(after)).encode()).decode();
+    return None
+        if after is None
+        else base64.urlsafe_b64encode(json.dumps(list(after)).encode()).decode();
 }
 
 def _decode_cursor(cursor: str | None) -> Optional[tuple[str, str, str]] {

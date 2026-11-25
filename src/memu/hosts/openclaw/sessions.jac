@@ -273,10 +273,7 @@ class OpenClawTranscriptSource(TranscriptSource) {
         if role in _MESSAGE_ROLES {
             return RecordKind.MESSAGE;
         }
-        if role == "toolResult" {
-            return RecordKind.TOOL;
-        }
-        return RecordKind.OTHER;
+        return RecordKind.TOOL if role == "toolResult" else RecordKind.OTHER;
     }
 
     def timestamp(record: str) -> str | None {

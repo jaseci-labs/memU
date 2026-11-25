@@ -142,9 +142,8 @@ class HermesTranscriptSource(TranscriptSource) {
         } except (json.JSONDecodeError, AttributeError) {
             return None;
         }
-        if isinstance(value, (int, float)) {
-            return datetime.datetime.fromtimestamp(value, tz=datetime.UTC).isoformat();
-        }
-        return value if isinstance(value, str) else None;
+        return datetime.datetime.fromtimestamp(value, tz=datetime.UTC).isoformat()
+            if isinstance(value, (int, float))
+            else (value if isinstance(value, str) else None);
     }
 }

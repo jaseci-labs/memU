@@ -67,10 +67,7 @@ def _split(raw: str) -> tuple[str, str] {
         return ("", "");
     }
     (key, sep, value) = line.partition("=");
-    if not sep {
-        return ("", "");
-    }
-    return (key.strip(), value);
+    return ("", "") if not sep else (key.strip(), value);
 }
 
 def _merged(text: str, updates: dict[str, str]) -> str {

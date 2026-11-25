@@ -179,10 +179,9 @@ def _quote(value: str) -> str {
 
 def _command(subcommand: str = "prompt-hook") -> str {
     executable = str(Path(sys.argv[0]).resolve());
-    if sys.platform == "win32" {
-        return "& " + _quote(executable) + " " + subcommand;
-    }
-    return shlex.join([executable, subcommand]);
+    return "& " + _quote(executable) + " " + subcommand
+        if sys.platform == "win32"
+        else shlex.join([executable, subcommand]);
 }
 
 def _owns_command(command: str, subcommand: str = "prompt-hook") -> bool {

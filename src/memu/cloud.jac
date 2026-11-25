@@ -278,9 +278,8 @@ class CloudMemoryClient {
         if status in {400, 409, 422} {
             return (CloudValidationError, "request rejected");
         }
-        if status == 429 {
-            return (CloudRateLimitError, "rate limit exceeded");
-        }
-        return (CloudServiceError, "service request failed");
+        return (CloudRateLimitError, "rate limit exceeded")
+            if status == 429
+            else (CloudServiceError, "service request failed");
     }
 }

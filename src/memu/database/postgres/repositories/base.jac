@@ -33,10 +33,7 @@ class PostgresRepoBase(SQLRepoBase) {
         }
         if isinstance(embedding, str) {
             stripped = embedding.strip("[]");
-            if not stripped {
-                return [];
-            }
-            return [float(x) for x in stripped.split(",")];
+            return [] if not stripped else [float(x) for x in stripped.split(",")];
         }
         try {
             return [float(x) for x in embedding];
@@ -47,10 +44,7 @@ class PostgresRepoBase(SQLRepoBase) {
     }
 
     def _prepare_embedding(embedding: Optional[list[float]]) -> Any {
-        if embedding is None {
-            return None;
-        }
-        return embedding;
+        return None if embedding is None else embedding;
     }
 }
 

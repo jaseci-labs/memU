@@ -17,10 +17,7 @@ with entry {
 
 def is_bridging_run(cwd: Path, base: Path, env: Mapping[str, str] | None = None) -> bool {
     environ: any = os.environ if env is None else env;
-    if environ.get(BRIDGING_RUN_ENV, "").strip() {
-        return True;
-    }
-    return operator.eq(cwd, base);
+    return True if environ.get(BRIDGING_RUN_ENV, "").strip() else operator.eq(cwd, base);
 }
 
 def load(path: Path) -> list[str] {

@@ -108,10 +108,9 @@ def _refresh_due(attempt_path: Path, now: float) -> bool {
     } except (OSError, ValueError) {
         return True;
     }
-    if not math.isfinite(last_attempt) or last_attempt > now {
-        return True;
-    }
-    return now - last_attempt >= _REFRESH_INTERVAL_SECONDS;
+    return True
+        if not math.isfinite(last_attempt) or last_attempt > now
+        else now - last_attempt >= _REFRESH_INTERVAL_SECONDS;
 }
 
 def resolve(name: str, embedded: str) -> str {
@@ -226,8 +225,7 @@ def _read_doc_cache(host: str, filename: str) -> str | None {
 }
 
 def resolve_doc(host: str, filename: str, embedded: str) -> str {
-    if not embedded.strip() {
-        return embedded;
-    }
-    return fetch_doc(host, filename) or _read_doc_cache(host, filename) or embedded;
+    return embedded
+        if not embedded.strip()
+        else fetch_doc(host, filename) or _read_doc_cache(host, filename) or embedded;
 }

@@ -45,10 +45,9 @@ def save_registration(path: Path, *, job_id: str) -> CronRegistration {
 def load_registration(path: Path) -> CronRegistration | None {
     try {
         value = json.loads(path.read_text(encoding="utf-8"));
-        if not isinstance(value, dict) {
-            return None;
-        }
-        return CronRegistration(job_id=_session_key_segment("job_id", value.get("job_id", "")));
+        return None
+            if not isinstance(value, dict)
+            else CronRegistration(job_id=_session_key_segment("job_id", value.get("job_id", "")));
     } except (OSError, json.JSONDecodeError, ValueError) {
         return None;
     }

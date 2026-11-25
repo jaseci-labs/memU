@@ -88,9 +88,6 @@ class CodexTranscriptSource(TranscriptSource) {
         if kind == "message" and payload.get("role") in _MESSAGE_ROLES {
             return RecordKind.OTHER if _injected(payload) else RecordKind.MESSAGE;
         }
-        if kind in _TOOL_TYPES {
-            return RecordKind.TOOL;
-        }
-        return RecordKind.OTHER;
+        return RecordKind.TOOL if kind in _TOOL_TYPES else RecordKind.OTHER;
     }
 }

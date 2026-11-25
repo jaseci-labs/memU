@@ -25,10 +25,7 @@ class SQLiteRepoBase(SQLRepoBase) {
     }
 
     def _prepare_embedding(embedding: Optional[list[float]]) -> Optional[list[float]] {
-        if embedding is None {
-            return None;
-        }
-        return list(embedding);
+        return None if embedding is None else list(embedding);
     }
 }
 

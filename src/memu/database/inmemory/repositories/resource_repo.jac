@@ -16,10 +16,9 @@ class InMemoryResourceRepository(ResourceRepoProtocol) {
     }
 
     def list_resources(where: Mapping[str, Any] | None = None) -> dict[str, Resource] {
-        if not where {
-            return dict(self.resources);
-        }
-        return {rid: res for (rid, res) in self.resources.items() if matches_where(res, where)};
+        return dict(self.resources)
+            if not where
+            else ({rid: res for (rid, res) in self.resources.items() if matches_where(res, where)});
     }
 
     def clear_resources(where: Mapping[str, Any] | None = None) -> dict[str, Resource] {

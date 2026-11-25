@@ -46,10 +46,7 @@ def _load_proxy(base_url: str) -> str | None {
     if target.scheme.lower() == "https" {
         return proxies.get("https") or proxies.get("http") or proxies.get("all");
     }
-    if target.scheme.lower() == "http" {
-        return proxies.get("http") or proxies.get("all");
-    }
-    return None;
+    return proxies.get("http") or proxies.get("all") if target.scheme.lower() == "http" else None;
 }
 
 glob logger = logging.getLogger(__name__),

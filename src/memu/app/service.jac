@@ -70,9 +70,6 @@ class MemoryService(AgenticMixin) {
         if isinstance(config, model_type) {
             return config;
         }
-        if config is None {
-            return model_type();
-        }
-        return model_type.model_validate(config);
+        return model_type() if config is None else model_type.model_validate(config);
     }
 }

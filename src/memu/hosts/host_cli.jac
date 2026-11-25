@@ -283,10 +283,7 @@ def _cycle_duration_ms(layout: Layout) -> int | None {
     } except (OSError, ValueError, TypeError, KeyError) {
         return None;
     }
-    if elapsed < 0 or elapsed > MAX_CYCLE_SECONDS {
-        return None;
-    }
-    return round(elapsed * 1000);
+    return None if elapsed < 0 or elapsed > MAX_CYCLE_SECONDS else round(elapsed * 1000);
 }
 
 def _cycle_is_open(layout: Layout) -> bool {
@@ -545,10 +542,9 @@ async def _cmd_schedule(spec: HostSpec, args: argparse.Namespace) -> int {
     if args.action == "uninstall" {
         return scheduling.uninstall(spec, layout);
     }
-    if args.action == "status" {
-        return scheduling.status(spec, layout);
-    }
-    return scheduling.verify(spec, layout);
+    return scheduling.status(spec, layout)
+        if args.action == "status"
+        else scheduling.verify(spec, layout);
 }
 
 async def _cmd_report(spec: HostSpec, args: argparse.Namespace) -> int {

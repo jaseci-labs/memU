@@ -76,9 +76,6 @@ class PiTranscriptSource(TranscriptSource) {
         if "text" in block_types {
             return RecordKind.MESSAGE;
         }
-        if "toolCall" in block_types {
-            return RecordKind.TOOL;
-        }
-        return RecordKind.OTHER;
+        return RecordKind.TOOL if "toolCall" in block_types else RecordKind.OTHER;
     }
 }

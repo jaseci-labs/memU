@@ -100,10 +100,7 @@ def enabled -> bool {
     if _off(env_declared("MEMU_TELEMETRY", "1")) {
         return False;
     }
-    if _on(os.environ.get("DO_NOT_TRACK")) {
-        return False;
-    }
-    return events_url() is not None;
+    return False if _on(os.environ.get("DO_NOT_TRACK")) else events_url() is not None;
 }
 
 def _spool_path -> Path {
@@ -135,10 +132,7 @@ def reported_by(event_name: str) -> str {
 }
 
 def agent_platform(host: str | None) -> str {
-    if not host {
-        return "none";
-    }
-    return AGENT_PLATFORMS.get(host, host.replace("-", "_"));
+    return "none" if not host else AGENT_PLATFORMS.get(host, host.replace("-", "_"));
 }
 
 def _os_name -> str {
@@ -153,10 +147,7 @@ def _now -> str {
 }
 
 def _session_id(session_id_env: str) -> str {
-    if not session_id_env {
-        return "";
-    }
-    return os.environ.get(session_id_env, "").strip();
+    return "" if not session_id_env else os.environ.get(session_id_env, "").strip();
 }
 
 def envelope(
@@ -214,10 +205,7 @@ def record(
 
 def _deliver(event: dict[str, Any]) -> bool {
     url = events_url();
-    if url is None {
-        return False;
-    }
-    return _post(url, event) != RETRY;
+    return False if url is None else _post(url, event) != RETRY;
 }
 
 def _filter(event_name: str, properties: Optional[dict[str, Any]]) -> dict[str, Any] {
@@ -448,10 +436,9 @@ def _drain(
 
 def _sending_files -> list[Path] {
     spool = _spool_path();
-    if not spool.parent.is_dir() {
-        return [];
-    }
-    return sorted(spool.parent.glob(f"{spool.name}.*.sending"));
+    return []
+        if not spool.parent.is_dir()
+        else sorted(spool.parent.glob(f"{spool.name}.*.sending"));
 }
 
 def _rotate_spool -> list[Path] {

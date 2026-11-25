@@ -11,10 +11,7 @@ import from pydantic {
 }
 
 def normalize_value(v: str) -> str {
-    if isinstance(v, str) {
-        return v.strip().lower();
-    }
-    return v;
+    return v.strip().lower() if isinstance(v, str) else v;
 }
 
 glob Normalize: any;

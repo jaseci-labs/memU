@@ -79,10 +79,7 @@ def env_declared(name: str, `default: str = "") -> str {
         return os.environ[name];
     }
     values = _file_values();
-    if name in values {
-        return values[name];
-    }
-    return `default;
+    return values[name] if name in values else `default;
 }
 
 def require(name: str) -> str {

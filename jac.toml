@@ -1,0 +1,387 @@
+[pypi."."]
+[pypi.".".project]
+name = "memu-cli"
+version = "0.11.0-beta.3"
+authors = [
+    {name = "MemU Team", email = "contact@nevamind.ai"},
+]
+description = "Personal memory as files — fast retrieval, higher accuracy, lower cost."
+readme = "README.md"
+# license = {file = "LICENSE"}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+keywords = ["agent", "agentic", "agent-harness", "harness", "loop-engineering", "context-engineering", "context-window", "memory", "personal-information", "workspace", "retrieval", "llm"]
+dependencies = [
+    "httpx>=0.28.1",
+    "numpy>=2.3.4",
+    "openai>=2.8.0",
+    "pydantic>=2.12.4",
+    "sqlmodel>=0.0.27",
+    "alembic>=1.14.0",
+    "pendulum>=3.1.0",
+]
+
+[pypi.".".build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[pypi.".".tool.hatch.build.targets.wheel]
+packages = ["src/memu"]
+
+[pypi.".".dependency-groups]
+dev = [
+    {include-group = "lint"},
+    {include-group = "test"},
+]
+lint = [
+    "deptry>=0.23.1",
+    "mypy>=1.18.2",
+    "pre-commit>=4.3.0",
+    "ruff>=0.14.3",
+    "types-defusedxml>=0.7.0",
+]
+test = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=7.0.0",
+]
+
+[pypi.".".project.optional-dependencies]
+postgres = ["pgvector>=0.3.4", "sqlalchemy[postgresql-psycopgbinary]>=2.0.36"]
+
+[pypi.".".project.scripts]
+memu = "memu.cli:main"
+# Host adapters get their own binary rather than a subcommand: `memu` is the
+# algorithm surface, these are sidecars to a desktop agent (ADR 0008/0009/0010).
+memu-codex = "memu.hosts.codex.cli:main"
+memu-claude-code = "memu.hosts.claude_code.cli:main"
+memu-cursor = "memu.hosts.cursor.cli:main"
+memu-openclaw = "memu.hosts.openclaw.cli:main"
+memu-hermes = "memu.hosts.hermes.cli:main"
+memu-workbuddy = "memu.hosts.workbuddy.cli:main"
+memu-pi = "memu.hosts.pi.cli:main"
+
+[pypi.".".project.urls]
+"Homepage" = "https://github.com/NevaMind-AI/MemU"
+"Bug Tracker" = "https://github.com/NevaMind-AI/MemU/issues"
+"Documentation" = "https://github.com/NevaMind-AI/MemU#readme"
+
+[pypi.".".tool.mypy]
+files = ["src", "tests"]
+python_version = "3.11"
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[[pypi.".".tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+warn_unused_ignores = false
+disable_error_code = ["attr-defined", "call-arg"]
+
+[[pypi.".".tool.mypy.overrides]]
+module = ["pgvector.*"]
+ignore_missing_imports = true
+
+[pypi.".".tool.deptry.per_rule_ignores]
+# memu.trust imports certifi only as a fallback, inside a try/except that
+# degrades when it is absent — so it is deliberately a transitive dependency
+# (via httpx) rather than one this package declares and would then require.
+DEP003 = ["certifi"]
+
+[pypi.".".tool.ruff]
+target-version = "py311"
+line-length = 120
+fix = true
+
+[pypi.".".tool.ruff.lint]
+select = [
+    # flake8-2020
+    "YTT",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-builtins
+    "A",
+    # flake8-comprehensions
+    "C4",
+    # flake8-debugger
+    "T10",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # mccabe
+    "C90",
+    # pycodestyle
+    "E", "W",
+    # pyflakes
+    "F",
+    # pygrep-hooks
+    "PGH",
+    # pyupgrade
+    "UP",
+    # ruff
+    "RUF",
+    # tryceratops
+    "TRY",
+]
+ignore = [
+    # LineTooLong
+    "E501",
+    # DoNotAssignLambda
+    "E731",
+]
+
+[pypi.".".tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[pypi.".".tool.ruff.format]
+preview = true
+
+[pypi.".".tool.coverage.report]
+skip_empty = true
+
+[pypi.".".tool.coverage.run]
+branch = true
+source = ["memu"]
+
+[pypi.".".tool.pytest.ini_options]
+testpaths = ["tests"]
+log_cli = true
+log_cli_level = "INFO"
+asyncio_mode = "auto"
+
+[test.pypi."."]
+command = ["pytest", "--import-mode=append"]
+groups = ["test"]
+
+[install.pypi."."]
+groups = ["dev"]
+
+[npm.npm]
+name = "memu-cli"
+version = "0.2.0"
+description = "CLI for memU — personal memory as files. Thin launcher for the PyPI package memu-cli."
+bin = { memu = "bin/memu.js" }
+files = ["bin"]
+engines = { node = ">=18" }
+keywords = ["memu", "memory", "agent", "context-engineering", "retrieval", "llm", "cli"]
+license = "Apache-2.0"
+repository = { type = "git", url = "git+https://github.com/NevaMind-AI/MemU.git", directory = "npm" }
+homepage = "https://github.com/NevaMind-AI/MemU#readme"
+
+[npm.npm.bugs]
+url = "https://github.com/NevaMind-AI/MemU/issues"
+
+[wheel."."]
+root = "src"
+files = [
+    "memu/__init__.py",
+    "memu/__main__.py",
+    "memu/agentic_backend.py",
+    "memu/app/__init__.py",
+    "memu/app/agentic.py",
+    "memu/app/client_pool.py",
+    "memu/app/memorize/__init__.py",
+    "memu/app/memorize/input.py",
+    "memu/app/memorize/lifecycle.py",
+    "memu/app/memorize/materialize.py",
+    "memu/app/service.py",
+    "memu/app/settings.py",
+    "memu/cli.py",
+    "memu/cloud.py",
+    "memu/config_file.py",
+    "memu/database/__init__.py",
+    "memu/database/factory.py",
+    "memu/database/inmemory/__init__.py",
+    "memu/database/inmemory/models.py",
+    "memu/database/inmemory/repo.py",
+    "memu/database/inmemory/repositories/__init__.py",
+    "memu/database/inmemory/repositories/filter.py",
+    "memu/database/inmemory/repositories/recall_file_repo.py",
+    "memu/database/inmemory/repositories/recall_file_segment_repo.py",
+    "memu/database/inmemory/repositories/resource_repo.py",
+    "memu/database/inmemory/state.py",
+    "memu/database/inmemory/vector.py",
+    "memu/database/interfaces.py",
+    "memu/database/models.py",
+    "memu/database/postgres/__init__.py",
+    "memu/database/postgres/migration.py",
+    "memu/database/postgres/migrations/__init__.py",
+    "memu/database/postgres/migrations/env.py",
+    "memu/database/postgres/migrations/script.py.mako",
+    "memu/database/postgres/migrations/versions/20260703_0001_initial_schema.py",
+    "memu/database/postgres/models.py",
+    "memu/database/postgres/postgres.py",
+    "memu/database/postgres/repositories/__init__.py",
+    "memu/database/postgres/repositories/base.py",
+    "memu/database/postgres/repositories/recall_file_repo.py",
+    "memu/database/postgres/repositories/recall_file_segment_repo.py",
+    "memu/database/postgres/repositories/resource_repo.py",
+    "memu/database/postgres/schema.py",
+    "memu/database/postgres/session.py",
+    "memu/database/repositories/__init__.py",
+    "memu/database/repositories/recall_file.py",
+    "memu/database/repositories/recall_file_segment.py",
+    "memu/database/repositories/resource.py",
+    "memu/database/sqlite/__init__.py",
+    "memu/database/sqlite/models.py",
+    "memu/database/sqlite/repositories/__init__.py",
+    "memu/database/sqlite/repositories/base.py",
+    "memu/database/sqlite/repositories/recall_file_repo.py",
+    "memu/database/sqlite/repositories/recall_file_segment_repo.py",
+    "memu/database/sqlite/repositories/resource_repo.py",
+    "memu/database/sqlite/schema.py",
+    "memu/database/sqlite/session.py",
+    "memu/database/sqlite/sqlite.py",
+    "memu/database/state.py",
+    "memu/database/transaction.py",
+    "memu/embedding/__init__.py",
+    "memu/embedding/backends/__init__.py",
+    "memu/embedding/backends/base.py",
+    "memu/embedding/backends/doubao.py",
+    "memu/embedding/backends/jina.py",
+    "memu/embedding/backends/openai.py",
+    "memu/embedding/backends/openrouter.py",
+    "memu/embedding/backends/voyage.py",
+    "memu/embedding/base.py",
+    "memu/embedding/defaults.py",
+    "memu/embedding/gateway.py",
+    "memu/embedding/http_client.py",
+    "memu/embedding/openai_sdk.py",
+    "memu/env.py",
+    "memu/events.py",
+    "memu/hosts/__init__.py",
+    "memu/hosts/_extraction_runner.py",
+    "memu/hosts/_extraction_windows_job.py",
+    "memu/hosts/base.py",
+    "memu/hosts/bridging/__init__.py",
+    "memu/hosts/bridging/instructions.py",
+    "memu/hosts/bridging/layout.py",
+    "memu/hosts/bridging/manifest.py",
+    "memu/hosts/bridging/pipeline.py",
+    "memu/hosts/bridging/recall_files.py",
+    "memu/hosts/bridging/resources.py",
+    "memu/hosts/bridging/self_sessions.py",
+    "memu/hosts/bridging/transcripts.py",
+    "memu/hosts/claude_code/BRIDGING_TASK.md",
+    "memu/hosts/claude_code/INSTALL.md",
+    "memu/hosts/claude_code/UNINSTALL.md",
+    "memu/hosts/claude_code/__init__.py",
+    "memu/hosts/claude_code/auth.py",
+    "memu/hosts/claude_code/cli.py",
+    "memu/hosts/claude_code/cli_prepare.py",
+    "memu/hosts/claude_code/cowork_cmd.py",
+    "memu/hosts/claude_code/desktop_sessions.py",
+    "memu/hosts/claude_code/doctor.py",
+    "memu/hosts/claude_code/hook_install.py",
+    "memu/hosts/claude_code/install.py",
+    "memu/hosts/claude_code/memorize_hook.py",
+    "memu/hosts/claude_code/prompt_hook.py",
+    "memu/hosts/claude_code/query_extraction.py",
+    "memu/hosts/claude_code/sessions.py",
+    "memu/hosts/claude_code/submit.py",
+    "memu/hosts/claude_code/uninstall.py",
+    "memu/hosts/claude_records.py",
+    "memu/hosts/cli_install.py",
+    "memu/hosts/codex/BRIDGING_TASK.md",
+    "memu/hosts/codex/INSTALL.md",
+    "memu/hosts/codex/UNINSTALL.md",
+    "memu/hosts/codex/__init__.py",
+    "memu/hosts/codex/cli.py",
+    "memu/hosts/codex/cli_prepare.py",
+    "memu/hosts/codex/doctor.py",
+    "memu/hosts/codex/hook_status.py",
+    "memu/hosts/codex/install.py",
+    "memu/hosts/codex/memorize_hook.py",
+    "memu/hosts/codex/notify_console.py",
+    "memu/hosts/codex/prompt_hook.py",
+    "memu/hosts/codex/prompt_hook_install.py",
+    "memu/hosts/codex/query_extraction.py",
+    "memu/hosts/codex/sessions.py",
+    "memu/hosts/codex/uninstall.py",
+    "memu/hosts/config_cmd.py",
+    "memu/hosts/cowork/__init__.py",
+    "memu/hosts/cowork/sessions.py",
+    "memu/hosts/cursor/BRIDGING_TASK.md",
+    "memu/hosts/cursor/INSTALL.md",
+    "memu/hosts/cursor/UNINSTALL.md",
+    "memu/hosts/cursor/__init__.py",
+    "memu/hosts/cursor/cli.py",
+    "memu/hosts/cursor/sessions.py",
+    "memu/hosts/hermes/BRIDGING_TASK.md",
+    "memu/hosts/hermes/INSTALL.md",
+    "memu/hosts/hermes/UNINSTALL.md",
+    "memu/hosts/hermes/__init__.py",
+    "memu/hosts/hermes/cli.py",
+    "memu/hosts/hermes/hook.py",
+    "memu/hosts/hermes/hook_install.py",
+    "memu/hosts/hermes/install.py",
+    "memu/hosts/hermes/memorize_hook.py",
+    "memu/hosts/hermes/sessions.py",
+    "memu/hosts/hooks/__init__.py",
+    "memu/hosts/hooks/admission.py",
+    "memu/hosts/hooks/worker.py",
+    "memu/hosts/host_cli.py",
+    "memu/hosts/install_language.py",
+    "memu/hosts/installation.py",
+    "memu/hosts/instruction.py",
+    "memu/hosts/openclaw/BRIDGING_TASK.md",
+    "memu/hosts/openclaw/INSTALL.md",
+    "memu/hosts/openclaw/UNINSTALL.md",
+    "memu/hosts/openclaw/__init__.py",
+    "memu/hosts/openclaw/cli.py",
+    "memu/hosts/openclaw/cron_identity.py",
+    "memu/hosts/openclaw/sessions.py",
+    "memu/hosts/pi/BRIDGING_TASK.md",
+    "memu/hosts/pi/INSTALL.md",
+    "memu/hosts/pi/UNINSTALL.md",
+    "memu/hosts/pi/__init__.py",
+    "memu/hosts/pi/cli.py",
+    "memu/hosts/pi/hook_install.py",
+    "memu/hosts/pi/install.py",
+    "memu/hosts/pi/memorize_hook.py",
+    "memu/hosts/pi/prompt_hook.py",
+    "memu/hosts/pi/query_extraction.py",
+    "memu/hosts/pi/retrieval-extension.ts",
+    "memu/hosts/pi/sessions.py",
+    "memu/hosts/query_extraction.py",
+    "memu/hosts/retrieval.py",
+    "memu/hosts/scheduling/__init__.py",
+    "memu/hosts/scheduling/macos.py",
+    "memu/hosts/scheduling/prompt.py",
+    "memu/hosts/scheduling/windows.py",
+    "memu/hosts/templates.py",
+    "memu/hosts/workbuddy/BRIDGING_TASK.md",
+    "memu/hosts/workbuddy/INSTALL.md",
+    "memu/hosts/workbuddy/UNINSTALL.md",
+    "memu/hosts/workbuddy/__init__.py",
+    "memu/hosts/workbuddy/cli.py",
+    "memu/hosts/workbuddy/sessions.py",
+    "memu/retry.py",
+    "memu/trust.py",
+    "memu/vector.py",
+]
+
+[wheel.".".metadata]
+License-File = "LICENSE.txt"
+Keywords = "agent,agent-harness,agentic,context-engineering,context-window,harness,llm,loop-engineering,memory,personal-information,retrieval,workspace"
+
+[lock.pypi]
+accept = ["pydantic", "pydantic-core", "jiter"]

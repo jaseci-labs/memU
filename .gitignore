@@ -217,3 +217,8 @@ claude_sessions.md
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/hooks/
+/npm/package.json
+/npm/package-lock.json
+/npm/node_modules/
+/pyproject.toml
+.jac/

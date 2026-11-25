@@ -175,5 +175,3 @@ class PostgresRecallFileSegmentRepo(PostgresRepoBase, RecallFileSegmentRepo) {
         }
     }
 }
-
-glob __all__ = ["PostgresRecallFileSegmentRepo"];

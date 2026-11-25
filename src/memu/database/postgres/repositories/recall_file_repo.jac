@@ -194,5 +194,3 @@ class PostgresRecallFileRepo(PostgresRepoBase, RecallFileRepo) {
         return recall_file;
     }
 }
-
-glob __all__ = ["PostgresRecallFileRepo"];

@@ -66,10 +66,3 @@ class SQLiteRecallFileSegmentModel(_Mixin, RecallFileSegment) {
         text: str = Field(sa_type=Text, nullable=False),
         embedding: Optional[list[float]] = Field(default=None, sa_type=JSON, nullable=True);
 }
-
-glob __all__ = [
-    "SQLiteBaseModelMixin",
-    "SQLiteRecallFileModel",
-    "SQLiteRecallFileSegmentModel",
-    "SQLiteResourceModel",
-];

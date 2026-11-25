@@ -1,5 +1,3 @@
-import builtins;
-
 import from jaclang.comptime { target }
 
 import ctypes;
@@ -60,7 +58,7 @@ def _last_error -> OSError {
     return OSError("Windows extraction jobs are unavailable on this platform");
 }
 
-obj WindowsExtractionJob {
+class WindowsExtractionJob {
     has _handle: any,
         _kernel32: any;
 
@@ -220,17 +218,5 @@ obj WindowsExtractionJob {
             self._close_handle(self._handle);
             self._handle = None;
         }
-    }
-
-    def __repr__ -> str {
-        return (getattr(builtins.object, "__repr__") as any)(self);
-    }
-
-    def __eq__(other: any) -> bool {
-        return self is other;
-    }
-
-    def __hash__ -> int {
-        return id(self);
     }
 }

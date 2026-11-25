@@ -58,5 +58,3 @@ def cosine_topk(
     }
     return [(ids[i], float(scores[i])) for i in topk_indices];
 }
-
-glob __all__ = ["cosine_topk"];

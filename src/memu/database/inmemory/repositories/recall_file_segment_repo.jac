@@ -68,5 +68,3 @@ class InMemoryFileSegmentRepository(RecallFileSegmentRepo) {
         return None;
     }
 }
-
-glob __all__ = ["InMemoryFileSegmentRepository"];

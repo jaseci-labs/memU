@@ -98,5 +98,3 @@ glob ResourceRepo: any;
 with entry {
     ResourceRepo = InMemoryResourceRepository;
 }
-
-glob __all__ = ["InMemoryResourceRepository", "ResourceRepo"];

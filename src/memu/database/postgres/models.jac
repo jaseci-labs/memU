@@ -95,11 +95,3 @@ def build_scoped_models(
     );
     return (resource_model, recall_file_model, recall_file_segment_model);
 }
-
-glob __all__ = [
-    "BaseModelMixin",
-    "RecallFileModel",
-    "RecallFileSegmentModel",
-    "ResourceModel",
-    "build_scoped_models",
-];

@@ -101,5 +101,3 @@ class SQLiteStore(Database) {
         self.recall_file_segment_repo.load_existing();
     }
 }
-
-glob __all__ = ["SQLiteStore"];

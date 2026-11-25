@@ -54,5 +54,3 @@ def get_sqlite_metadata(scope_model: Type[BaseModel] | None = None) -> MetaData 
     import from typing { cast }
     return cast(MetaData, get_sqlite_sqlalchemy_models(scope_model=scope_model).Base.metadata);
 }
-
-glob __all__ = ["SQLiteSQLAModels", "get_sqlite_metadata", "get_sqlite_sqlalchemy_models"];

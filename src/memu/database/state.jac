@@ -8,5 +8,3 @@ class DatabaseState {
         recall_files: dict[str, RecallFile] = field(default_factory=dict[any, any]),
         segments: list[RecallFileSegment] = field(default_factory=list[any]);
 }
-
-glob __all__ = ["DatabaseState"];

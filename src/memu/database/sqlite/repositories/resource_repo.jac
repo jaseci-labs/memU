@@ -197,5 +197,3 @@ class SQLiteResourceRepo(SQLiteRepoBase, ResourceRepo) {
         self.list_resources();
     }
 }
-
-glob __all__ = ["SQLiteResourceRepo"];

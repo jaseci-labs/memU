@@ -1,2 +1,1 @@
-glob InMemoryState = DatabaseState,
-     __all__ = ["DatabaseState", "InMemoryState"];
+glob InMemoryState = DatabaseState;

@@ -28,5 +28,3 @@ class SQLiteRepoBase(SQLRepoBase) {
         return None if embedding is None else list(embedding);
     }
 }
-
-glob __all__ = ["SQLiteRepoBase"];

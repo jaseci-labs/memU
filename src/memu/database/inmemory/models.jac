@@ -17,10 +17,3 @@ def build_inmemory_models(
     );
     return (resource_model, recall_file_model, recall_file_segment_model);
 }
-
-glob __all__ = [
-    "InMemoryFileSegment",
-    "InMemoryRecallFile",
-    "InMemoryResource",
-    "build_inmemory_models",
-];

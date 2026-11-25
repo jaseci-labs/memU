@@ -51,5 +51,3 @@ class SQLiteSessionManager {
         }
     }
 }
-
-glob __all__ = ["SQLiteSessionManager"];

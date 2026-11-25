@@ -2,31 +2,8 @@ import builtins;
 import from typing { Type, Any }
 import from dataclasses { dataclass }
 import from pydantic { BaseModel }
-glob msg: any,
-     SQLModel: any,
-     MetaData: any,
-     Vector: any;
-
-with entry {
-    try {
-        import from sqlmodel { SQLModel as SQLModel_ }
-        SQLModel = SQLModel_;
-    } except ImportError as exc {
-        raise ImportError("sqlmodel is required for Postgres storage support") from exc;
-    }
-    try {
-        import from sqlalchemy { MetaData as MetaData_ }
-        MetaData = MetaData_;
-    } except ImportError as exc {
-        raise ImportError("sqlalchemy is required for Postgres storage support") from exc;
-    }
-    try {
-        import from pgvector.sqlalchemy { VECTOR as Vector_ }
-        Vector = Vector_;
-    } except ImportError as exc {
-        raise ImportError("pgvector is required for Postgres vector support") from exc;
-    }
-}
+import from sqlmodel { SQLModel }
+import from sqlalchemy { MetaData }
 
 glob DefaultScope = DefaultUserModel;
 
@@ -77,11 +54,3 @@ def get_metadata(scope_model: Type[BaseModel] | None = None) -> MetaData {
     import from typing { cast }
     return cast(MetaData, get_sqlalchemy_models(scope_model=scope_model).Base.metadata);
 }
-
-glob __all__ = [
-    "SQLAModels",
-    "Vector",
-    "get_metadata",
-    "get_sqlalchemy_models",
-    "require_sqlalchemy",
-];

@@ -141,5 +141,3 @@ glob RecallFileRepo: any;
 with entry {
     RecallFileRepo = InMemoryRecallFileRepository;
 }
-
-glob __all__ = ["InMemoryRecallFileRepository", "RecallFileRepo"];

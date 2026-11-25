@@ -47,5 +47,3 @@ class PostgresRepoBase(SQLRepoBase) {
         return None if embedding is None else embedding;
     }
 }
-
-glob __all__ = ["PostgresRepoBase"];

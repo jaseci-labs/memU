@@ -64,12 +64,3 @@ def build_scoped_models(
     );
     return (resource_model, recall_file_model, recall_file_segment_model);
 }
-
-glob __all__ = [
-    "BaseRecord",
-    "RecallFile",
-    "RecallFileSegment",
-    "Resource",
-    "build_scoped_models",
-    "merge_scope_model",
-];

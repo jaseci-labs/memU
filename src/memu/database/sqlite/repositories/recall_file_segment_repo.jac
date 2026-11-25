@@ -145,5 +145,3 @@ class SQLiteRecallFileSegmentRepo(SQLiteRepoBase, RecallFileSegmentRepo) {
         self.list_segments();
     }
 }
-
-glob __all__ = ["SQLiteRecallFileSegmentRepo"];

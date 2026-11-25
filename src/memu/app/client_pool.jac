@@ -44,5 +44,3 @@ class ClientPool(_PoolBase) {
         return client;
     }
 }
-
-glob __all__ = ["ClientPool"];

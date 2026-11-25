@@ -238,5 +238,3 @@ class SQLiteRecallFileRepo(SQLiteRepoBase, RecallFileRepo) {
         self.list_recall_files();
     }
 }
-
-glob __all__ = ["SQLiteRecallFileRepo"];

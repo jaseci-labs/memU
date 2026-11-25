@@ -152,5 +152,3 @@ class PostgresResourceRepo(PostgresRepoBase, ResourceRepo) {
         return res;
     }
 }
-
-glob __all__ = ["PostgresResourceRepo"];

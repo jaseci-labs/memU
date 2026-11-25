@@ -34,5 +34,3 @@ def matches_where(`obj: Any, where: Mapping[str, Any] | None) -> bool {
     }
     return True;
 }
-
-glob __all__: any = ["matches_where"];

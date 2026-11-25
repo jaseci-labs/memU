@@ -1,4 +1,4 @@
-import from typing { Any, cast }
+import from typing { Any }
 
 class JinaEmbeddingBackend(EmbeddingBackend) {
     static has name: str = "jina",
@@ -9,6 +9,6 @@ class JinaEmbeddingBackend(EmbeddingBackend) {
     }
 
     def parse_embedding_response(data: dict[str, Any]) -> list[list[float]] {
-        return [cast(list[float], d["embedding"]) for d in data["data"]];
+        return [[float(x) for x in d["embedding"]] for d in data["data"]];
     }
 }

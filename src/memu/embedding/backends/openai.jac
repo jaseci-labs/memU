@@ -1,4 +1,4 @@
-import from typing { Any, cast }
+import from typing { Any }
 
 class OpenAIEmbeddingBackend(EmbeddingBackend) {
     static has name: str = "openai",
@@ -9,6 +9,6 @@ class OpenAIEmbeddingBackend(EmbeddingBackend) {
     }
 
     def parse_embedding_response(data: dict[str, Any]) -> list[list[float]] {
-        return [cast(list[float], d["embedding"]) for d in data["data"]];
+        return [[float(x) for x in d["embedding"]] for d in data["data"]];
     }
 }

@@ -1,5 +1,4 @@
 import logging;
-import from typing { cast }
 import from openai { AsyncOpenAI, DefaultAsyncHttpxClient }
 import from openai.types { CreateEmbeddingResponse }
 glob logger = logging.getLogger(__name__);
@@ -35,14 +34,14 @@ class OpenAIEmbeddingSDKClient {
         }
         if len(inputs) <= self.batch_size {
             response = await self.client.embeddings.create(model=self.embed_model, input=inputs);
-            return ([cast(list[float], d.embedding) for d in response.data], response);
+            return ([[float(x) for x in d.embedding] for d in response.data], response);
         }
         all_embeddings: list[list[float]] = [];
         last_response: CreateEmbeddingResponse | None = None;
         for i in range(0, len(inputs), self.batch_size) {
             batch = inputs[i:i + self.batch_size];
             response = await self.client.embeddings.create(model=self.embed_model, input=batch);
-            all_embeddings.extend([cast(list[float], d.embedding) for d in response.data]);
+            all_embeddings.extend([[float(x) for x in d.embedding] for d in response.data]);
             last_response = response;
         }
         return (all_embeddings, last_response);

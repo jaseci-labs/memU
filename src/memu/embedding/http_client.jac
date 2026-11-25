@@ -107,6 +107,9 @@ class HTTPEmbeddingClient {
         }
         vectors: list[list[float]] = [];
         data: dict[str, Any] = {};
+        # Called through its class, the backend's vectors keep their type: read
+        # through the `any` field they would be converted float by float again.
+        backend: EmbeddingBackend = self.backend;
         async with httpx.AsyncClient(
             base_url=self.base_url, timeout=self.timeout, proxy=self.proxy, mounts=self.mounts
         ) as client {
@@ -114,7 +117,7 @@ class HTTPEmbeddingClient {
                 batch = inputs[start:start + self.embed_batch_size];
                 data = await self._post_embeddings(client, batch);
                 logger.debug("HTTP embedding response: %s", data);
-                vectors.extend(self.backend.parse_embedding_response(data));
+                vectors.extend(backend.parse_embedding_response(data));
             }
         }
         return (vectors, data);

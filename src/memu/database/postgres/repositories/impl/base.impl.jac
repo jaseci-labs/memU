@@ -79,12 +79,12 @@ impl PostgresRepoBase._build_filters(model: Any, where: Mapping[str, Any] | None
         }
         if op == "in" {
             if isinstance(expected, str) {
-                filters.append(column == expected);
+                filters.append(operator.eq(column, expected));
             } else {
                 filters.append(column.in_(expected));
             }
         } else {
-            filters.append(column == expected);
+            filters.append(operator.eq(column, expected));
         }
     }
     return filters;

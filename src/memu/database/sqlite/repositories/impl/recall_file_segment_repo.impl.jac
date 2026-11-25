@@ -88,7 +88,7 @@ impl SQLiteRecallFileSegmentRepo.delete_segment(segment_id: str) {
     with self._sessions.session() as session {
         session.exec(
             delete(self._recall_file_segment_model).where(
-                self._recall_file_segment_model.id == segment_id
+                operator.eq(self._recall_file_segment_model.id, segment_id)
             ),
         );
         session.commit();
@@ -106,7 +106,7 @@ impl SQLiteRecallFileSegmentRepo.delete_segments_for_file(
     with self._sessions.session() as session {
         session.exec(
             delete(self._recall_file_segment_model).where(
-                self._recall_file_segment_model.recall_file_id == recall_file_id
+                operator.eq(self._recall_file_segment_model.recall_file_id, recall_file_id)
             ),
         );
         session.commit();

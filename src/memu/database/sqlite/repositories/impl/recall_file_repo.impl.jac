@@ -43,7 +43,7 @@ impl SQLiteRecallFileRepo.list_recall_files_page(
             stmt = stmt.where(*filters);
         }
         if after is not None {
-            stmt = stmt.where(tuple_(model.track, model.name, model.id) > after);
+            stmt = stmt.where(operator.gt(tuple_(model.track, model.name, model.id), after));
         }
         stmt = stmt.order_by(model.track, model.name, model.id).limit(limit + 1);
         rows = session.exec(stmt).all();
@@ -185,7 +185,9 @@ impl SQLiteRecallFileRepo.update_recall_file(
     content: str | None = None,
 ) -> RecallFile {
     with self._sessions.session() as session {
-        stmt = select(self._recall_file_model).where(self._recall_file_model.id == recall_file_id);
+        stmt = select(self._recall_file_model).where(
+            operator.eq(self._recall_file_model.id, recall_file_id)
+        );
         row = session.exec(stmt).first();
         if row is None {
             msg = f"RecallFile with id {recall_file_id} not found";

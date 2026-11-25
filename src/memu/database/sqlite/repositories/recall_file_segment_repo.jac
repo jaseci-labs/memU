@@ -1,3 +1,4 @@
+import operator;
 import from typing { Type, Optional }
 import logging;
 import from collections.abc { Mapping }

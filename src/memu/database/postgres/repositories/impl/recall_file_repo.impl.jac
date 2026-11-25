@@ -38,7 +38,7 @@ impl PostgresRecallFileRepo.list_recall_files_page(
     with self._sessions.session() as session {
         stmt = select(model).where(*filters);
         if after is not None {
-            stmt = stmt.where(tuple_(model.track, model.name, model.id) > after);
+            stmt = stmt.where(operator.gt(tuple_(model.track, model.name, model.id), after));
         }
         stmt = stmt.order_by(model.track, model.name, model.id).limit(limit + 1);
         rows = session.scalars(stmt).all();
@@ -90,11 +90,11 @@ impl PostgresRecallFileRepo.get_or_create_recall_file(
     now = self._now();
     with self._sessions.session() as session {
         filters = [
-            self._sqla_models.RecallFile.name == name,
-            self._sqla_models.RecallFile.track == track,
+            operator.eq(self._sqla_models.RecallFile.name, name),
+            operator.eq(self._sqla_models.RecallFile.track, track),
         ];
         for (key, value) in user_data.items() {
-            filters.append(getattr(self._sqla_models.RecallFile, key) == value);
+            filters.append(operator.eq(getattr(self._sqla_models.RecallFile, key), value));
         }
         existing = session.scalar(select(self._sqla_models.RecallFile).where(*filters));
         if existing {
@@ -144,7 +144,7 @@ impl PostgresRecallFileRepo.update_recall_file(
     with self._sessions.session() as session {
         recall_file = session.scalar(
             select(self._sqla_models.RecallFile).where(
-                self._sqla_models.RecallFile.id == recall_file_id
+                operator.eq(self._sqla_models.RecallFile.id, recall_file_id)
             ),
         );
         if recall_file is None {

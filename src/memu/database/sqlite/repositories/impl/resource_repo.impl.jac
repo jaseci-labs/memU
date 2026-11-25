@@ -86,7 +86,9 @@ impl SQLiteResourceRepo.clear_resources(
 
 impl SQLiteResourceRepo.delete_resource(resource_id: str) {
     with self._sessions.session() as session {
-        session.exec(delete(self._resource_model).where(self._resource_model.id == resource_id));
+        session.exec(
+            delete(self._resource_model).where(operator.eq(self._resource_model.id, resource_id))
+        );
         session.commit();
     }
     self.resources.pop(resource_id, None);
@@ -141,7 +143,9 @@ impl SQLiteResourceRepo.update_resource(
     track: str | None = None,
 ) -> Resource {
     with self._sessions.session() as session {
-        stmt = select(self._resource_model).where(self._resource_model.id == resource_id);
+        stmt = select(self._resource_model).where(
+            operator.eq(self._resource_model.id, resource_id)
+        );
         row = session.exec(stmt).first();
         if row is None {
             msg = f"Resource with id {resource_id} not found";

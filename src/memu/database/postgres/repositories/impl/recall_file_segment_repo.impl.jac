@@ -110,7 +110,7 @@ impl PostgresRecallFileSegmentRepo.delete_segment(segment_id: str) {
     with self._sessions.session() as session {
         session.exec(
             delete(self._sqla_models.RecallFileSegment).where(
-                self._sqla_models.RecallFileSegment.id == segment_id
+                operator.eq(self._sqla_models.RecallFileSegment.id, segment_id)
             ),
         );
         session.commit();
@@ -125,14 +125,14 @@ impl PostgresRecallFileSegmentRepo.delete_segments_for_file(
     with self._sessions.session() as session {
         rows = session.scalars(
             select(self._sqla_models.RecallFileSegment).where(
-                self._sqla_models.RecallFileSegment.recall_file_id == recall_file_id
+                operator.eq(self._sqla_models.RecallFileSegment.recall_file_id, recall_file_id)
             ),
         ).all();
         removed = [self._row_to_record(row) for row in rows];
         if removed {
             session.exec(
                 delete(self._sqla_models.RecallFileSegment).where(
-                    self._sqla_models.RecallFileSegment.recall_file_id == recall_file_id
+                    operator.eq(self._sqla_models.RecallFileSegment.recall_file_id, recall_file_id)
                 ),
             );
             session.commit();

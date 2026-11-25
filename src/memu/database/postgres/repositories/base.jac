@@ -1,3 +1,4 @@
+import operator;
 import builtins;
 import logging;
 import from collections.abc { Mapping }

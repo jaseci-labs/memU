@@ -56,7 +56,9 @@ impl PostgresResourceRepo.delete_resource(resource_id: str) {
     import from sqlmodel { delete }
     with self._sessions.session() as session {
         session.exec(
-            delete(self._sqla_models.Resource).where(self._sqla_models.Resource.id == resource_id)
+            delete(self._sqla_models.Resource).where(
+                operator.eq(self._sqla_models.Resource.id, resource_id)
+            ),
         );
         session.commit();
     }
@@ -101,7 +103,9 @@ impl PostgresResourceRepo.update_resource(
     import from sqlmodel { select }
     with self._sessions.session() as session {
         row = session.scalars(
-            select(self._sqla_models.Resource).where(self._sqla_models.Resource.id == resource_id)
+            select(self._sqla_models.Resource).where(
+                operator.eq(self._sqla_models.Resource.id, resource_id)
+            ),
         ).first();
         if row is None {
             msg = f"Resource with id {resource_id} not found";

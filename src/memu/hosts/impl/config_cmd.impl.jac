@@ -176,7 +176,7 @@ impl _updates_for(target: str, args: argparse.Namespace) -> dict[str, str] {
     updates: dict[str, str] = {"MEMU_MEMORY_MODE": target};
     if target == "cloud" {
         _collect(updates, args, (("cloud_api_key", "MEMU_CLOUD_API_KEY"),));
-        import from memu.cloud { DEFAULT_CLOUD_BASE_URL }
+        DEFAULT_CLOUD_BASE_URL = importlib.import_module("memu.cloud").DEFAULT_CLOUD_BASE_URL;
         if args.cloud_base_url and args.cloud_base_url != DEFAULT_CLOUD_BASE_URL {
             updates["MEMU_CLOUD_BASE_URL"] = args.cloud_base_url;
         }

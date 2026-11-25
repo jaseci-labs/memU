@@ -37,7 +37,7 @@ impl InMemoryResourceRepository.create_resource(
     url: str,
     local_path: str,
     caption: str | None,
-    embedding: list[float] | None,
+    embedding: Optional[list[float]],
     user_data: dict[str, Any],
     track: str | None = None,
 ) -> Resource {
@@ -60,7 +60,7 @@ impl InMemoryResourceRepository.update_resource(
     resource_id: str,
     local_path: str,
     caption: str | None,
-    embedding: list[float] | None,
+    embedding: Optional[list[float]],
     track: str | None = None,
 ) -> Resource {
     res = self.resources.get(resource_id);

@@ -33,8 +33,8 @@ impl SQLiteRecallFileRepo.list_recall_files(
 }
 
 impl SQLiteRecallFileRepo.list_recall_files_page(
-    where: Mapping[str, Any] | None, *, after: tuple[str, str, str] | None, limit: int
-) -> tuple[list[RecallFile], tuple[str, str, str] | None] {
+    where: Mapping[str, Any] | None, *, after: Optional[tuple[str, str, str]], limit: int
+) -> tuple[list[RecallFile], Optional[tuple[str, str, str]]] {
     model = self._recall_file_model;
     with self._sessions.session() as session {
         stmt = select(model);
@@ -181,7 +181,7 @@ impl SQLiteRecallFileRepo.update_recall_file(
     recall_file_id: str,
     name: str | None = None,
     description: str | None = None,
-    embedding: list[float] | None = None,
+    embedding: Optional[list[float]] = None,
     content: str | None = None,
 ) -> RecallFile {
     with self._sessions.session() as session {

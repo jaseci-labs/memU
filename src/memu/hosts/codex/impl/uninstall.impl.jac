@@ -246,10 +246,10 @@ impl _apply_trust(
         verified = hooks._entries(
             server.request("hooks/list", {"cwds": [str(cwd)]}), command, str(path)
         );
-        if not any(
-            (hook.get("key") == `entry.get("key") and hook.get("trustStatus") == "trusted"
-            for hook in verified),
-        ) {
+        if not any([
+            hook.get("key") == `entry.get("key") and hook.get("trustStatus") == "trusted"
+            for hook in verified
+        ]) {
             raise RuntimeError(
                 "Hooks removed, but Codex did not preserve third-party hook trust; inspect the backup",
             );

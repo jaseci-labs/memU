@@ -1,3 +1,4 @@
+import importlib;
 import contextlib;
 import hashlib;
 import json;
@@ -12,7 +13,7 @@ import uuid;
 import from collections.abc { Iterable }
 import from datetime { UTC, datetime }
 import from pathlib { Path }
-import from typing { Any }
+import from typing { Any, Optional }
 glob DEFAULT_EVENTS_URL = "https://api.memu.so/api/memu/analytics/events";
 
 with entry {}
@@ -180,18 +181,18 @@ def envelope(
     *,
     host: str = "",
     session_id_env: str = "",
-    properties: dict[str, Any] | None = None,
+    properties: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any];
 def record(
     event_name: str,
     *,
     host: str = "",
     session_id_env: str = "",
-    properties: dict[str, Any] | None = None,
+    properties: Optional[dict[str, Any]] = None,
     deliver: bool = False,
 );
 def _deliver(event: dict[str, Any]) -> bool;
-def _filter(event_name: str, properties: dict[str, Any] | None) -> dict[str, Any];
+def _filter(event_name: str, properties: Optional[dict[str, Any]]) -> dict[str, Any];
 def _append(line: str);
 def _drop_counter -> Path;
 def _count_drop;
@@ -219,8 +220,9 @@ def _frames(exc: BaseException) -> list[str];
 def _module_of(filename: str) -> str;
 def flush -> tuple[int, int];
 def _flush -> tuple[int, int];
-def _drain(path: Path, url: str, posts_left: int) -> tuple[int, int, int, list[dict[str, Any]]
-    | None];
+def _drain(
+    path: Path, url: str, posts_left: int
+) -> tuple[int, int, int, Optional[list[dict[str, Any]]]];
 def _sending_files -> list[Path];
 def _rotate_spool -> list[Path];
 def _promote_drop_counter;

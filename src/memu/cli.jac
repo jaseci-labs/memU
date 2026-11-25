@@ -9,7 +9,7 @@ import sys;
 import tempfile;
 import time;
 import from collections.abc { Callable, Coroutine }
-import from typing { Any }
+import from typing { Any, Optional }
 glob MEMORIZE_WORKSPACE = "~/.memu/developer",
      MAX_MEMORIZE_SESSIONS = 10;
 def _env(name: str, `default: str) -> str;
@@ -28,7 +28,7 @@ async def _cmd_memorize_commit(args: argparse.Namespace) -> int;
 async def _cmd_memorize_verify_resources(args: argparse.Namespace) -> int;
 async def _cmd_memorize_discard(args: argparse.Namespace) -> int;
 def build_parser -> argparse.ArgumentParser;
-def main(argv: list[str] | None = None) -> int;
+def main(argv: Optional[list[str]] = None) -> int;
 
 with entry:__main__ {
     sys.exit(main());

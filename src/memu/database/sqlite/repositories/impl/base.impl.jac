@@ -15,7 +15,7 @@ impl SQLiteRepoBase._scope_kwargs_from(`obj: Any) -> dict[str, Any] {
     return {field: getattr(`obj, field, None) for field in self._scope_fields};
 }
 
-impl SQLiteRepoBase._normalize_embedding(embedding: Any) -> list[float] | None {
+impl SQLiteRepoBase._normalize_embedding(embedding: Any) -> Optional[list[float]] {
     if embedding is None {
         return None;
     }
@@ -35,7 +35,7 @@ impl SQLiteRepoBase._normalize_embedding(embedding: Any) -> list[float] | None {
     }
 }
 
-impl SQLiteRepoBase._prepare_embedding(embedding: list[float] | None) -> list[float] | None {
+impl SQLiteRepoBase._prepare_embedding(embedding: Optional[list[float]]) -> Optional[list[float]] {
     if embedding is None {
         return None;
     }

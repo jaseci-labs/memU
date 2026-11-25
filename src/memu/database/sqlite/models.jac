@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import builtins;
 import uuid;
 import from datetime { datetime }
@@ -29,20 +29,24 @@ class SQLiteBaseModelMixin(SQLModel) {
         );
 }
 
-glob _Mixin: any = SQLiteBaseModelMixin;
+glob _Mixin: any;
+
+with entry {
+    _Mixin = SQLiteBaseModelMixin;
+}
 
 class SQLiteResourceModel(_Mixin, Resource) {
     has url: str = Field(sa_type=String, nullable=False),
         local_path: str = Field(sa_type=String, nullable=False),
         caption: str | None = Field(default=None, sa_type=Text, nullable=True),
-        embedding: list[float] | None = Field(default=None, sa_type=JSON, nullable=True),
+        embedding: Optional[list[float]] = Field(default=None, sa_type=JSON, nullable=True),
         track: str | None = Field(default=None, sa_type=String, nullable=True);
 }
 
 class SQLiteRecallFileModel(_Mixin, RecallFile) {
     has name: str = Field(sa_type=String, nullable=False, index=True),
         description: str = Field(sa_type=Text, nullable=False),
-        embedding: list[float] | None = Field(default=None, sa_type=JSON, nullable=True),
+        embedding: Optional[list[float]] = Field(default=None, sa_type=JSON, nullable=True),
         content: str | None = Field(default=None, sa_type=Text, nullable=True),
         track: str = Field(
             default="memory",
@@ -61,7 +65,7 @@ class SQLiteRecallFileSegmentModel(_Mixin, RecallFileSegment) {
             sa_column_kwargs={"server_default": "memory", "default": None},
         ),
         text: str = Field(sa_type=Text, nullable=False),
-        embedding: list[float] | None = Field(default=None, sa_type=JSON, nullable=True);
+        embedding: Optional[list[float]] = Field(default=None, sa_type=JSON, nullable=True);
 }
 
 def _normalize_table_args(table_args: Any) -> tuple[list[Any], dict[str, Any]];
@@ -78,8 +82,8 @@ def build_sqlite_table_model(
     *,
     tablename: str,
     metadata: MetaData | None = None,
-    extra_table_args: tuple[Any, ...] | None = None,
-    unique_with_scope: list[str] | None = None,
+    extra_table_args: Optional[tuple[Any, ...]] = None,
+    unique_with_scope: Optional[list[str]] = None,
 ) -> Type[SQLModel];
 glob __all__ = [
     "SQLiteBaseModelMixin",

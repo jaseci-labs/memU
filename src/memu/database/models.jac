@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import builtins;
 import uuid;
 import from datetime { datetime }
@@ -16,7 +16,7 @@ class Resource(BaseRecord) {
     has url: str,
         local_path: str,
         caption: str | None = None,
-        embedding: list[float] | None = None,
+        embedding: Optional[list[float]] = None,
         track: str | None = None;
 }
 
@@ -24,7 +24,7 @@ class RecallFile(BaseRecord) {
     has name: str,
         track: str = "memory",
         description: str,
-        embedding: list[float] | None = None,
+        embedding: Optional[list[float]] = None,
         content: str | None = None;
 }
 
@@ -32,10 +32,15 @@ class RecallFileSegment(BaseRecord) {
     has recall_file_id: str,
         track: str = "memory",
         text: str,
-        embedding: list[float] | None = None;
+        embedding: Optional[list[float]] = None;
 }
 
-glob TBaseRecord = TypeVar("TBaseRecord", bound=BaseRecord);
+glob TBaseRecord: any;
+
+with entry {
+    TBaseRecord = TypeVar("TBaseRecord", bound=BaseRecord);
+}
+
 def merge_scope_model(
     user_model: Type[BaseModel], core_model: Type[TBaseRecord], *, name_suffix: str
 ) -> Type[TBaseRecord];

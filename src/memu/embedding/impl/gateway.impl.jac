@@ -1,5 +1,7 @@
 impl _build_sdk_client(cfg: EmbeddingConfig) -> Any {
-    import from memu.embedding.openai_sdk { OpenAIEmbeddingSDKClient }
+    OpenAIEmbeddingSDKClient = importlib.import_module(
+        "memu.embedding.openai_sdk"
+    ).OpenAIEmbeddingSDKClient;
     return OpenAIEmbeddingSDKClient(
         base_url=cfg.base_url,
         api_key=cfg.api_key,
@@ -9,7 +11,7 @@ impl _build_sdk_client(cfg: EmbeddingConfig) -> Any {
 }
 
 impl _build_httpx_client(cfg: EmbeddingConfig) -> Any {
-    import from memu.embedding.http_client { HTTPEmbeddingClient }
+    HTTPEmbeddingClient = importlib.import_module("memu.embedding.http_client").HTTPEmbeddingClient;
     return HTTPEmbeddingClient(
         base_url=cfg.base_url,
         api_key=cfg.api_key,

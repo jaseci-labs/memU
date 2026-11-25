@@ -1,3 +1,4 @@
+import importlib;
 import argparse;
 import asyncio;
 import contextlib;
@@ -14,7 +15,7 @@ import from collections.abc { Callable, Coroutine }
 import from dataclasses { dataclass, field }
 import from importlib.resources { files }
 import from pathlib { Path }
-import from typing { Any, Literal }
+import from typing { Any, Literal, Optional }
 glob ScheduleBackend = Literal["os", "native", "external", "hook"];
 
 with entry {}
@@ -145,4 +146,4 @@ async def _cmd_schedule(spec: HostSpec, args: argparse.Namespace) -> int;
 async def _cmd_report(spec: HostSpec, args: argparse.Namespace) -> int;
 def _register_report(sub: Any, handler: Any);
 def build_parser(spec: HostSpec) -> argparse.ArgumentParser;
-def run(spec: HostSpec, argv: list[str] | None = None) -> int;
+def run(spec: HostSpec, argv: Optional[list[str]] = None) -> int;

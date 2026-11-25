@@ -325,7 +325,7 @@ impl build_parser -> argparse.ArgumentParser {
     return parser;
 }
 
-impl main(argv: list[str] | None = None) -> int {
+impl main(argv: Optional[list[str]] = None) -> int {
     for stream in (sys.stdout, sys.stderr) {
         reconfigure = getattr(stream, "reconfigure", None);
         if reconfigure is not None {

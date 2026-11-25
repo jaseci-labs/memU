@@ -11,7 +11,7 @@ import tempfile;
 import threading;
 import time;
 import from pathlib { Path }
-import from typing { Any }
+import from typing { Any, Optional }
 
 class AppServer {
     has stderr_thread: any,
@@ -21,7 +21,7 @@ class AppServer {
     def init(executable: str, cwd: Path, codex_home: Path);
     def _read_stderr;
     def _read;
-    def request(method: str, params: dict[str, Any] | None = None) -> dict[str, Any];
+    def request(method: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any];
     def notify(method: str);
     def close;
 }

@@ -11,7 +11,7 @@ impl is_loopback_url(url: str) -> bool {
     }
 }
 
-impl proxy_bypass_mounts(url: str) -> dict[str, httpx.AsyncBaseTransport | None] | None {
+impl proxy_bypass_mounts(url: str) -> Optional[dict[str, httpx.AsyncBaseTransport | None]] {
     if not is_loopback_url(url) {
         return None;
     }
@@ -23,7 +23,7 @@ impl proxy_bypass_mounts(url: str) -> dict[str, httpx.AsyncBaseTransport | None]
 }
 
 impl _load_proxy(base_url: str) -> str | None {
-    import from memu.env { env as memu_env }
+    memu_env = importlib.import_module("memu.env").env;
     explicit = memu_env("MEMU_HTTP_PROXY") or None;
     if explicit or is_loopback_url(base_url) {
         return explicit;
@@ -48,7 +48,7 @@ impl HTTPEmbeddingClient.init(
     api_key: str,
     embed_model: str,
     provider: str = "openai",
-    endpoint_overrides: dict[str, str] | None = None,
+    endpoint_overrides: Optional[dict[str, str]] = None,
     timeout: int = 60,
     embed_batch_size: int = 64,
     max_attempts: int = DEFAULT_MAX_ATTEMPTS,

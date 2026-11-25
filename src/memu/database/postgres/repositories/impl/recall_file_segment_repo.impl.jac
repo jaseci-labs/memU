@@ -83,7 +83,7 @@ impl PostgresRecallFileSegmentRepo.create_segment(
     *,
     recall_file_id: str,
     text: str,
-    embedding: list[float] | None,
+    embedding: Optional[list[float]],
     user_data: dict[str, Any],
     track: str = "memory",
 ) -> RecallFileSegment {

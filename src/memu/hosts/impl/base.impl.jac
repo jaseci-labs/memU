@@ -29,7 +29,7 @@ impl TranscriptSource.read_records(path: Path) -> list[str] {
 }
 
 impl TranscriptSource.read_incremental(
-    path: Path, previous: dict[str, object] | None
+    path: Path, previous: Optional[dict[str, object]]
 ) -> TranscriptRead {
     records = self.read_records(path);
     start = previous.get("lines", 0) if previous else 0;

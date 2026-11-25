@@ -27,7 +27,7 @@ impl configure_windows_path(executable: Path) {
     }
 }
 
-impl install(host: str, url: str, *, unix_shell: str, env: dict[str, str] | None = None) {
+impl install(host: str, url: str, *, unix_shell: str, env: Optional[dict[str, str]] = None) {
     windows = sys.platform == "win32";
     shell = shutil.which("powershell.exe" if windows else unix_shell);
     if shell is None {

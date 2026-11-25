@@ -111,7 +111,7 @@ impl OpenClawTranscriptSource._virtual_path(db: Path, session_id: str) -> Path {
     return db.parent.parent / "sessions" / f"{session_id}{_SESSION_SUFFIX}";
 }
 
-impl OpenClawTranscriptSource._stored_session(path: Path) -> tuple[Path, str] | None {
+impl OpenClawTranscriptSource._stored_session(path: Path) -> Optional[tuple[Path, str]] {
     if path not in self._stored_paths {
         return None;
     }
@@ -173,7 +173,7 @@ impl OpenClawTranscriptSource.read_records(path: Path) -> list[str] {
 }
 
 impl OpenClawTranscriptSource.read_incremental(
-    path: Path, previous: dict[str, object] | None
+    path: Path, previous: Optional[dict[str, object]]
 ) -> TranscriptRead {
     stored = self._stored_session(path);
     if stored is None {

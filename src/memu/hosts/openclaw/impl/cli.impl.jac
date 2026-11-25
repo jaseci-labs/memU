@@ -18,6 +18,6 @@ impl _register_cron_job(sub: Any) {
     parser.set_defaults(handler=_cmd_register_cron_job);
 }
 
-impl main(argv: list[str] | None = None) -> int {
+impl main(argv: Optional[list[str]] = None) -> int {
     return run(SPEC, argv);
 }

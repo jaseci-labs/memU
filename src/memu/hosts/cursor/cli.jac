@@ -1,3 +1,4 @@
+import from typing { Optional }
 import sys;
 glob HOST = "cursor",
      SESSION_ID_ENV = "CURSOR_CONVERSATION_ID",
@@ -26,7 +27,7 @@ glob SPEC = HostSpec(
     session), or run `cursor-agent login` once. Note: custom-provider (BYOK)
     models do not work in the CLI - runs bill the Cursor account's plan,""",
 );
-def main(argv: list[str] | None = None) -> int;
+def main(argv: Optional[list[str]] = None) -> int;
 
 with entry:__main__ {
     sys.exit(main());

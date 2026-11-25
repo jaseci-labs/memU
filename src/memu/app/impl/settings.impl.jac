@@ -6,16 +6,12 @@ impl normalize_value(v: str) -> str {
 }
 
 impl EmbeddingConfig.set_provider_defaults -> EmbeddingConfig {
-    import from memu.embedding.defaults {
-        EMBEDDING_PROVIDER_ENDPOINTS,
-        EMBEDDING_SDK_BASE_URLS,
-        default_embedding_model,
-    }
-    endpoint = EMBEDDING_PROVIDER_ENDPOINTS.get(self.provider);
+    defaults = importlib.import_module("memu.embedding.defaults");
+    endpoint = defaults.EMBEDDING_PROVIDER_ENDPOINTS.get(self.provider);
     if endpoint is not None {
         (base_url, api_key) = endpoint;
         if self.base_url == "https://api.openai.com/v1" {
-            self.base_url = EMBEDDING_SDK_BASE_URLS.get(self.provider, base_url)
+            self.base_url = defaults.EMBEDDING_SDK_BASE_URLS.get(self.provider, base_url)
                 if self.client_backend == "sdk"
                 else base_url;
         }
@@ -24,7 +20,7 @@ impl EmbeddingConfig.set_provider_defaults -> EmbeddingConfig {
         }
     }
     if self.embed_model == "text-embedding-3-small" {
-        resolved = default_embedding_model(self.provider);
+        resolved = defaults.default_embedding_model(self.provider);
         if resolved is not None {
             self.embed_model = resolved;
         }

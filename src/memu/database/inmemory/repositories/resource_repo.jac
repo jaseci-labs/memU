@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import uuid;
 import from collections.abc { Mapping }
 import from typing { Any }
@@ -17,7 +17,7 @@ class InMemoryResourceRepository(ResourceRepoProtocol) {
         url: str,
         local_path: str,
         caption: str | None,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         user_data: dict[str, Any],
         track: str | None = None,
     ) -> Resource;
@@ -26,7 +26,7 @@ class InMemoryResourceRepository(ResourceRepoProtocol) {
         resource_id: str,
         local_path: str,
         caption: str | None,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         track: str | None = None,
     ) -> Resource;
     def vector_search_resources(
@@ -35,5 +35,10 @@ class InMemoryResourceRepository(ResourceRepoProtocol) {
     def load_existing;
 }
 
-glob ResourceRepo = InMemoryResourceRepository,
-     __all__ = ["InMemoryResourceRepository", "ResourceRepo"];
+glob ResourceRepo: any;
+
+with entry {
+    ResourceRepo = InMemoryResourceRepository;
+}
+
+glob __all__ = ["InMemoryResourceRepository", "ResourceRepo"];

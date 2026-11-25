@@ -11,7 +11,7 @@ impl make_alembic_config(*, dsn: str, scope_model: Type[Any]) -> AlembicConfig {
 }
 
 impl run_migrations(*, dsn: str, scope_model: Type[Any], ddl_mode: DDLMode = "create") {
-    import from memu.database.postgres.schema { get_metadata }
+    get_metadata = importlib.import_module("memu.database.postgres.schema").get_metadata;
     if ddl_mode == "create" {
         cfg = make_alembic_config(dsn=dsn, scope_model=scope_model);
         command.upgrade(cfg, "head");

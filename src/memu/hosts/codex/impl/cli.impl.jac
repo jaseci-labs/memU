@@ -8,10 +8,10 @@ impl _register_extra(sub: object) {
 }
 
 impl build_parser -> argparse.ArgumentParser {
-    import from memu.hosts.host_cli { build_parser as _build }
+    _build = importlib.import_module("memu.hosts.host_cli").build_parser;
     return _build(SPEC);
 }
 
-impl main(argv: list[str] | None = None) -> int {
+impl main(argv: Optional[list[str]] = None) -> int {
     return run(SPEC, argv);
 }

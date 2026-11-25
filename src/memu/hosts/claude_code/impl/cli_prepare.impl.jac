@@ -112,7 +112,7 @@ impl _safe_response(message: str) -> str {
     for (name, value) in values.items() {
         if isinstance(value, str)
             and value
-            and any((key in name.upper() for key in ("KEY", "TOKEN", "SECRET", "PASSWORD", "URL")))
+            and any([key in name.upper() for key in ("KEY", "TOKEN", "SECRET", "PASSWORD", "URL")])
         {
             message = message.replace(value, "[redacted]");
         }

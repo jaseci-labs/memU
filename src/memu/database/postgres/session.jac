@@ -2,7 +2,7 @@ import builtins;
 
 import logging;
 
-import from typing { Any }
+import from typing { Any, Optional }
 
 glob msg: any;
 
@@ -28,7 +28,7 @@ with entry {
 obj SessionManager {
     has _engine: any;
 
-    def init(*, dsn: str, engine_kwargs: dict[str, Any] | None = None);
+    def init(*, dsn: str, engine_kwargs: Optional[dict[str, Any]] = None);
 
     def session -> Session;
 

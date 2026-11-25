@@ -16,12 +16,12 @@ impl read -> tuple[Path, bytes | None, dict[str, Any]] {
     }
     for groups in data.get("hooks", {}).values() {
         if not isinstance(groups, list)
-            or any(
-                (not isinstance(group, dict)
+            or any([
+                not isinstance(group, dict)
                     or not isinstance(group.get("hooks"), list)
-                    or any((not isinstance(hook, dict) for hook in group["hooks"]))
-                for group in groups),
-            )
+                    or any([not isinstance(hook, dict) for hook in group["hooks"]])
+                for group in groups
+            ])
         {
             raise ValueError("Invalid Claude hook groups; settings were not changed");
         }
@@ -155,7 +155,7 @@ impl uninstall -> int {
             kept = [
                 hook
                 for hook in group["hooks"]
-                if not any((owns(hook, name) for name in SUBCOMMANDS))
+                if not any([owns(hook, name) for name in SUBCOMMANDS])
             ];
             removed = len(group["hooks"]) - len(kept);
             count += removed;

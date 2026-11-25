@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import logging;
 import from collections.abc { Mapping }
 import from typing { Any }
@@ -25,7 +25,7 @@ class SQLiteResourceRepo(SQLiteRepoBase, ResourceRepo) {
         url: str,
         local_path: str,
         caption: str | None,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         user_data: dict[str, Any],
         track: str | None = None,
     ) -> Resource;
@@ -34,7 +34,7 @@ class SQLiteResourceRepo(SQLiteRepoBase, ResourceRepo) {
         resource_id: str,
         local_path: str,
         caption: str | None,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         track: str | None = None,
     ) -> Resource;
     def vector_search_resources(

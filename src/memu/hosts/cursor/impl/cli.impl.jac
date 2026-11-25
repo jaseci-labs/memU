@@ -1,3 +1,3 @@
-impl main(argv: list[str] | None = None) -> int {
+impl main(argv: Optional[list[str]] = None) -> int {
     return run(SPEC, argv);
 }

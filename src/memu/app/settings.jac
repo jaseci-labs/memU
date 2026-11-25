@@ -1,4 +1,5 @@
-import from typing { Type }
+import importlib;
+import from typing { Type, Optional }
 import from typing { Annotated, Any, Literal }
 import from pydantic {
     BaseModel,
@@ -9,7 +10,11 @@ import from pydantic {
     model_validator,
 }
 def normalize_value(v: str) -> str;
-glob Normalize = BeforeValidator(normalize_value);
+glob Normalize: any;
+
+with entry {
+    Normalize = BeforeValidator(normalize_value);
+}
 
 class EmbeddingConfig(BaseModel) {
     has provider: str = Field(
@@ -46,7 +51,7 @@ class RetrieveResourceConfig(BaseModel) {
 class RetrieveFileConfig(BaseModel) {
     has enabled: bool = Field(default=True, description="Whether to enable file retrieval."),
         top_k: int = Field(default=5, description="Total number of files to retrieve."),
-        tracks: list[str] | None = Field(
+        tracks: Optional[list[str]] = Field(
             default=None,
             description="Optional file tracks (e.g. ['memory', 'skill']) to filter on. None means all tracks.",
         );
@@ -66,8 +71,13 @@ class UserConfig(BaseModel) {
     has model: Type[BaseModel] = Field(default=DefaultUserModel);
 }
 
-glob Key = Annotated[str, StringConstraints(min_length=1)],
-     _ProfilesBase: any = RootModel[dict[Key, EmbeddingConfig]];
+glob Key = Annotated[str, StringConstraints(min_length=1)];
+
+glob _ProfilesBase: any;
+
+with entry {
+    _ProfilesBase = RootModel[dict[Key, EmbeddingConfig]];
+}
 
 class EmbeddingProfilesConfig(_ProfilesBase) {
     has `root: dict[str, EmbeddingConfig] = Field(

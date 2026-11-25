@@ -1,5 +1,5 @@
 impl ClaudeDesktopTranscriptSource.init(
-    session_dir: str | Path, cowork_roots: list[str | Path] | None = None
+    session_dir: str | Path, cowork_roots: Optional[list[str | Path]] = None
 ) {
     self._code = ClaudeCodeTranscriptSource(session_dir);
     self._cowork = CoworkTranscriptSource(cowork_roots);
@@ -30,7 +30,7 @@ impl ClaudeDesktopTranscriptSource.read_records(path: Path) -> list[str] {
 }
 
 impl ClaudeDesktopTranscriptSource.read_incremental(
-    path: Path, previous: dict[str, object] | None
+    path: Path, previous: Optional[dict[str, object]]
 ) -> TranscriptRead {
     return self._source(path).read_incremental(path, previous);
 }

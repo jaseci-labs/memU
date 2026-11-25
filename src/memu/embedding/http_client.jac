@@ -1,13 +1,14 @@
+import importlib;
 import asyncio;
 import ipaddress;
 import logging;
 import urllib.parse;
 import urllib.request;
 import from collections.abc { Callable }
-import from typing { Any, Literal }
+import from typing { Any, Literal, Optional }
 import httpx;
 def is_loopback_url(url: str) -> bool;
-def proxy_bypass_mounts(url: str) -> dict[str, httpx.AsyncBaseTransport | None] | None;
+def proxy_bypass_mounts(url: str) -> Optional[dict[str, httpx.AsyncBaseTransport | None]];
 def _load_proxy(base_url: str) -> str | None;
 glob logger = logging.getLogger(__name__),
      _UNREACHABLE_RETRY = "embedding retry loop exited without a response",
@@ -37,7 +38,7 @@ class HTTPEmbeddingClient {
         api_key: str,
         embed_model: str,
         provider: str = "openai",
-        endpoint_overrides: dict[str, str] | None = None,
+        endpoint_overrides: Optional[dict[str, str]] = None,
         timeout: int = 60,
         embed_batch_size: int = 64,
         max_attempts: int = DEFAULT_MAX_ATTEMPTS,

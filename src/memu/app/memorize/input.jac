@@ -24,9 +24,13 @@ class ToolResultInput(InputModel) {
         is_error: bool | None = None;
 }
 
-glob ConversationItem: TypeAlias = Annotated[Union[MessageInput, ToolCallInput, ToolResultInput], Field(
-    discriminator="type"
-)];
+glob ConversationItem: any;
+
+with entry {
+    ConversationItem = Annotated[Union[MessageInput, ToolCallInput, ToolResultInput], Field(
+        discriminator="type"
+    )];
+}
 
 class MemorizeInput(InputModel) {
     has schema_version: Literal["1.0"] = "1.0",
@@ -35,8 +39,18 @@ class MemorizeInput(InputModel) {
     def require_message -> Self;
 }
 
-glob MemoryInputItem: TypeAlias = MessageInput,
-     SkillInputItem: TypeAlias = Union[MessageInput, ToolCallInput, ToolResultInput];
+glob MemoryInputItem: any;
+
+with entry {
+    MemoryInputItem = MessageInput;
+}
+
+glob SkillInputItem: any;
+
+with entry {
+    SkillInputItem = Union[MessageInput, ToolCallInput, ToolResultInput];
+}
+
 def project_memory(memorize_input: MemorizeInput) -> list[MemoryInputItem];
 def project_skill(memorize_input: MemorizeInput) -> list[SkillInputItem];
 glob __all__ = [

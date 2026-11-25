@@ -82,7 +82,7 @@ impl _cmd_memorize_hook(args: argparse.Namespace) -> int {
 }
 
 impl register(sub: Any) {
-    import from memu.hosts.claude_code.sessions { SESSION_DIR }
+    SESSION_DIR = importlib.import_module("memu.hosts.claude_code.sessions").SESSION_DIR;
     parser = sub.add_parser(
         "memorize-hook", help="Start background memory processing on Claude prompt submission"
     );
@@ -93,7 +93,7 @@ impl register(sub: Any) {
 }
 
 impl main -> int {
-    import from memu.hosts.claude_code.cli { main as claude_main }
+    claude_main = importlib.import_module("memu.hosts.claude_code.cli").main;
     parser = argparse.ArgumentParser();
     parser.add_argument("--base-dir", required=True);
     parser.add_argument("--session-dir", required=True);

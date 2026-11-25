@@ -106,7 +106,7 @@ impl register(sub: Any) {
 }
 
 impl main -> int {
-    import from memu.hosts.hermes.cli { main as cli_main }
+    cli_main = importlib.import_module("memu.hosts.hermes.cli").main;
     parser = argparse.ArgumentParser();
     for name in ("base-dir", "agent", "log-path", "origin-session") {
         parser.add_argument(f"--{name}", required=True);
@@ -124,7 +124,7 @@ impl main -> int {
         os.environ.pop("HERMES_SESSION_ID", None);
         os.environ[self_sessions.BRIDGING_RUN_ENV] = "1";
         try {
-            code = cli_main([
+            code: int = cli_main([
                 "hook-run",
                 "--base-dir",
                 str(layout.base),

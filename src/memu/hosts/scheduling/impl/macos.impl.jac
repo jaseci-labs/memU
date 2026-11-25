@@ -156,7 +156,7 @@ impl _inspect_launchd -> tuple[list[Registration], list[str]] {
     errors: list[str] = [];
     for (directory, domains) in _locations() {
         try {
-            files = sorted((p for p in directory.iterdir() if p.suffix == ".plist"))
+            files = sorted([p for p in directory.iterdir() if p.suffix == ".plist"])
                 if directory.exists()
                 else [];
             for path in files {

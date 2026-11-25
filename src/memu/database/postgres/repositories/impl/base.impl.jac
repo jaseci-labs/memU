@@ -17,7 +17,7 @@ impl PostgresRepoBase._scope_kwargs_from(`obj: Any) -> dict[str, Any] {
     return {field: getattr(`obj, field, None) for field in self._scope_fields};
 }
 
-impl PostgresRepoBase._normalize_embedding(embedding: Any) -> list[float] | None {
+impl PostgresRepoBase._normalize_embedding(embedding: Any) -> Optional[list[float]] {
     if embedding is None {
         return None;
     }
@@ -44,7 +44,7 @@ impl PostgresRepoBase._normalize_embedding(embedding: Any) -> list[float] | None
     }
 }
 
-impl PostgresRepoBase._prepare_embedding(embedding: list[float] | None) -> Any {
+impl PostgresRepoBase._prepare_embedding(embedding: Optional[list[float]]) -> Any {
     if embedding is None {
         return None;
     }

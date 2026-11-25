@@ -1,4 +1,4 @@
-impl SessionManager.init(*, dsn: str, engine_kwargs: dict[str, Any] | None = None) {
+impl SessionManager.init(*, dsn: str, engine_kwargs: Optional[dict[str, Any]] = None) {
     kw: any = {"pool_pre_ping": True};
     if engine_kwargs {
         kw.update(engine_kwargs);

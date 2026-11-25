@@ -148,7 +148,7 @@ impl main -> int {
     `report(f"=== WORKER {args.label} pid={os.getpid()} ===");
     `report(f"worker parent={os.getppid()} source={__file__}");
     try {
-        import from memu.hosts.codex.cli { main as codex_main }
+        codex_main = importlib.import_module("memu.hosts.codex.cli").main;
         with log_path.open("a", encoding="utf-8", buffering=1) as log, contextlib.redirect_stdout(
             log if args.background else cast(TextIO, _Tee(sys.stdout, log))
         ), contextlib.redirect_stderr(

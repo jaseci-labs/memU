@@ -4,7 +4,7 @@ impl _cosine(a: np.ndarray, b: np.ndarray) -> float {
 }
 
 impl cosine_topk(
-    query_vec: list[float], corpus: Iterable[tuple[str, list[float] | None]], k: int = 5
+    query_vec: list[float], corpus: Iterable[tuple[str, Optional[list[float]]]], k: int = 5
 ) -> list[tuple[str, float]] {
     if k <= 0 {
         return [];

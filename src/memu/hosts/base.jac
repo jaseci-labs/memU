@@ -3,7 +3,7 @@ import from abc { ABC, abstractmethod }
 import from dataclasses { dataclass }
 import from enum { Enum }
 import from pathlib { Path }
-import from typing { ClassVar }
+import from typing { ClassVar, Optional }
 
 class RecordKind(Enum) {
     static has MESSAGE: any = "message",
@@ -38,7 +38,7 @@ class TranscriptSource(ABC) {
     def exists -> bool;
     def discover -> list[Path];
     def read_records(path: Path) -> list[str];
-    def read_incremental(path: Path, previous: dict[str, object] | None) -> TranscriptRead;
+    def read_incremental(path: Path, previous: Optional[dict[str, object]]) -> TranscriptRead;
     def timestamp(record: str) -> str | None;
     def key(path: Path) -> str;
     def scan_region(path: Path) -> str;

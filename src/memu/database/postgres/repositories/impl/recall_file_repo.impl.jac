@@ -29,8 +29,8 @@ impl PostgresRecallFileRepo.list_recall_files(
 }
 
 impl PostgresRecallFileRepo.list_recall_files_page(
-    where: Mapping[str, Any] | None, *, after: tuple[str, str, str] | None, limit: int
-) -> tuple[list[RecallFile], tuple[str, str, str] | None] {
+    where: Mapping[str, Any] | None, *, after: Optional[tuple[str, str, str]], limit: int
+) -> tuple[list[RecallFile], Optional[tuple[str, str, str]]] {
     import from sqlalchemy { tuple_ }
     import from sqlmodel { select }
     model = self._sqla_models.RecallFile;
@@ -136,7 +136,7 @@ impl PostgresRecallFileRepo.update_recall_file(
     recall_file_id: str,
     name: str | None = None,
     description: str | None = None,
-    embedding: list[float] | None = None,
+    embedding: Optional[list[float]] = None,
     content: str | None = None,
 ) -> RecallFile {
     import from sqlmodel { select }

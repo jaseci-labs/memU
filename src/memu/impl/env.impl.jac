@@ -152,7 +152,7 @@ impl memory_mode -> MemoryMode {
 }
 
 impl cloud_base_url -> str {
-    import from memu.cloud { DEFAULT_CLOUD_BASE_URL }
+    DEFAULT_CLOUD_BASE_URL = importlib.import_module("memu.cloud").DEFAULT_CLOUD_BASE_URL;
     return env("MEMU_CLOUD_BASE_URL", DEFAULT_CLOUD_BASE_URL) or DEFAULT_CLOUD_BASE_URL;
 }
 
@@ -168,13 +168,13 @@ impl cloud_api_key -> str {
 }
 
 impl build_agentic_memory_backend_from_env(
-    *, local_database: str | None = None, local_embedding_profile: dict[str, Any] | None = None
+    *, local_database: str | None = None, local_embedding_profile: Optional[dict[str, Any]] = None
 ) -> dyn AgenticMemoryBackend {
     if memory_mode() == "cloud" {
-        import from memu.cloud { CloudMemoryClient }
+        CloudMemoryClient = importlib.import_module("memu.cloud").CloudMemoryClient;
         return CloudMemoryClient(base_url=cloud_base_url(), api_key=cloud_api_key()) as any;
     }
-    import from memu.app { MemoryService }
+    MemoryService = importlib.import_module("memu.app").MemoryService;
     resolved_database = database_config(
         local_database if local_database is not None else require("MEMU_DB")
     );
@@ -187,7 +187,7 @@ impl build_agentic_memory_backend_from_env(
 }
 
 impl build_service_from_env -> Any {
-    import from memu.app { MemoryService }
+    MemoryService = importlib.import_module("memu.app").MemoryService;
     return MemoryService(
         embedding_profiles={"default": embedding_profile()},
         database_config=database_config(require("MEMU_DB")),

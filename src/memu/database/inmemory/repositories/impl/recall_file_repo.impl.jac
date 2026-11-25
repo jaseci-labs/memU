@@ -20,8 +20,8 @@ impl InMemoryRecallFileRepository.list_recall_files(
 }
 
 impl InMemoryRecallFileRepository.list_recall_files_page(
-    where: Mapping[str, Any] | None, *, after: tuple[str, str, str] | None, limit: int
-) -> tuple[list[RecallFile], tuple[str, str, str] | None] {
+    where: Mapping[str, Any] | None, *, after: Optional[tuple[str, str, str]], limit: int
+) -> tuple[list[RecallFile], Optional[tuple[str, str, str]]] {
     matches = [f for f in self.recall_files.values() if not where or matches_where(f, where)];
     matches.sort(key=lambda (f: any) -> any { (f.track, f.name, f.id) });
     if after is not None {
@@ -63,7 +63,7 @@ impl InMemoryRecallFileRepository.get_or_create_recall_file(
     for recall_file in self.recall_files.values() {
         if recall_file.name == name
             and recall_file.track == track
-            and all((getattr(recall_file, k) == v for (k, v) in user_data.items()))
+            and all([getattr(recall_file, k) == v for (k, v) in user_data.items()])
         {
             now = pendulum.now("UTC");
             if embedding and (not recall_file.embedding) {
@@ -90,7 +90,7 @@ impl InMemoryRecallFileRepository.update_recall_file(
     recall_file_id: str,
     name: str | None = None,
     description: str | None = None,
-    embedding: list[float] | None = None,
+    embedding: Optional[list[float]] = None,
     content: str | None = None,
 ) -> RecallFile {
     recall_file = self.recall_files.get(recall_file_id);

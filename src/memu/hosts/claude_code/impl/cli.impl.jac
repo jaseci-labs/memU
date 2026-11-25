@@ -1,6 +1,6 @@
 impl _cmd_legacy_schedule(args: argparse.Namespace) -> int {
     if platform.system() == "Darwin" {
-        import memu.hosts.scheduling.macos as macos;
+        macos = importlib.import_module("memu.hosts.scheduling.macos");
         return macos.cleanup(remove=args.action == "uninstall");
     }
     if args.action == "status" {
@@ -14,7 +14,7 @@ impl _cmd_legacy_schedule(args: argparse.Namespace) -> int {
         );
         return 1;
     }
-    import memu.hosts.scheduling as scheduling;
+    scheduling = importlib.import_module("memu.hosts.scheduling");
     return scheduling.uninstall(SPEC, Layout.default(host=HOST, base=args.base_dir));
 }
 
@@ -37,6 +37,6 @@ impl _register_extra(sub: Any) {
     p.set_defaults(handler=_cmd_legacy_schedule);
 }
 
-impl main(argv: list[str] | None = None) -> int {
+impl main(argv: Optional[list[str]] = None) -> int {
     return run(SPEC, argv);
 }

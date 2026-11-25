@@ -1,11 +1,11 @@
-impl _encode_cursor(after: tuple[str, str, str] | None) -> str | None {
+impl _encode_cursor(after: Optional[tuple[str, str, str]]) -> str | None {
     if after is None {
         return None;
     }
     return base64.urlsafe_b64encode(json.dumps(list(after)).encode()).decode();
 }
 
-impl _decode_cursor(cursor: str | None) -> tuple[str, str, str] | None {
+impl _decode_cursor(cursor: str | None) -> Optional[tuple[str, str, str]] {
     if not cursor {
         return None;
     }
@@ -67,7 +67,7 @@ impl _EmbeddingBatch.vector(ticket: int | None) -> list[float] {
 }
 
 impl AgenticMixin.list_all_recall_files(
-    where: dict[str, Any] | None = None,
+    where: Optional[dict[str, Any]] = None,
     *,
     cursor: str | None = None,
     limit: int = DEFAULT_PAGE_LIMIT,
@@ -91,7 +91,7 @@ impl AgenticMixin.list_all_recall_files(
 }
 
 impl AgenticMixin.progressive_retrieve(
-    query: str, where: dict[str, Any] | None = None
+    query: str, where: Optional[dict[str, Any]] = None
 ) -> dict[str, Any] {
     if not query or not query.strip() {
         raise ValueError("empty_query");
@@ -215,9 +215,9 @@ impl AgenticMixin._materialize_hits(
 
 impl AgenticMixin.commit_results(
     *,
-    recall_files: list[dict[str, Any]] | None = None,
-    resource: list[dict[str, Any]] | None = None,
-    user: dict[str, Any] | None = None,
+    recall_files: Optional[list[dict[str, Any]]] = None,
+    resource: Optional[list[dict[str, Any]]] = None,
+    user: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any] {
     store = self._get_database();
     user_scope: any = None;
@@ -262,7 +262,7 @@ impl AgenticMixin._plan_resources(
     resources: list[dict[str, Any]],
     *,
     store: Database,
-    user_scope: dict[str, Any] | None,
+    user_scope: Optional[dict[str, Any]],
     batch: _EmbeddingBatch,
 ) -> list[_ResourcePlan] {
     deduped: dict[str, dict[str, Any]] = {};
@@ -314,7 +314,7 @@ impl AgenticMixin._write_resources(
 ) -> list[Resource] {
     committed: list[Resource] = [];
     for plan in plans {
-        embedding: list[float] | None;
+        embedding: Optional[list[float]];
         if plan.caption_ticket is not None {
             embedding = batch.vector(plan.caption_ticket);
         } elif plan.caption and plan.existing is not None {
@@ -362,7 +362,7 @@ impl AgenticMixin._plan_recall_files(
             msg = "recall-file name must not be empty";
             raise ValueError(msg);
         }
-        if any((char in name for char in "/\\\u0000")) or name in {".", ".."} {
+        if any([char in name for char in "/\\\u0000"]) or name in {".", ".."} {
             msg = "recall-file name must not contain path separators or null bytes";
             raise ValueError(msg);
         }

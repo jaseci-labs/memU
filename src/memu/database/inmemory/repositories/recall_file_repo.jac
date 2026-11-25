@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import uuid;
 import from collections.abc { Mapping }
 import from typing { Any }
@@ -11,8 +11,8 @@ class InMemoryRecallFileRepository(RecallFileRepoProtocol) {
     def init(*, state: InMemoryState, recall_file_model: Type[RecallFile]);
     def list_recall_files(where: Mapping[str, Any] | None = None) -> dict[str, RecallFile];
     def list_recall_files_page(
-        where: Mapping[str, Any] | None, *, after: tuple[str, str, str] | None, limit: int
-    ) -> tuple[list[RecallFile], tuple[str, str, str] | None];
+        where: Mapping[str, Any] | None, *, after: Optional[tuple[str, str, str]], limit: int
+    ) -> tuple[list[RecallFile], Optional[tuple[str, str, str]]];
     def clear_recall_files(where: Mapping[str, Any] | None = None) -> dict[str, RecallFile];
     def get_or_create_recall_file(
         *,
@@ -27,11 +27,16 @@ class InMemoryRecallFileRepository(RecallFileRepoProtocol) {
         recall_file_id: str,
         name: str | None = None,
         description: str | None = None,
-        embedding: list[float] | None = None,
+        embedding: Optional[list[float]] = None,
         content: str | None = None,
     ) -> RecallFile;
     def load_existing;
 }
 
-glob RecallFileRepo = InMemoryRecallFileRepository,
-     __all__ = ["InMemoryRecallFileRepository", "RecallFileRepo"];
+glob RecallFileRepo: any;
+
+with entry {
+    RecallFileRepo = InMemoryRecallFileRepository;
+}
+
+glob __all__ = ["InMemoryRecallFileRepository", "RecallFileRepo"];

@@ -39,7 +39,7 @@ impl bounded_context(memories: dict[str, Any], trace: dict[str, Any]) -> str | N
         else None;
 }
 
-impl _retrieve(trace: dict[str, Any]) -> dict[str, Any] | None {
+impl _retrieve(trace: dict[str, Any]) -> Optional[dict[str, Any]] {
     event = json.load(sys.stdin);
     if not isinstance(event, dict) or event.get("hook_event_name") != "UserPromptSubmit" {
         raise ValueError("expected a UserPromptSubmit object");

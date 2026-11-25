@@ -1,5 +1,5 @@
 import from collections.abc { Mapping }
-import from typing { Any, Protocol, runtime_checkable }
+import from typing { Any, Protocol, runtime_checkable, Optional }
 
 @runtime_checkable
 class ResourceRepo(Protocol) {
@@ -12,7 +12,7 @@ class ResourceRepo(Protocol) {
         url: str,
         local_path: str,
         caption: str | None,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         user_data: dict[str, Any],
         track: str | None = None,
     ) -> Resource abst;
@@ -21,7 +21,7 @@ class ResourceRepo(Protocol) {
         resource_id: str,
         local_path: str,
         caption: str | None,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         track: str | None = None,
     ) -> Resource abst;
     def vector_search_resources(

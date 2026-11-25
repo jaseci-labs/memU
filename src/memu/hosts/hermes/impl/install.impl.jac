@@ -1,6 +1,6 @@
 impl _command(argv: list[str]) -> int {
-    import from memu.hosts.hermes.cli { SPEC }
-    import from memu.hosts.host_cli { build_parser }
+    SPEC = importlib.import_module("memu.hosts.hermes.cli").SPEC;
+    build_parser = importlib.import_module("memu.hosts.host_cli").build_parser;
     spec = replace(
         SPEC, instruction_path=str(hermes_home() / "SOUL.md"), session_dir=str(state_db_path())
     );

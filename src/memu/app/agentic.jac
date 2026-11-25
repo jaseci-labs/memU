@@ -4,11 +4,11 @@ import json;
 import from collections.abc { Callable, Mapping, Sequence }
 import from contextlib { nullcontext }
 import from dataclasses { dataclass }
-import from typing { Any }
+import from typing { Any, Optional }
 import from pydantic { BaseModel }
 glob DEFAULT_PAGE_LIMIT = 50;
-def _encode_cursor(after: tuple[str, str, str] | None) -> str | None;
-def _decode_cursor(cursor: str | None) -> tuple[str, str, str] | None;
+def _encode_cursor(after: Optional[tuple[str, str, str]]) -> str | None;
+def _decode_cursor(cursor: str | None) -> Optional[tuple[str, str, str]];
 async def _embed_one(embed_client: Any, text: str) -> list[float];
 glob _UNRESOLVED_TICKET = "embedding ticket redeemed without a planned vector",
      _VECTOR_COUNT_MISMATCH = "embedding provider returned the wrong number of vectors";
@@ -65,13 +65,13 @@ class AgenticMixin {
     def _normalize_where(where: Mapping[str, Any] | None) -> dict[str, Any] abst;
     def _model_dump_without_embeddings(`obj: BaseModel) -> dict[str, Any] abst;
     async def list_all_recall_files(
-        where: dict[str, Any] | None = None,
+        where: Optional[dict[str, Any]] = None,
         *,
         cursor: str | None = None,
         limit: int = DEFAULT_PAGE_LIMIT,
     ) -> dict[str, Any];
     async def progressive_retrieve(
-        query: str, where: dict[str, Any] | None = None
+        query: str, where: Optional[dict[str, Any]] = None
     ) -> dict[str, Any];
     def _recall_segments(
         *, store: Database, where_filters: dict[str, Any], query_vector: list[float], enabled: bool
@@ -91,15 +91,15 @@ class AgenticMixin {
     ) -> list[dict[str, Any]];
     async def commit_results(
         *,
-        recall_files: list[dict[str, Any]] | None = None,
-        resource: list[dict[str, Any]] | None = None,
-        user: dict[str, Any] | None = None,
+        recall_files: Optional[list[dict[str, Any]]] = None,
+        resource: Optional[list[dict[str, Any]]] = None,
+        user: Optional[dict[str, Any]] = None,
     ) -> dict[str, Any];
     def _plan_resources(
         resources: list[dict[str, Any]],
         *,
         store: Database,
-        user_scope: dict[str, Any] | None,
+        user_scope: Optional[dict[str, Any]],
         batch: _EmbeddingBatch,
     ) -> list[_ResourcePlan];
     def _write_resources(

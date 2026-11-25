@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import builtins;
 import uuid;
 import from datetime { datetime }
@@ -42,13 +42,17 @@ class BaseModelMixin(SQLModel) {
         );
 }
 
-glob _Mixin: any = BaseModelMixin;
+glob _Mixin: any;
+
+with entry {
+    _Mixin = BaseModelMixin;
+}
 
 class ResourceModel(_Mixin, Resource) {
     has url: str = Field(sa_column=Column(String, nullable=False)),
         local_path: str = Field(sa_column=Column(String, nullable=False)),
         caption: str | None = Field(default=None, sa_column=Column(Text, nullable=True)),
-        embedding: list[float] | None = Field(
+        embedding: Optional[list[float]] = Field(
             default=None, sa_column=Column(Vector(), nullable=True)
         ),
         track: str | None = Field(default=None, sa_column=Column(String, nullable=True));
@@ -57,7 +61,7 @@ class ResourceModel(_Mixin, Resource) {
 class RecallFileModel(_Mixin, RecallFile) {
     has name: str = Field(sa_column=Column(String, nullable=False, index=True)),
         description: str = Field(sa_column=Column(Text, nullable=False)),
-        embedding: list[float] | None = Field(
+        embedding: Optional[list[float]] = Field(
             default=None, sa_column=Column(Vector(), nullable=True)
         ),
         content: str | None = Field(default=None, sa_column=Column(Text, nullable=True)),
@@ -76,7 +80,7 @@ class RecallFileSegmentModel(_Mixin, RecallFileSegment) {
             default="memory", sa_column=Column(String, nullable=False, server_default="memory")
         ),
         text: str = Field(sa_column=Column(Text, nullable=False)),
-        embedding: list[float] | None = Field(
+        embedding: Optional[list[float]] = Field(
             default=None, sa_column=Column(Vector(), nullable=True)
         );
 }
@@ -95,8 +99,8 @@ def build_table_model(
     *,
     tablename: str,
     metadata: MetaData | None = None,
-    extra_table_args: tuple[Any, ...] | None = None,
-    unique_with_scope: list[str] | None = None,
+    extra_table_args: Optional[tuple[Any, ...]] = None,
+    unique_with_scope: Optional[list[str]] = None,
 ) -> Type[SQLModel];
 def build_scoped_models(
     user_model: Type[BaseModel]

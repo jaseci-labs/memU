@@ -1,3 +1,5 @@
+import from typing { Optional }
+import importlib;
 import argparse;
 import sys;
 glob HOST = "codex",
@@ -31,27 +33,32 @@ glob HOOK = hooks.HookSpec(
     stream_output=notify_console.stream_agent,
 );
 def _register_extra(sub: object);
-glob SPEC = HostSpec(
-    host=HOST,
-    display="Codex",
-    package="memu.hosts.codex",
-    task_name="memu-bridging-codex",
-    former_task_names=("memu-remember", "memu-bridging"),
-    source_factory=CodexTranscriptSource,
-    session_dir=SESSION_DIR,
-    session_help="Codex session log",
-    instruction_path=AGENTS_MD,
-    skills_dir=SKILLS_DIR,
-    schedule_backend="native",
-    hook=HOOK,
-    install_hint="""Install the standalone Codex CLI using the official native installer:
+glob SPEC: any;
+
+with entry {
+    SPEC = HostSpec(
+        host=HOST,
+        display="Codex",
+        package="memu.hosts.codex",
+        task_name="memu-bridging-codex",
+        former_task_names=("memu-remember", "memu-bridging"),
+        source_factory=CodexTranscriptSource,
+        session_dir=SESSION_DIR,
+        session_help="Codex session log",
+        instruction_path=AGENTS_MD,
+        skills_dir=SKILLS_DIR,
+        schedule_backend="native",
+        hook=HOOK,
+        install_hint="""Install the standalone Codex CLI using the official native installer:
   Windows (PowerShell): irm https://chatgpt.com/codex/install.ps1 | iex
   macOS/Linux: curl -fsSL https://chatgpt.com/codex/install.sh | sh
 Refresh PATH, verify `codex --version`, then retry `memu-codex install-prompt-hook`.""",
-    register_extra=_register_extra,
-);
+        register_extra=_register_extra,
+    );
+}
+
 def build_parser -> argparse.ArgumentParser;
-def main(argv: list[str] | None = None) -> int;
+def main(argv: Optional[list[str]] = None) -> int;
 
 with entry:__main__ {
     sys.exit(main());

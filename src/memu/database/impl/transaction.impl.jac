@@ -76,9 +76,9 @@ impl preserve_state(state: DatabaseState) -> Iterator[None] {
             yield None;
         } except BaseException {
             state.resources.clear();
-            state.resources.update(resources);
+            (state.resources as any).update(resources);
             state.recall_files.clear();
-            state.recall_files.update(recall_files);
+            (state.recall_files as any).update(recall_files);
             state.segments[:] = segments;
             raise;
         }

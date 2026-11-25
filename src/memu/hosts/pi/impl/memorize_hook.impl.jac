@@ -106,8 +106,8 @@ impl register(sub: Any) {
 }
 
 impl main -> int {
-    import from memu.hosts.host_cli { run }
-    import from memu.hosts.pi.cli { SPEC }
+    run = importlib.import_module("memu.hosts.host_cli").run;
+    SPEC = importlib.import_module("memu.hosts.pi.cli").SPEC;
     parser = argparse.ArgumentParser();
     for name in ("base-dir", "session-dir", "agent", "log-path") {
         parser.add_argument(f"--{name}", required=True);
@@ -118,7 +118,7 @@ impl main -> int {
     if SPEC.hook is None {
         raise RuntimeError("pi memory hook is not configured");
     }
-    argv = list(SPEC.hook.agent.argv);
+    argv: list[any] = list(SPEC.hook.agent.argv);
     for name in ("provider", "model") {
         if (value := getattr(args, name)) {
             argv.extend([f"--{name}", value]);

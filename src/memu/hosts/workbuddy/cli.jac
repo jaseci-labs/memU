@@ -1,3 +1,4 @@
+import from typing { Optional }
 import sys;
 glob HOST = "workbuddy",
      SOUL_MD = "~/.workbuddy/SOUL.md";
@@ -20,7 +21,7 @@ glob SPEC = HostSpec(
     legacy_instruction_paths=(MEMORY_MD,),
     schedule_backend="native",
 );
-def main(argv: list[str] | None = None) -> int;
+def main(argv: Optional[list[str]] = None) -> int;
 
 with entry:__main__ {
     sys.exit(main());

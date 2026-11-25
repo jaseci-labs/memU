@@ -1,3 +1,4 @@
+import from typing { Optional }
 import operator;
 
 import from jaclang.comptime { target }
@@ -20,7 +21,7 @@ import from contextlib { suppress }
 
 def _owner_exited(lifetime_fd: int, timeout: float = 0) -> bool;
 
-def _read_command(lifetime_fd: int) -> list[str] | None;
+def _read_command(lifetime_fd: int) -> Optional[list[str]];
 
 def _group_has_only_zombies(group_id: int) -> bool;
 

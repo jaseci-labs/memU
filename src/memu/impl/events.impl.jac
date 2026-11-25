@@ -25,7 +25,7 @@ impl _spool_path -> Path {
 }
 
 impl client_version -> str {
-    import from memu { __version__ }
+    __version__ = importlib.import_module("memu").__version__;
     return __version__;
 }
 
@@ -78,7 +78,7 @@ impl envelope(
     *,
     host: str = "",
     session_id_env: str = "",
-    properties: dict[str, Any] | None = None,
+    properties: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any] {
     built: dict[str, Any] = {
         "event_id": str(uuid.uuid4()),
@@ -107,7 +107,7 @@ impl record(
     *,
     host: str = "",
     session_id_env: str = "",
-    properties: dict[str, Any] | None = None,
+    properties: Optional[dict[str, Any]] = None,
     deliver: bool = False,
 ) {
     try {
@@ -134,7 +134,7 @@ impl _deliver(event: dict[str, Any]) -> bool {
     return _post(url, event) != RETRY;
 }
 
-impl _filter(event_name: str, properties: dict[str, Any] | None) -> dict[str, Any] {
+impl _filter(event_name: str, properties: Optional[dict[str, Any]]) -> dict[str, Any] {
     allowed = _ALLOWED_PROPERTIES.get(event_name, frozenset());
     return {key: value for (key, value) in (properties or {}).items() if key in allowed};
 }
@@ -331,8 +331,9 @@ impl _flush -> tuple[int, int] {
     return (accepted, rejected);
 }
 
-impl _drain(path: Path, url: str, posts_left: int) -> tuple[int, int, int, list[dict[str, Any]]
-    | None] {
+impl _drain(
+    path: Path, url: str, posts_left: int
+) -> tuple[int, int, int, Optional[list[dict[str, Any]]]] {
     events = _read(path);
     event_index = 0;
     rejected = 0;

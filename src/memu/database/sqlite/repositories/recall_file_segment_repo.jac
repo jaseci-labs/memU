@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import logging;
 import from collections.abc { Mapping }
 import from typing { Any }
@@ -24,7 +24,7 @@ class SQLiteRecallFileSegmentRepo(SQLiteRepoBase, RecallFileSegmentRepo) {
         *,
         recall_file_id: str,
         text: str,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         user_data: dict[str, Any],
         track: str = "memory",
     ) -> RecallFileSegment;

@@ -246,7 +246,7 @@ impl _cmd_verify_resources(spec: HostSpec, args: argparse.Namespace) -> int {
 }
 
 impl _smells_like_transport(exc: BaseException) -> bool {
-    import from memu.env { ConfigError }
+    ConfigError = importlib.import_module("memu.env").ConfigError;
     seen: list[BaseException] = [];
     current: any = exc;
     while current is not None and current not in seen {
@@ -258,7 +258,7 @@ impl _smells_like_transport(exc: BaseException) -> bool {
     }
     for e in seen {
         text = f"{type(e).__name__} {e}".lower();
-        if any((smell in text for smell in _TRANSPORT_SMELLS)) {
+        if any([smell in text for smell in _TRANSPORT_SMELLS]) {
             return True;
         }
     }
@@ -270,7 +270,7 @@ impl _proxy_hint(base_url: str) -> str | None {
     if not proxies {
         return None;
     }
-    import from memu.embedding.http_client { is_loopback_url }
+    is_loopback_url = importlib.import_module("memu.embedding.http_client").is_loopback_url;
     listing = ", ".join(sorted(set(proxies.values())));
     env_configured = any((k.lower().endswith("_proxy") for k in os.environ));
     source = "the shell environment"
@@ -289,9 +289,9 @@ impl _cmd_doctor(spec: HostSpec, args: argparse.Namespace) -> int {
     backend_status = await _cmd_backend_doctor(spec, args);
     if spec.host in {"codex", "claude-code"} and (not getattr(args, "backend_only", False)) {
         if spec.host == "codex" {
-            import from memu.hosts.codex.doctor { check }
+            check = importlib.import_module("memu.hosts.codex.doctor").check;
         } else {
-            import from memu.hosts.claude_code.doctor { check as check_claude }
+            check_claude = importlib.import_module("memu.hosts.claude_code.doctor").check;
             check = check_claude;
         }
         integration_status = check();
@@ -301,7 +301,11 @@ impl _cmd_doctor(spec: HostSpec, args: argparse.Namespace) -> int {
 }
 
 impl _cmd_backend_doctor(spec: HostSpec, args: argparse.Namespace) -> int {
-    import from memu.env { CONFIG_ENV, cloud_base_url, embedding_provider, env, memory_mode }
+    CONFIG_ENV = importlib.import_module("memu.env").CONFIG_ENV;
+    cloud_base_url = importlib.import_module("memu.env").cloud_base_url;
+    embedding_provider = importlib.import_module("memu.env").embedding_provider;
+    env = importlib.import_module("memu.env").env;
+    memory_mode = importlib.import_module("memu.env").memory_mode;
     try {
         mode = memory_mode();
         result = await retrieval.retrieve("smoke test");
@@ -359,17 +363,15 @@ impl _report_guide_opened(spec: HostSpec, event: str) {
 impl _cmd_hook_run(spec: HostSpec, args: argparse.Namespace) -> int {
     if spec.host in {"codex", "claude-code", "pi", "hermes"} {
         if spec.host == "codex" {
-            import from memu.hosts.codex.notify_console { memorize_run as codex_run }
-            memorize_run = codex_run;
+            memorize_run = importlib.import_module("memu.hosts.codex.notify_console").memorize_run;
         } elif spec.host == "pi" {
-            import from memu.hosts.pi.memorize_hook { memorize_run as pi_run }
-            memorize_run = pi_run;
+            memorize_run = importlib.import_module("memu.hosts.pi.memorize_hook").memorize_run;
         } elif spec.host == "hermes" {
-            import from memu.hosts.hermes.memorize_hook { memorize_run as hermes_run }
-            memorize_run = hermes_run;
+            memorize_run = importlib.import_module("memu.hosts.hermes.memorize_hook").memorize_run;
         } else {
-            import from memu.hosts.claude_code.memorize_hook { memorize_run as claude_code_run }
-            memorize_run = claude_code_run;
+            memorize_run = importlib.import_module(
+                "memu.hosts.claude_code.memorize_hook"
+            ).memorize_run;
         }
         with memorize_run(_layout(spec, args)) as admitted {
             if not admitted {
@@ -423,7 +425,7 @@ impl _cmd_schedule(spec: HostSpec, args: argparse.Namespace) -> int {
         );
         return 0;
     }
-    import memu.hosts.scheduling as scheduling;
+    scheduling = importlib.import_module("memu.hosts.scheduling");
     layout = _layout(spec, args);
     if args.action in {"status", "uninstall"} and spec.host == "hermes" {
         return scheduling.cleanup(spec, layout, remove=args.action == "uninstall");
@@ -618,7 +620,7 @@ impl build_parser(spec: HostSpec) -> argparse.ArgumentParser {
     return parser;
 }
 
-impl run(spec: HostSpec, argv: list[str] | None = None) -> int {
+impl run(spec: HostSpec, argv: Optional[list[str]] = None) -> int {
     reconfigure_input = getattr(sys.stdin, "reconfigure", None);
     if reconfigure_input is not None {
         reconfigure_input(encoding="utf-8", errors="strict");

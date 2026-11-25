@@ -5,7 +5,7 @@ import os;
 import re;
 import sqlite3;
 import from pathlib { Path }
-import from typing { ClassVar }
+import from typing { ClassVar, Optional }
 glob logger = logging.getLogger(__name__),
      SESSION_DIR = "~/.openclaw/agents",
      _MESSAGE_ROLES = ("user", "assistant"),
@@ -48,10 +48,10 @@ class OpenClawTranscriptSource(TranscriptSource) {
     def session_id(path: Path) -> str;
     def cron_run_session_ids(*, job_id: str) -> list[str];
     def _virtual_path(db: Path, session_id: str) -> Path;
-    def _stored_session(path: Path) -> tuple[Path, str] | None;
+    def _stored_session(path: Path) -> Optional[tuple[Path, str]];
     def discover -> list[Path];
     def read_records(path: Path) -> list[str];
-    def read_incremental(path: Path, previous: dict[str, object] | None) -> TranscriptRead;
+    def read_incremental(path: Path, previous: Optional[dict[str, object]]) -> TranscriptRead;
     def sanitize(path: Path, record: str) -> str;
     def classify(record: str) -> RecordKind;
     def timestamp(record: str) -> str | None;

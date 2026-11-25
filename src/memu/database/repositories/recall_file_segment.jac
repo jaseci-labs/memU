@@ -1,5 +1,5 @@
 import from collections.abc { Mapping }
-import from typing { Any, Protocol, runtime_checkable }
+import from typing { Any, Protocol, runtime_checkable, Optional }
 
 @runtime_checkable
 class RecallFileSegmentRepo(Protocol) {
@@ -13,7 +13,7 @@ class RecallFileSegmentRepo(Protocol) {
         *,
         recall_file_id: str,
         text: str,
-        embedding: list[float] | None,
+        embedding: Optional[list[float]],
         user_data: dict[str, Any],
         track: str = "memory",
     ) -> RecallFileSegment abst;

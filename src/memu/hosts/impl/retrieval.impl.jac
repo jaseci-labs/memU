@@ -1,4 +1,4 @@
-impl render_context(memories: dict[str, Any], *, original: dict[str, Any] | None = None) -> str {
+impl render_context(memories: dict[str, Any], *, original: Optional[dict[str, Any]] = None) -> str {
     original = memories if original is None else original;
     payload = {
         **memories,
@@ -14,7 +14,7 @@ impl render_context(memories: dict[str, Any], *, original: dict[str, Any] | None
 }
 
 impl retrieve(
-    query: str, where: dict[str, Any] | None = None, *, query_kind: QueryKind | None = None
+    query: str, where: Optional[dict[str, Any]] = None, *, query_kind: QueryKind | None = None
 ) -> dict[str, Any] {
     kind = query_kind
         or ("long" if sum((not c.isspace() for c in query)) >= LONG_QUERY_CHARS else "short");

@@ -93,7 +93,9 @@ impl _run_managed(
     with ExitStack() as resources {
         (job, life_reader, life_writer) = (None, None, None);
         if sys.platform == "win32" {
-            import from memu.hosts._extraction_windows_job { WindowsExtractionJob }
+            WindowsExtractionJob = importlib.import_module(
+                "memu.hosts._extraction_windows_job"
+            ).WindowsExtractionJob;
             job = WindowsExtractionJob();
             resources.callback(job.close);
         } else {

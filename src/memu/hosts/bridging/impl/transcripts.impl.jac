@@ -58,10 +58,10 @@ impl prepare_transcripts(
         }
         if read.changed
             and (
-                not any(
-                    (source.classify(record) is not RecordKind.OTHER
-                    for record in read.records[read.start:]),
-                )
+                not any([
+                    source.classify(record) is not RecordKind.OTHER
+                    for record in read.records[read.start:]
+                ])
             )
         {
             observed[key] = {

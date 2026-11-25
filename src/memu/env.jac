@@ -1,10 +1,11 @@
+import importlib;
 import codecs;
 import locale;
 import math;
 import os;
 import from functools { cache }
 import from pathlib { Path }
-import from typing { TYPE_CHECKING, Any, Literal }
+import from typing { TYPE_CHECKING, Any, Literal, Optional }
 glob CONFIG_ENV = "~/.memu/config.env";
 
 with entry {}
@@ -40,6 +41,6 @@ def memory_mode -> MemoryMode;
 def cloud_base_url -> str;
 def cloud_api_key -> str;
 def build_agentic_memory_backend_from_env(
-    *, local_database: str | None = None, local_embedding_profile: dict[str, Any] | None = None
+    *, local_database: str | None = None, local_embedding_profile: Optional[dict[str, Any]] = None
 ) -> dyn AgenticMemoryBackend;
 def build_service_from_env -> Any;

@@ -1,16 +1,16 @@
-import from typing { Any, Protocol }
+import from typing { Any, Protocol, Optional }
 
 class AgenticMemoryBackend(Protocol) {
     async def list_all_recall_files(
-        where: dict[str, Any] | None = None, *, cursor: str | None = None, limit: int = 100
+        where: Optional[dict[str, Any]] = None, *, cursor: str | None = None, limit: int = 100
     ) -> dict[str, Any] abst;
     async def progressive_retrieve(
-        query: str, where: dict[str, Any] | None = None
+        query: str, where: Optional[dict[str, Any]] = None
     ) -> dict[str, Any] abst;
     async def commit_results(
         *,
-        recall_files: list[dict[str, Any]] | None = None,
-        resource: list[dict[str, Any]] | None = None,
-        user: dict[str, Any] | None = None,
+        recall_files: Optional[list[dict[str, Any]]] = None,
+        resource: Optional[list[dict[str, Any]]] = None,
+        user: Optional[dict[str, Any]] = None,
     ) -> dict[str, Any] abst;
 }

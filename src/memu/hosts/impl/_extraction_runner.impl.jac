@@ -5,7 +5,7 @@ impl _owner_exited(lifetime_fd: int, timeout: float = 0) -> bool {
     return `bool(readable) and not os.read(lifetime_fd, 1);
 }
 
-impl _read_command(lifetime_fd: int) -> list[str] | None {
+impl _read_command(lifetime_fd: int) -> Optional[list[str]] {
     input_fd: any = sys.stdin.fileno();
     header: any = bytearray();
     while True {

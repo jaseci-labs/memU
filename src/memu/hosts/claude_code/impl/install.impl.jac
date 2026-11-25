@@ -1,6 +1,6 @@
 impl _command(argv: list[str]) -> int {
-    import from memu.hosts.claude_code.cli { SPEC }
-    import from memu.hosts.host_cli { build_parser }
+    SPEC = importlib.import_module("memu.hosts.claude_code.cli").SPEC;
+    build_parser = importlib.import_module("memu.hosts.host_cli").build_parser;
     args = build_parser(SPEC).parse_args(argv);
     return int(await args.handler(args));
 }

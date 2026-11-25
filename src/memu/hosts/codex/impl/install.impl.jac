@@ -3,7 +3,7 @@ impl _home -> Path {
 }
 
 impl _command(argv: list[str]) -> int {
-    import from memu.hosts.codex.cli { build_parser }
+    build_parser = importlib.import_module("memu.hosts.codex.cli").build_parser;
     args = build_parser().parse_args(argv);
     return int(await args.handler(args));
 }

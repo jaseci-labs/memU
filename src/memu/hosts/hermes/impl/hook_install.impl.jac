@@ -169,7 +169,7 @@ impl remove(args: argparse.Namespace) -> int {
         }
         instruction.check_skill_cleanup(home() / "skills", "memu-hermes");
         if platform.system() == "Windows" {
-            import from memu.hosts.hermes.install { _command }
+            _command = importlib.import_module("memu.hosts.hermes.install")._command;
             with contextlib.redirect_stdout(sys.stderr) {
                 code = await _command(["schedule", "uninstall", "--base-dir", str(args.base_dir)]);
             }
@@ -195,7 +195,7 @@ impl register(sub: Any) {
     parser = sub.add_parser(
         "uninstall", help="Remove managed Hermes instructions and legacy plugin; preserve memory"
     );
-    import from memu.hosts.hermes.cli { SPEC }
+    SPEC = importlib.import_module("memu.hosts.hermes.cli").SPEC;
     parser.add_argument(
         "--base-dir", default=SPEC.default_base_dir, help="memU working directory for legacy tasks"
     );

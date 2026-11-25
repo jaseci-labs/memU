@@ -45,8 +45,8 @@ impl build_sqlite_table_model(
     *,
     tablename: str,
     metadata: MetaData | None = None,
-    extra_table_args: tuple[Any, ...] | None = None,
-    unique_with_scope: list[str] | None = None,
+    extra_table_args: Optional[tuple[Any, ...]] = None,
+    unique_with_scope: Optional[list[str]] = None,
 ) -> Type[SQLModel] {
     overlap = set(user_model.model_fields) & set(core_model.model_fields);
     if overlap {

@@ -61,7 +61,7 @@ impl AppServer._read {
     self.lines.put(None);
 }
 
-impl AppServer.request(method: str, params: dict[str, Any] | None = None) -> dict[str, Any] {
+impl AppServer.request(method: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any] {
     self.request_id += 1;
     request_id = self.request_id;
     if self.process.stdin is None {

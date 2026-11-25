@@ -1,4 +1,4 @@
-import from typing { Type }
+import from typing { Type, Optional }
 import asyncio;
 import from collections.abc { Mapping }
 import from typing { Any }
@@ -54,16 +54,19 @@ class CloudMemoryClient {
         transport: httpx.AsyncBaseTransport | None = None,
     );
     async def list_all_recall_files(
-        where: dict[str, Any] | None = None, *, cursor: str | None = None, limit: int | None = None
+        where: Optional[dict[str, Any]] = None,
+        *,
+        cursor: str | None = None,
+        limit: int | None = None,
     ) -> dict[str, Any];
     async def progressive_retrieve(
-        query: str, where: dict[str, Any] | None = None
+        query: str, where: Optional[dict[str, Any]] = None
     ) -> dict[str, Any];
     async def commit_results(
         *,
-        recall_files: list[dict[str, Any]] | None = None,
-        resource: list[dict[str, Any]] | None = None,
-        user: dict[str, Any] | None = None,
+        recall_files: Optional[list[dict[str, Any]]] = None,
+        resource: Optional[list[dict[str, Any]]] = None,
+        user: Optional[dict[str, Any]] = None,
     ) -> dict[str, Any];
     static def _scope(where: Mapping[str, Any] | None) -> dict[str, str];
     static def _scope_value(value: Any) -> str;
@@ -72,8 +75,8 @@ class CloudMemoryClient {
         method: str,
         endpoint: str,
         *,
-        params: dict[str, str] | None = None,
-        json: dict[str, Any] | None = None,
+        params: Optional[dict[str, str]] = None,
+        json: Optional[dict[str, Any]] = None,
     ) -> dict[str, Any];
     static def _response_error(response: httpx.Response) -> CloudMemoryError;
     static def _error_details(response: httpx.Response) -> tuple[str, str | None];

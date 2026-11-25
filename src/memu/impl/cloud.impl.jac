@@ -70,7 +70,7 @@ impl CloudMemoryClient.init(
 }
 
 impl CloudMemoryClient.list_all_recall_files(
-    where: dict[str, Any] | None = None, *, cursor: str | None = None, limit: int | None = None
+    where: Optional[dict[str, Any]] = None, *, cursor: str | None = None, limit: int | None = None
 ) -> dict[str, Any] {
     params = self._scope(where);
     if cursor {
@@ -83,7 +83,7 @@ impl CloudMemoryClient.list_all_recall_files(
 }
 
 impl CloudMemoryClient.progressive_retrieve(
-    query: str, where: dict[str, Any] | None = None
+    query: str, where: Optional[dict[str, Any]] = None
 ) -> dict[str, Any] {
     payload: dict[str, Any] = {"query": query, **self._scope(where)};
     return await self._request("POST", "search", json=payload);
@@ -91,9 +91,9 @@ impl CloudMemoryClient.progressive_retrieve(
 
 impl CloudMemoryClient.commit_results(
     *,
-    recall_files: list[dict[str, Any]] | None = None,
-    resource: list[dict[str, Any]] | None = None,
-    user: dict[str, Any] | None = None,
+    recall_files: Optional[list[dict[str, Any]]] = None,
+    resource: Optional[list[dict[str, Any]]] = None,
+    user: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any] {
     payload = {
         "user": self._user(user),
@@ -145,8 +145,8 @@ impl CloudMemoryClient._request(
     method: str,
     endpoint: str,
     *,
-    params: dict[str, str] | None = None,
-    json: dict[str, Any] | None = None,
+    params: Optional[dict[str, str]] = None,
+    json: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any] {
     headers = {"Authorization": f"Bearer {self.api_key}"};
     explicit_proxy = env("MEMU_HTTP_PROXY") or None;

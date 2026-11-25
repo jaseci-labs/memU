@@ -68,7 +68,7 @@ impl PostgresResourceRepo.create_resource(
     url: str,
     local_path: str,
     caption: str | None,
-    embedding: list[float] | None,
+    embedding: Optional[list[float]],
     user_data: dict[str, Any],
     track: str | None = None,
 ) -> Resource {
@@ -95,7 +95,7 @@ impl PostgresResourceRepo.update_resource(
     resource_id: str,
     local_path: str,
     caption: str | None,
-    embedding: list[float] | None,
+    embedding: Optional[list[float]],
     track: str | None = None,
 ) -> Resource {
     import from sqlmodel { select }

@@ -1,6 +1,8 @@
+# Annotations stay text, so CreateEmbeddingResponse names the SDK's type
+# without importing it: the SDK costs about half a second to import, and only a
+# client that is built needs it (see init).
+import from __future__ { annotations }
 import logging;
-import from openai { AsyncOpenAI, DefaultAsyncHttpxClient }
-import from openai.types { CreateEmbeddingResponse }
 glob logger = logging.getLogger(__name__);
 
 class OpenAIEmbeddingSDKClient {
@@ -15,6 +17,7 @@ class OpenAIEmbeddingSDKClient {
         self.api_key = api_key or "";
         self.embed_model = embed_model;
         self.batch_size = batch_size;
+        import from openai { AsyncOpenAI, DefaultAsyncHttpxClient }
         proxy = _load_proxy(self.base_url);
         http_client: DefaultAsyncHttpxClient | None;
         if proxy {

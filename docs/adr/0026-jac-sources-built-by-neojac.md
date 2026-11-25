@@ -9,7 +9,7 @@ Write the `memu` package in Jac, built by the neojac toolchain, while keeping th
 
 ## Decision {#decision}
 
-`jac.toml` holds what `pyproject.toml` and `npm/package.json` held, and `archwire.jac` declares the package as the `cpython` space `memu`, its tests and scripts as `memu_dev`, and every import between the package's modules as a wire. The modules under `src/memu` are Jac, one file each with its bodies inline: `jac.toml` selects the `style` lint rules rather than neojac's default `clean`, whose `separate-impls` would repeat every signature in an `impl/` annex (about 1,200 more lines). The Python sources they replace are kept under `replaced-by-neojac/` until every platform the package ships for is recorded.
+`jac.toml` holds what `pyproject.toml` and `npm/package.json` held, and `archwire.jac` declares the package as the `cpython` space `memu`, its tests and scripts as `memu_dev`, and every import between the package's modules as a wire. The modules under `src/memu` are Jac, one file each with its bodies inline: `jac.toml` selects the `style` lint rules rather than neojac's default `clean`, whose `separate-impls` would repeat every signature in an `impl/` annex (about 1,200 more lines). The Python sources they replace are not kept in the tree (git history holds them); `replaced-by-neojac/` keeps only the manifests and lock that `jac.toml` and `jac.lock` stand in for.
 
 Three files stay Python:
 

@@ -19,8 +19,12 @@ def cosine_topk(
         return [];
     }
     dim = q.size;
-    ids: list[str] = [];
-    vecs: list[list[float]] = [];
+    # The corpus is CPython's iterable, so each row reaches this code as an
+    # `any`. Kept as `list[any]`, the rows go to numpy as they are: a typed
+    # `list[list[float]]` would convert every float of every row in Python
+    # first, which costs far more than the ranking itself.
+    ids: list[any] = [];
+    vecs: list[any] = [];
     for (_id, vec) in corpus {
         if vec is None {
             continue;
@@ -29,7 +33,7 @@ def cosine_topk(
             continue;
         }
         ids.append(_id);
-        vecs.append(cast(list[float], vec));
+        vecs.append(vec);
     }
     if not vecs {
         return [];

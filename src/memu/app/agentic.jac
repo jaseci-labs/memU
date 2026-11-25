@@ -72,9 +72,10 @@ class _EmbeddingBatch {
             raise ValueError(_VECTOR_COUNT_MISMATCH);
         }
         # The client is an `any`, so its vectors arrive untyped. Read each float
-        # here once, as Python reads it: the runtime's own conversion into
-        # `list[list[float]]` walks every element far more slowly.
-        self._vectors.extend([[float(x) for x in vector] for vector in vectors]);
+        # here once, as Python reads it (map builds the same list fastest): the
+        # runtime's own conversion into `list[list[float]]` walks every element
+        # far more slowly.
+        self._vectors.extend([list(map(float, vector)) for vector in vectors]);
     }
 
     has resolved: bool {

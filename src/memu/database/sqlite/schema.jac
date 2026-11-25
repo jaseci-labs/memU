@@ -1,7 +1,6 @@
 import builtins;
-import from typing { Type }
+import from typing { Type, Any }
 import from dataclasses { dataclass }
-import from typing { Any }
 import from pydantic { BaseModel }
 import from sqlalchemy { MetaData }
 import from sqlmodel { SQLModel }

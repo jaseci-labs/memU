@@ -1,7 +1,6 @@
-import from typing { Type, Optional }
+import from typing { Type, Optional, Any }
 import asyncio;
 import from collections.abc { Mapping }
-import from typing { Any }
 import httpx;
 glob DEFAULT_CLOUD_BASE_URL = "https://api.memu.so/api/v4/memory/",
      DEFAULT_SCOPE = "default",

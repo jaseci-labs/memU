@@ -1,5 +1,5 @@
 import json;
-import from abc { ABC, abstractmethod }
+import from abc { ABC }
 import from dataclasses { dataclass }
 import from enum { Enum }
 import from pathlib { Path }

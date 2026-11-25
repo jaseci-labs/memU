@@ -1,4 +1,4 @@
-import from typing { Annotated, Literal, Self, TypeAlias, Union }
+import from typing { Annotated, Literal, Self, Union }
 import from pydantic { BaseModel, ConfigDict, Field, JsonValue, model_validator }
 
 class InputModel(BaseModel) {

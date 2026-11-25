@@ -1,7 +1,7 @@
 import base64;
 import binascii;
 import json;
-import from collections.abc { Callable, Mapping, Sequence }
+import from collections.abc { Mapping, Sequence }
 import from contextlib { nullcontext }
 import from dataclasses { dataclass }
 import from typing { Any, Optional }

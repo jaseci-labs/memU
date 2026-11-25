@@ -2,8 +2,6 @@ import hashlib;
 
 import json;
 
-import from collections.abc { Iterator }
-
 import from pathlib { Path }
 
 def _hash_file(path: Path) -> str {

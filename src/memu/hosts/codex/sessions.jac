@@ -47,7 +47,6 @@ class CodexTranscriptSource(TranscriptSource) {
     }
 
     def sanitize(path: Path, record: str) -> str {
-        del path;
         try {
             `entry = json.loads(record);
         } except json.JSONDecodeError {

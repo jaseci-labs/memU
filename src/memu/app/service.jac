@@ -1,6 +1,5 @@
-import from typing { Type }
+import from typing { Type, Any, TypeVar }
 import from collections.abc { Mapping }
-import from typing { Any, TypeVar }
 import from pydantic { BaseModel }
 glob TConfigModel = TypeVar("TConfigModel", bound=BaseModel);
 

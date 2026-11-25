@@ -1,6 +1,5 @@
 import importlib;
-import from collections.abc { Callable }
-import from typing { TYPE_CHECKING, Any }
+import from typing { Any }
 
 def _build_sdk_client(cfg: EmbeddingConfig) -> Any {
     OpenAIEmbeddingSDKClient = importlib.import_module(

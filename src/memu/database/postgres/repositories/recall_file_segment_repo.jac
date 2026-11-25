@@ -1,7 +1,6 @@
 import operator;
-import from typing { Type, Optional }
+import from typing { Type, Optional, Any }
 import from collections.abc { Mapping }
-import from typing { Any }
 
 class PostgresRecallFileSegmentRepo(PostgresRepoBase, RecallFileSegmentRepo) {
     has _recall_file_segment_model: Type[RecallFileSegment];

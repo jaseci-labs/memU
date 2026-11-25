@@ -1,8 +1,7 @@
 import operator;
-import from typing { Type, Optional }
+import from typing { Type, Optional, Any }
 import logging;
 import from collections.abc { Mapping }
-import from typing { Any }
 import from sqlalchemy { tuple_ }
 import from sqlmodel { delete, select }
 glob logger = logging.getLogger(__name__);

@@ -4,7 +4,6 @@ import shutil;
 import subprocess;
 import sys;
 import from pathlib { Path }
-import from typing { TYPE_CHECKING }
 glob TASK_PATH = "\\memU\\",
      DEFAULT_INTERVAL_MINUTES = 60,
      WRAPPER_NAME = "memu-bridge.ps1",

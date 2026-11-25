@@ -1,7 +1,6 @@
-import from typing { Type, Optional }
+import from typing { Type, Optional, Any }
 import uuid;
 import from collections.abc { Mapping }
-import from typing { Any }
 
 class InMemoryFileSegmentRepository(RecallFileSegmentRepo) {
     has recall_file_segment_model: Type[RecallFileSegment],

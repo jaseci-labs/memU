@@ -1,12 +1,9 @@
-import from typing { Type, Optional }
-import builtins;
+import from typing { Optional, Any }
 import uuid;
 import from datetime { datetime }
-import from typing { Any }
 import pendulum;
-import from pydantic { BaseModel }
-import from sqlalchemy { JSON, MetaData, String, Text }
-import from sqlmodel { DateTime, Field, Index, SQLModel, func }
+import from sqlalchemy { JSON, String, Text }
+import from sqlmodel { DateTime, Field, SQLModel, func }
 
 class TZDateTime(DateTime) {
     def init(timezone: bool = True, **kw: Any) {

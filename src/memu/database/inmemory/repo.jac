@@ -1,7 +1,6 @@
-import from typing { Type }
+import from typing { Type, Any }
 import from collections.abc { Iterator }
 import from contextlib { contextmanager }
-import from typing { Any }
 import from pydantic { BaseModel }
 
 class InMemoryStore(Database) {

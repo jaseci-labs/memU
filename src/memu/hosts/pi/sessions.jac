@@ -35,7 +35,6 @@ class PiTranscriptSource(TranscriptSource) {
     }
 
     def sanitize(path: Path, record: str) -> str {
-        del path;
         return sanitize_agent_record(
             record,
             record_fields=_RECORD_PRIVATE_FIELDS,

@@ -6,8 +6,6 @@ import ctypes;
 
 import subprocess;
 
-import sys;
-
 import time;
 
 import from contextlib { ExitStack }

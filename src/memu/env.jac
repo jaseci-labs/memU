@@ -5,7 +5,7 @@ import math;
 import os;
 import from functools { cache }
 import from pathlib { Path }
-import from typing { TYPE_CHECKING, Any, Literal, Optional }
+import from typing { Any, Literal, Optional }
 glob CONFIG_ENV = "~/.memu/config.env";
 
 class ConfigError(RuntimeError) {

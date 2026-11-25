@@ -1,8 +1,7 @@
-import from typing { Type, Optional }
+import from typing { Type, Optional, TypeVar }
 import builtins;
 import uuid;
 import from datetime { datetime }
-import from typing { TypeVar }
 import pendulum;
 import from pydantic { BaseModel, ConfigDict, Field }
 

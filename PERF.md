@@ -24,18 +24,18 @@ in a native space** (see blocker 3).
   repetition and reports medians. CLI: 7 reps. In-process: 5. Test suite: 3. It records wall
   time, and also the child's user+sys CPU time, because the machine is shared.
 - **Load.** The machine has 20 cores and is shared with other users. The 1-minute load average
-  during each batch (min/median/max):
-  - CLI: 10.8/13.4/25.9
-  - in-process: 14.9/24.0/33.9
-  - test suite: 19.9/27.2/46.3
-  - while profiling: 26–60
+  during each batch of the final run (min/median/max):
+  - CLI: 16.6/20.8/42.6
+  - in-process: 12.0/16.8/21.4
+  - test suite: 17.5/22.4/32.7
+  - while profiling and re-measuring: 26–75
 
   CPU time is the steadier number. The wall time of the test suite swings by ±25% between reps.
 - **Three sides:**
   - **orig:** the original Python.
   - **Jac before:** commit `7ac272b`, the rewrite as found plus the one correctness fix it needed
     before its `commit` and `retrieve` could run at all (below).
-  - **Jac after:** this branch, `6625588`.
+  - **Jac after:** this branch, code as of `5e83c58`.
 
   The rewrite exactly as found (`dd817e1`) fails `memu commit` and `memu retrieve` with
   `error: "Unknown embedding profile 'embedding'"`.
@@ -46,19 +46,19 @@ machine's.
 ## Results
 
 Median seconds, wall (CPU in parentheses where the two differ). Lower is better. **Jac/orig**
-compares *Jac after* with *orig*.
+compares *Jac after* with *orig*. All three sides were measured in the same final run.
 
 ### Commands (`memu …`, a fresh process each, SQLite store)
 
 | Workload | orig | Jac before | Jac after | Jac/orig |
 |---|---:|---:|---:|---:|
-| `memu --help` (start-up) | 0.853 | 0.999 | **0.620** | 0.73 |
-| `import memu.app` (library start-up) | 0.828 | 0.998 | **0.573** | 0.69 |
-| `memu commit` (4,360 texts into an empty store) | 6.373 (5.68) | 7.978 (7.32) | 7.325 (6.67) | 1.15 |
-| `memu commit` again (planning, no new vectors) | 2.708 | 2.998 | 2.890 | 1.07 |
-| `memu retrieve` (one query, ~4k segments) | 1.859 | 2.197 | **1.764** | 0.95 |
-| `memu list-files` (330 files) | 1.164 | 1.035 | **0.619** | 0.53 |
-| `memu memorize prepare` (3,000-item session) | 1.187 | 1.206 | **0.740** | 0.62 |
+| `memu --help` (start-up) | 0.961 | 0.991 | **0.593** | 0.62 |
+| `import memu.app` (library start-up) | 0.942 | 0.972 | **0.573** | 0.61 |
+| `memu commit` (4,360 texts into an empty store) | 7.193 (6.33) | 7.804 (6.95) | 7.485 (6.59) | 1.04 |
+| `memu commit` again (planning, no new vectors) | 2.931 | 3.077 | 3.075 | 1.05 |
+| `memu retrieve` (one query, ~4k segments) | 1.998 | 2.196 | **1.883** | 0.94 |
+| `memu list-files` (330 files) | 1.055 | 1.025 | **0.636** | 0.60 |
+| `memu memorize prepare` (3,000-item session) | 1.160 (1.10) | 1.212 (1.18) | **0.805 (0.77)** | 0.69 |
 
 `memu commit` and `memu retrieve` under *Jac before* ran with the validator fix. Without it they
 fail.
@@ -69,30 +69,38 @@ Inside one process, median seconds per phase:
 
 | Phase | orig | Jac before | Jac after | Jac/orig |
 |---|---:|---:|---:|---:|
-| inmemory commit | 0.461 | 1.085 | 0.589 | 1.28 |
-| inmemory re-commit | 0.474 | 0.477 | 0.572 | 1.21 |
-| inmemory 30 retrieves | 1.768 | **14.628** | 1.992 | 1.13 |
-| sqlite commit | 7.531 | 7.244 | 7.708 | 1.02 |
-| sqlite re-commit | 2.749 | 2.562 | 2.768 | 1.01 |
-| sqlite 10 retrieves | 8.218 | 13.018 | 9.736 | 1.18 |
-| whole process | 22.92 (22.17) | 38.85 (38.33) | 24.02 (23.65) | 1.05 |
+| inmemory commit | 0.346 | 0.638 | 0.379 | 1.10 |
+| inmemory re-commit | 0.364 | 0.319 | 0.278 | 0.76 |
+| inmemory 30 retrieves | 1.099 | **10.002** | 1.187 | 1.08 |
+| sqlite commit | 4.784 | 5.001 | 5.452 | 1.14 |
+| sqlite re-commit | 2.280 | 1.876 | 2.208 | 0.97 |
+| sqlite 10 retrieves | 6.200 | 9.678 | 6.589 | 1.06 |
+| whole process | 16.19 (15.55) | 29.23 (28.61) | 17.51 (17.01) | 1.08 |
 
-The phases that take under 0.6 s (inmemory commit and re-commit) differ by about 0.1 s, which is
-within this machine's noise.
+The sub-second phases differ by a few hundredths of a second, which is within this machine's
+noise. The in-process sqlite commit (1.14) is the same code path as `memu commit` above (1.04)
+without the HTTP; its spread between runs on one side was larger than the gap.
 
 ### Test suite (`pytest`, 1,613 collected)
 
 | | orig | Jac before | Jac after | Jac/orig |
 |---|---:|---:|---:|---:|
-| wall | 156.6 | 132.3 | 122.3 | 0.78 |
-| CPU (all processes it waits on) | 55.3 | 60.8 | **49.1** | 0.89 |
+| wall | 129.7 | 123.4 | 117.4 | 0.90 |
+| CPU (all processes it waits on) | 51.4 | 56.0 | **42.9** | 0.83 |
 
 Every side passed the same 1,572 tests, and every side failed the same one,
 `test_events.py::test_a_failed_commit_reports_the_call_and_leaves_the_cycle_to_the_agent`. It
 fails because the harness clears `MEMU_EVENTS_BASE_URL`, and it fails for the original too. The
 harness deselects six tests that fail on this machine for the original as well: the Windows-path
-cases, and the detached-worker tests that time out under load. Through `neojac test`, the full
-suite gives 1,576 passed and the same 4 environmental failures as the original.
+cases, and the detached-worker tests that time out under load. Through `neojac test` on the
+final code, the full suite gives 1,576 passed and the same 4 environmental failures as the
+original.
+
+### The first run
+
+A first full run, on `6625588` (before the `map(float)` change in `resolve`), measured `memu
+commit` at 1.15× wall and 1.17× CPU, and in-process retrieves at 1.13–1.18×. The rest of its
+numbers were in line with the final run.
 
 ## What made the difference
 
@@ -116,7 +124,7 @@ suite gives 1,576 passed and the same 4 environmental failures as the original.
    - The backends parse the same way, and `embed` calls its backend through a typed local.
    - The SDK client returns the SDK's lists untouched, as the original does.
 
-   Commits `d8ffb2e`, `a412b1a`, `f615aeb`. Effect: inmemory retrieve 14.6 s → 2.0 s, sqlite
+   Commits `d8ffb2e`, `a412b1a`, `f615aeb`, and `5e83c58` for the `map(float)` form. Effect (first run): inmemory retrieve 14.6 s → 2.0 s, sqlite
    retrieve 13.0 s → 9.7 s, inmemory commit 1.09 s → 0.59 s, whole-process CPU 38.3 s → 23.7 s.
 2. **Start-up: the OpenAI SDK is imported when a client is built (`fcc8dfb`).** `import openai`
    was about half the start-up of every `memu` entry point, `--help` and `list-files` included.
@@ -146,7 +154,7 @@ suite gives 1,576 passed and the same 4 environmental failures as the original.
 
 ### Where the Jac is still slower, and why
 
-- **`memu commit`: 1.15× wall, 1.17× CPU in the table above; 1.02× CPU after `5e83c58`.**
+- **`memu commit`: 1.04× wall and CPU in the final run (1.15× / 1.17× in the first run, before `5e83c58`).**
   Profiles of the two sides make the same 2.3M SQLAlchemy calls, with the same SQL, the same
   143–147 GC collections and the same heap. The two venvs are not the cause either: the
   original's code ran at the same speed on the Jac venv's interpreter and packages (5
@@ -155,8 +163,9 @@ suite gives 1,576 passed and the same 4 environmental failures as the original.
   work is one typed float pass over the 1.1M embedded floats (`resolve`, to honour
   `list[list[float]]`), plus the `held`/`convert` checks below. `5e83c58` builds that pass with
   `list(map(float, v))`. In a re-measure of 7 alternating runs (load 55–75), commit's median
-  CPU was 11.59 s for the original and 11.87 s for the Jac, a ratio of **1.02**.
-- **In-process retrieve: 1.13–1.18×.** Every value read through an `any` is wrapped in
+  CPU was 11.59 s for the original and 11.87 s for the Jac, a ratio of **1.02**. The final
+  full run gives 1.04.
+- **In-process retrieve: 1.06–1.08× in the final run (1.13–1.18× in the first).** Every value read through an `any` is wrapped in
   `_jac.held` (0.34 µs a call), and every value returned as a typed class goes through
   `_jac.convert` (0.79 µs). Python's attribute read costs 0.05 µs. The SQLite row mapper
   (`_row_to_record` and `_scope_kwargs_from`) does about ten of these per row, which is about
@@ -254,7 +263,7 @@ hot work is numpy's matrix product, C `json` decoding of stored vectors, and SQL
 
 `_jac.held(v)` (boxing for Jac structs and arrays, which memU never uses) wraps every value read
 through an `any`. A typed return of an `any` goes through `_jac.convert`. Together they are the
-remaining 13–18% of in-process retrieve (above). No annotation or setting removes them for code
+remaining 6–8% of in-process retrieve (above). No annotation or setting removes them for code
 that handles Python objects. The only way out would be to move such code back into a `.py` file
 of the space, which this port does not do.
 

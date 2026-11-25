@@ -8,7 +8,7 @@ Ship small, verified feature and bugfix changes while preserving memU's current 
 
 Core invariants:
 
-- `MemoryService` (`src/memu/app/service.py`) is the composition root: config, storage, and the embedding client pool. Its public surface is exactly the three `AgenticMixin` entry points — `list_all_recall_files`, `progressive_retrieve`, `commit_results`.
+- `MemoryService` (`src/memu/app/service.jac`) is the composition root: config, storage, and the embedding client pool. Its public surface is exactly the three `AgenticMixin` entry points — `list_all_recall_files`, `progressive_retrieve`, `commit_results`.
 - memU is embedding-only. No LLM/chat call happens anywhere in the service; do not add one.
 - Storage is pluggable across `inmemory`, `sqlite`, and `postgres`; repository contract changes require backend parity.
 - Scope data comes from `UserConfig.model`; validate `where` filters (`_normalize_where`) and do not bypass scope filtering.
@@ -16,17 +16,19 @@ Core invariants:
 
 ## Layer Map
 
-- Service + three entry points: `src/memu/app/service.py`, `src/memu/app/agentic.py`
-- Config models/defaults: `src/memu/app/settings.py`
-- Storage protocols/factory: `src/memu/database/interfaces.py`, `src/memu/database/factory.py`
+- Service + three entry points: `src/memu/app/service.jac`, `src/memu/app/agentic.jac`
+- Config models/defaults: `src/memu/app/settings.jac`
+- Storage protocols/factory: `src/memu/database/interfaces.jac`, `src/memu/database/factory.jac`
 - Backends: `src/memu/database/{inmemory,sqlite,postgres}/*`
-- Vector math/ranking: `src/memu/vector.py`
+- Vector math/ranking: `src/memu/vector.jac`
 - Embedding clients: `src/memu/embedding/*`
-- CLI (`memu`): `src/memu/cli.py`; shared `MEMU_*` config: `src/memu/env.py`
+- CLI (`memu`): `src/memu/cli.jac`; shared `MEMU_*` config: `src/memu/env.jac`
 - Host adapters (`memu-codex`, bridging pipeline): `src/memu/hosts/*`
 - Tests: `tests/*`
 
 Read the relevant implementation and nearby tests first. Prefer local patterns over new abstractions.
+
+The package is Jac built by neojac (ADR 0026): each module is `<module>.jac` with its bodies in `impl/<module>.impl.jac`, and imports between modules are wires in `archwire.jac`. Check with `neojac check --space memu`; build and run the suite with `neojac test`.
 
 ## Implementation Rules
 

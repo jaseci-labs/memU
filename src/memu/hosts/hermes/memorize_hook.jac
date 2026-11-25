@@ -4,7 +4,6 @@ import contextlib;
 import json;
 import os;
 import shutil;
-import subprocess;
 import sys;
 import traceback;
 import from collections.abc { Iterator }
@@ -32,12 +31,9 @@ def launch(base: Path, session_id: str) -> Path {
     for key in ("PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV", "HERMES_SESSION_ID") {
         env.pop(key, None);
     }
-    subprocess.Popen(
+    worker.spawn_detached(
+        "memu.hosts.hermes.memorize_hook",
         [
-            sys.executable,
-            "-u",
-            "-m",
-            "memu.hosts.hermes.memorize_hook",
             "--base-dir",
             str(base),
             "--agent",
@@ -49,11 +45,6 @@ def launch(base: Path, session_id: str) -> Path {
         ],
         cwd=base,
         env=env,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=sys.platform != "win32",
-        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     );
     return log;
 }

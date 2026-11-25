@@ -6,7 +6,6 @@ import os;
 import shutil;
 import subprocess;
 import sys;
-import traceback;
 import from collections.abc { Iterator }
 import from dataclasses { replace }
 import from pathlib { Path }
@@ -41,10 +40,6 @@ def launch_background(args: argparse.Namespace, event: dict[str, Any]) -> Path {
     layout.base.mkdir(parents=True, exist_ok=True);
     log_path = worker.new_log_path(layout.base).resolve();
     argv = [
-        sys.executable,
-        "-u",
-        "-m",
-        "memu.hosts.pi.memorize_hook",
         "--base-dir",
         str(layout.base.resolve()),
         "--session-dir",
@@ -60,15 +55,8 @@ def launch_background(args: argparse.Namespace, event: dict[str, Any]) -> Path {
             argv.extend([f"--{name}", value]);
         }
     }
-    subprocess.Popen(
-        argv,
-        cwd=layout.base,
-        env=dict(os.environ),
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=sys.platform != "win32",
-        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0,
+    worker.spawn_detached(
+        "memu.hosts.pi.memorize_hook", argv, cwd=layout.base, env=dict(os.environ)
     );
     return log_path;
 }
@@ -126,13 +114,11 @@ def main -> int {
         }
     }
     spec = replace(SPEC, hook=replace(SPEC.hook, agent=hooks.HeadlessAgent(tuple(argv))));
-    code = 1;
-    with Path(args.log_path).open(
-        "a", encoding="utf-8", buffering=1
-    ) as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log) {
-        print(f"=== WORKER pi pid={os.getpid()} ===", flush=True);
-        try {
-            code = run(
+    return worker.run_logged(
+        host="pi",
+        log_path=args.log_path,
+        run=lambda -> int {
+            run(
                 spec,
                 [
                     "hook-run",
@@ -143,16 +129,9 @@ def main -> int {
                     "--agent",
                     args.agent,
                 ],
-            );
-        } except Exception {
-            traceback.print_exc();
-        }
-        if code {
-            print("=== MEMORIZE status=failed ===", flush=True);
-        }
-        print(f"=== FINISHED pi exit={code} ===", flush=True);
-    }
-    return code;
+            )
+        },
+    );
 }
 
 with entry:__main__ {

@@ -3,9 +3,7 @@ import argparse;
 import contextlib;
 import json;
 import os;
-import subprocess;
 import sys;
-import traceback;
 import from collections.abc { Iterator }
 import from pathlib { Path }
 import from typing { Any }
@@ -36,12 +34,9 @@ def launch_background(args: argparse.Namespace) -> Path {
     layout.base.mkdir(parents=True, exist_ok=True);
     log_path = worker.new_log_path(layout.base).resolve();
     env = cli_prepare.standalone_env();
-    subprocess.Popen(
+    worker.spawn_detached(
+        "memu.hosts.claude_code.memorize_hook",
         [
-            sys.executable,
-            "-u",
-            "-m",
-            "memu.hosts.claude_code.memorize_hook",
             "--base-dir",
             str(layout.base.resolve()),
             "--session-dir",
@@ -53,11 +48,6 @@ def launch_background(args: argparse.Namespace) -> Path {
         ],
         cwd=layout.base,
         env=env,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=sys.platform != "win32",
-        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0,
     );
     return log_path;
 }
@@ -98,13 +88,11 @@ def main -> int {
     parser.add_argument("--agent", required=True);
     parser.add_argument("--log-path", required=True);
     args = parser.parse_args();
-    code = 1;
-    with Path(args.log_path).open(
-        "a", encoding="utf-8", buffering=1
-    ) as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log) {
-        print(f"=== WORKER claude-code pid={os.getpid()} ===", flush=True);
-        try {
-            code = claude_main([
+    return worker.run_logged(
+        host="claude-code",
+        log_path=args.log_path,
+        run=lambda -> int {
+            claude_main([
                 "hook-run",
                 "--base-dir",
                 args.base_dir,
@@ -112,16 +100,9 @@ def main -> int {
                 args.session_dir,
                 "--agent",
                 args.agent,
-            ]);
-        } except Exception {
-            traceback.print_exc();
-        }
-        if code {
-            print("=== MEMORIZE status=failed ===", flush=True);
-        }
-        print(f"=== FINISHED claude-code exit={code} ===", flush=True);
-    }
-    return code;
+            ])
+        },
+    );
 }
 
 with entry:__main__ {

@@ -5,12 +5,45 @@ import signal;
 import subprocess;
 import sys;
 import tempfile;
+import traceback;
 import threading;
 import time;
 import from collections.abc { Callable }
 import from datetime { datetime }
 import from pathlib { Path }
 import from typing { TextIO }
+
+def run_logged(host: str, log_path: str, run: Callable[[], int]) -> int {
+    code = 1;
+    with Path(log_path).open("a", encoding="utf-8", buffering=1) as log, contextlib.redirect_stdout(
+        log
+    ), contextlib.redirect_stderr(log) {
+        print(f"=== WORKER {host} pid={os.getpid()} ===", flush=True);
+        try {
+            code = run();
+        } except Exception {
+            traceback.print_exc();
+        }
+        if code {
+            print("=== MEMORIZE status=failed ===", flush=True);
+        }
+        print(f"=== FINISHED {host} exit={code} ===", flush=True);
+    }
+    return code;
+}
+
+def spawn_detached(module: str, args: list[str], *, cwd: Path, env: any) {
+    subprocess.Popen(
+        [sys.executable, "-u", "-m", module, *args],
+        cwd=cwd,
+        env=env,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=sys.platform != "win32",
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0,
+    );
+}
 
 def new_log_path(base: Path, hook: str = "memorize") -> Path {
     directory = base / "log" / "hooks" / hook;

@@ -26,8 +26,9 @@ impl build_embedding_client(cfg: EmbeddingConfig) -> Any {
     builder = EMBEDDING_CLIENT_BUILDERS.get(cfg.client_backend);
     if builder is None {
         available = ", ".join(sorted(EMBEDDING_CLIENT_BUILDERS));
-        msg = f"Unknown embedding client_backend '{cfg.client_backend}'. Available: {available}";
-        raise ValueError(msg);
+        raise ValueError(
+            f"Unknown embedding client_backend '{cfg.client_backend}'. Available: {available}"
+        );
     }
     return builder(cfg);
 }

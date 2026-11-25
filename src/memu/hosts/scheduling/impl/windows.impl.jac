@@ -1,8 +1,7 @@
 impl _invocation_args(schedule_command: str) -> list[str] {
     tokens = schedule_command.split();
     if not tokens {
-        msg = "schedule_command is empty";
-        raise ValueError(msg);
+        raise ValueError("schedule_command is empty");
     }
     return tokens[1:];
 }
@@ -67,8 +66,7 @@ impl status_script(task_name: str) -> str {
 
 impl _require_windows {
     if platform.system() != "Windows" {
-        msg = "the Windows Task Scheduler backend is only usable on Windows";
-        raise RuntimeError(msg);
+        raise RuntimeError("the Windows Task Scheduler backend is only usable on Windows");
     }
 }
 

@@ -18,13 +18,8 @@ glob _RETRIEVAL_CONFIG_COMMENTS = """# Host retrieval score cutoffs (docs/retrie
 # MEMU_LOCAL_RETRIEVE_MIN_SCORE_EXTRACTED=<your-calibrated-score>
 # Values: finite [-1, 1]; score >= cutoff survives; -1 retains all valid cosine scores.
 """,
-     IDENTITY_KEYS = ("MEMU_DB", "MEMU_EMBED_PROVIDER", "MEMU_EMBED_MODEL");
-
-with entry {}
-
-glob REFUSED = 2;
-
-with entry {}
+     IDENTITY_KEYS = ("MEMU_DB", "MEMU_EMBED_PROVIDER", "MEMU_EMBED_MODEL"),
+     REFUSED = 2;
 
 def _row(label: str, value: str);
 def _declared_mode(values: dict[str, str]) -> str;

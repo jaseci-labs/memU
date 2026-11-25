@@ -12,11 +12,8 @@ import from pathlib { Path }
 import from typing { Any }
 glob BEGIN_TEMPLATE = "<!-- memu:begin — managed block, do not edit ({binary} install-instruction) -->",
      END = "<!-- memu:end -->",
-     SKILL_NAME = "memu-retrieve";
-
-with entry {}
-
-glob RETRIEVAL_BODY = """Run `{binary} retrieve "<query>"` — where <query> is the user's request, reworded
+     SKILL_NAME = "memu-retrieve",
+     RETRIEVAL_BODY = """Run `{binary} retrieve "<query>"` — where <query> is the user's request, reworded
 into a clearer query or focused keywords when that retrieves better (you need not
 pass their raw words verbatim). Use any relevant results as context. If it returns
 nothing, proceed normally.

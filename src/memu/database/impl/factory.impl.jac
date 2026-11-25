@@ -11,7 +11,6 @@ impl build_database(*, config: DatabaseConfig, user_model: Type[BaseModel]) -> D
         ).build_sqlite_database;
         return build_sqlite_database(config=config, user_model=user_model);
     } else {
-        msg = f"Unsupported metadata_store provider: {provider}";
-        raise ValueError(msg);
+        raise ValueError(f"Unsupported metadata_store provider: {provider}");
     }
 }

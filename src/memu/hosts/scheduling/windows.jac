@@ -5,11 +5,8 @@ import subprocess;
 import sys;
 import from pathlib { Path }
 import from typing { TYPE_CHECKING }
-glob TASK_PATH = "\\memU\\";
-
-with entry {}
-
-glob DEFAULT_INTERVAL_MINUTES = 60,
+glob TASK_PATH = "\\memU\\",
+     DEFAULT_INTERVAL_MINUTES = 60,
      WRAPPER_NAME = "memu-bridge.ps1",
      PROMPT_NAME = "bridge-prompt.txt",
      LOG_NAME = "bridge.log";

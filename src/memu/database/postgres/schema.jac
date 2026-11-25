@@ -13,22 +13,19 @@ with entry {
         import from sqlmodel { SQLModel as SQLModel_ }
         SQLModel = SQLModel_;
     } except ImportError as exc {
-        msg = "sqlmodel is required for Postgres storage support";
-        raise ImportError(msg) from exc;
+        raise ImportError("sqlmodel is required for Postgres storage support") from exc;
     }
     try {
         import from sqlalchemy { MetaData as MetaData_ }
         MetaData = MetaData_;
     } except ImportError as exc {
-        msg = "sqlalchemy is required for Postgres storage support";
-        raise ImportError(msg) from exc;
+        raise ImportError("sqlalchemy is required for Postgres storage support") from exc;
     }
     try {
         import from pgvector.sqlalchemy { VECTOR as Vector_ }
         Vector = Vector_;
     } except ImportError as exc {
-        msg = "pgvector is required for Postgres vector support";
-        raise ImportError(msg) from exc;
+        raise ImportError("pgvector is required for Postgres vector support") from exc;
     }
 }
 

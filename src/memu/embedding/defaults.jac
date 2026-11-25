@@ -1,8 +1,6 @@
-glob EMBEDDING_PROVIDER_DEFAULTS: dict[str, str];
-
-glob EMBEDDING_PROVIDER_ENDPOINTS: dict[str, tuple[str, str]];
-
-glob EMBEDDING_SDK_BASE_URLS: dict[str, str];
+glob EMBEDDING_PROVIDER_DEFAULTS: dict[str, str],
+     EMBEDDING_PROVIDER_ENDPOINTS: dict[str, tuple[str, str]],
+     EMBEDDING_SDK_BASE_URLS: dict[str, str];
 
 with entry {
     EMBEDDING_PROVIDER_DEFAULTS = {

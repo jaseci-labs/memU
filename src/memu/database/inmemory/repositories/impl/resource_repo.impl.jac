@@ -65,8 +65,7 @@ impl InMemoryResourceRepository.update_resource(
 ) -> Resource {
     res = self.resources.get(resource_id);
     if res is None {
-        msg = f"Resource with id {resource_id} not found";
-        raise KeyError(msg);
+        raise KeyError(f"Resource with id {resource_id} not found");
     }
     res.local_path = local_path;
     res.caption = caption;

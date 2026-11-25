@@ -3,8 +3,7 @@ impl PreparedMemorizeRun.init(
 ) {
     transcripts = [transcript] if isinstance(transcript, MaterializedConversation) else transcript;
     if not transcripts {
-        msg = "at least one transcript is required";
-        raise ValueError(msg);
+        raise ValueError("at least one transcript is required");
     }
     builtins.object.__setattr__(self, "transcripts", transcripts);
     builtins.object.__setattr__(self, "jobs", jobs);
@@ -42,12 +41,10 @@ impl prepare_memorize(
         if isinstance(memorize_input, MemorizeInput)
         else memorize_input;
     if not memorize_inputs {
-        msg = "at least one memorize input is required";
-        raise ValueError(msg);
+        raise ValueError("at least one memorize input is required");
     }
     if workspace.active_run.exists() {
-        msg = "memorize workspace already has an active run";
-        raise RuntimeError(msg);
+        raise RuntimeError("memorize workspace already has an active run");
     }
     workspace.base.mkdir(parents=True, exist_ok=True);
     transcripts = materialize_memorize_inputs(memorize_inputs, workspace.input);
@@ -84,13 +81,13 @@ impl prepare_memorize(
 
 impl commit_memorize(workspace: MemorizeWorkspace, backend: any) -> dict[str, Any] {
     if not workspace.active_run.is_file() {
-        msg = "memorize workspace has no active run";
-        raise RuntimeError(msg);
+        raise RuntimeError("memorize workspace has no active run");
     }
     marker = json.loads(workspace.active_run.read_text(encoding="utf-8"));
     if marker.get("status") == "committed" {
-        msg = "memorize run already committed; do not resubmit; discard the stopped run";
-        raise RuntimeError(msg);
+        raise RuntimeError(
+            "memorize run already committed; do not resubmit; discard the stopped run"
+        );
     }
     subdir_track = {subdir: track for (track, subdir) in TRACK_DIRS.items()};
     changed = diff_tracked(workspace.base, workspace.track_dirs, workspace.manifest);
@@ -104,8 +101,9 @@ impl commit_memorize(workspace: MemorizeWorkspace, backend: any) -> dict[str, An
     try {
         _atomic_write_text(workspace.active_run, json.dumps(marker, separators=(",", ":")) + "\n");
     } except OSError as exc {
-        msg = f"memorize run committed, but could not persist its committed status at {workspace.base}: {exc}; do not resubmit; discard the stopped run";
-        raise RuntimeError(msg) from exc;
+        raise RuntimeError(
+            f"memorize run committed, but could not persist its committed status at {workspace.base}: {exc}; do not resubmit; discard the stopped run",
+        ) from exc;
     }
     try {
         for (path, recall_file) in builtins.zip(changed, recall_files, strict=True) {
@@ -122,8 +120,9 @@ impl commit_memorize(workspace: MemorizeWorkspace, backend: any) -> dict[str, An
         workspace.resources.unlink(missing_ok=True);
         workspace.active_run.unlink();
     } except OSError as exc {
-        msg = f"memorize run committed, but cleanup failed at {workspace.base}: {exc}; do not resubmit; discard the stopped run";
-        raise RuntimeError(msg) from exc;
+        raise RuntimeError(
+            f"memorize run committed, but cleanup failed at {workspace.base}: {exc}; do not resubmit; discard the stopped run",
+        ) from exc;
     }
     return result;
 }

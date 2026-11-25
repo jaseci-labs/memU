@@ -2,9 +2,8 @@ import builtins;
 
 import from contextvars { ContextVar }
 
-glob LANGUAGE: ContextVar[builtins.str];
-
-glob _EN: any;
+glob LANGUAGE: ContextVar[builtins.str],
+     _EN: any;
 
 with entry {
     LANGUAGE = ContextVar("host_install_language", default="en");

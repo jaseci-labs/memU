@@ -126,17 +126,14 @@ impl _memorize_workspace(run_id: str | None = None) -> MemorizeWorkspace {
         return MemorizeWorkspace(pathlib.Path(tempfile.mkdtemp(prefix="run-", dir=`root)));
     }
     if not re.fullmatch("run-[a-z0-9_]{1,64}", run_id) {
-        msg = "invalid memorize run id";
-        raise ValueError(msg);
+        raise ValueError("invalid memorize run id");
     }
     path = `root / run_id;
     if path.is_symlink() or path.resolve() != path {
-        msg = "memorize run must be a directory directly below the runs root";
-        raise ValueError(msg);
+        raise ValueError("memorize run must be a directory directly below the runs root");
     }
     if not path.is_dir() {
-        msg = f"no such memorize run: {run_id}";
-        raise FileNotFoundError(msg);
+        raise FileNotFoundError(f"no such memorize run: {run_id}");
     }
     return MemorizeWorkspace(path);
 }
@@ -156,8 +153,7 @@ impl _read_memorize_input(payload: str) -> MemorizeInput {
     } else {
         path = pathlib.Path(payload).expanduser();
         if not path.exists() {
-            msg = f"no such file: {path}";
-            raise FileNotFoundError(msg);
+            raise FileNotFoundError(f"no such file: {path}");
         }
         data = json.loads(path.read_text(encoding="utf-8"));
     }
@@ -229,8 +225,9 @@ impl _cmd_memorize_commit(args: argparse.Namespace) -> int {
     try {
         shutil.rmtree(workspace.base);
     } except OSError as exc {
-        msg = f"run {args.run_id} committed, but cleanup failed; use memu memorize discard {args.run_id}: {exc}";
-        raise RuntimeError(msg) from exc;
+        raise RuntimeError(
+            f"run {args.run_id} committed, but cleanup failed; use memu memorize discard {args.run_id}: {exc}",
+        ) from exc;
     }
     if args.json {
         _print_json(result);
@@ -248,8 +245,7 @@ impl _cmd_memorize_commit(args: argparse.Namespace) -> int {
 impl _cmd_memorize_verify_resources(args: argparse.Namespace) -> int {
     workspace = _memorize_workspace(args.run_id);
     if not workspace.active_run.is_file() {
-        msg = "memorize workspace has no active run";
-        raise RuntimeError(msg);
+        raise RuntimeError("memorize workspace has no active run");
     }
     kept = verify_resource_log(workspace.resource_log, workspace.resources);
     print(f"verified {kept} resource(s)");

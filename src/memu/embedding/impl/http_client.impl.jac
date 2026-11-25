@@ -129,8 +129,9 @@ impl HTTPEmbeddingClient.embed_multimodal(
     encoding_format: str = "float",
 ) -> list[list[float]] {
     if not isinstance(self.backend, DoubaoEmbeddingBackend) {
-        msg = f"Multimodal embedding is only supported by 'doubao' provider, but current provider is '{self.provider}'";
-        raise TypeError(msg);
+        raise TypeError(
+            f"Multimodal embedding is only supported by 'doubao' provider, but current provider is '{self.provider}'",
+        );
     }
     multimodal_inputs = [
         DoubaoMultimodalEmbeddingInput(input_type=input_type, content=content)

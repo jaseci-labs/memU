@@ -4,17 +4,9 @@ import platform;
 import sys;
 import from typing { Any, Optional }
 glob HOST = "claude-code",
-     CLAUDE_MD = "~/.claude/CLAUDE.md";
-
-with entry {}
-
-glob SKILLS_DIR = "~/.claude/skills";
-
-with entry {}
-
-glob SESSION_ID_ENV = "CLAUDE_CODE_SESSION_ID";
-
-with entry {}
+     CLAUDE_MD = "~/.claude/CLAUDE.md",
+     SKILLS_DIR = "~/.claude/skills",
+     SESSION_ID_ENV = "CLAUDE_CODE_SESSION_ID";
 
 async def _cmd_legacy_schedule(args: argparse.Namespace) -> int;
 def _register_extra(sub: Any);

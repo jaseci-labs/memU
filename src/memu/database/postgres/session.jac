@@ -4,22 +4,17 @@ import logging;
 
 import from typing { Any, Optional }
 
-glob msg: any;
-
-glob Session: any;
-
-glob create_engine: any;
-
-glob logger: any;
-
-glob __all__: any;
+glob msg: any,
+     Session: any,
+     create_engine: any,
+     logger: any,
+     __all__: any;
 
 with entry {
     try {
         import from sqlmodel { Session, create_engine }
     } except ImportError as exc {
-        msg = "sqlmodel is required for Postgres storage support";
-        raise ImportError(msg) from exc;
+        raise ImportError("sqlmodel is required for Postgres storage support") from exc;
     }
 
     logger = logging.getLogger(__name__);

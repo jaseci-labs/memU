@@ -32,8 +32,7 @@ impl AtomicSessionManager.session -> Session | _BorrowedSession {
 
 impl AtomicSessionManager.atomic -> Iterator[None] {
     if self._active.get() is not None {
-        msg = "Nested memU write transactions are not supported";
-        raise RuntimeError(msg);
+        raise RuntimeError("Nested memU write transactions are not supported");
     }
     with Session(self._engine, expire_on_commit=False) as session {
         session.execute(text("BEGIN IMMEDIATE"));
@@ -52,8 +51,7 @@ impl AtomicSessionManager.atomic -> Iterator[None] {
 
 impl AtomicSessionManager.snapshot -> Iterator[None] {
     if self._active.get() is not None {
-        msg = "Nested memU read transactions are not supported";
-        raise RuntimeError(msg);
+        raise RuntimeError("Nested memU read transactions are not supported");
     }
     with Session(self._engine, expire_on_commit=False) as session {
         session.execute(text("BEGIN"));

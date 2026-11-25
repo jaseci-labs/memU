@@ -14,132 +14,60 @@ import from collections.abc { Iterable }
 import from datetime { UTC, datetime }
 import from pathlib { Path }
 import from typing { Any, Optional }
-glob DEFAULT_EVENTS_URL = "https://api.memu.so/api/memu/analytics/events";
-
-with entry {}
-
-glob MEMORY_SEARCH_SUCCEEDED = "memory_search_succeeded",
-     MEMORY_SEARCH_FAILED = "memory_search_failed";
-
-with entry {}
-
-glob MEMORY_LIST_SUCCEEDED = "memory_list_succeeded",
-     MEMORY_LIST_FAILED = "memory_list_failed";
-
-with entry {}
-
-glob MEMORY_COMMIT_SUCCEEDED = "memory_commit_succeeded",
-     MEMORY_COMMIT_FAILED = "memory_commit_failed";
-
-with entry {}
-
-glob MEMORY_UPDATE_STARTED = "memory_update_started",
+glob DEFAULT_EVENTS_URL = "https://api.memu.so/api/memu/analytics/events",
+     MEMORY_SEARCH_SUCCEEDED = "memory_search_succeeded",
+     MEMORY_SEARCH_FAILED = "memory_search_failed",
+     MEMORY_LIST_SUCCEEDED = "memory_list_succeeded",
+     MEMORY_LIST_FAILED = "memory_list_failed",
+     MEMORY_COMMIT_SUCCEEDED = "memory_commit_succeeded",
+     MEMORY_COMMIT_FAILED = "memory_commit_failed",
+     MEMORY_UPDATE_STARTED = "memory_update_started",
      MEMORY_UPDATE_SUCCEEDED = "memory_update_succeeded",
-     MEMORY_UPDATE_FAILED = "memory_update_failed";
-
-with entry {}
-
-glob CLI_INSTALL_STARTED = "cli_install_started";
-
-with entry {}
-
-glob INSTALL_GUIDE_OPENED = "install_guide_opened";
-
-with entry {}
-
-glob CLI_INSTALL_SUCCEEDED = "cli_install_succeeded";
-
-with entry {}
-
-glob CLI_INSTALL_FAILED = "cli_install_failed",
-     UNINSTALL_GUIDE_OPENED = "uninstall_guide_opened";
-
-with entry {}
-
-glob CLI_UNINSTALL_SUCCEEDED = "cli_uninstall_succeeded",
-     CLI_UNINSTALL_FAILED = "cli_uninstall_failed";
-
-with entry {}
-
-glob AGENT_ERROR_REPORTED = "agent_error_reported";
-
-with entry {}
-
-glob CLI_ERROR = "cli_error";
-
-with entry {}
-
-glob CLI_EVENTS_DROPPED = "cli_events_dropped";
-
-with entry {}
-
-glob CLIENT_TYPE = "memu_cli",
-     SPOOL_PATH = "~/.memu/events.jsonl";
-
-with entry {}
-
-glob MAX_SPOOL_BYTES = 1024 * 1024;
-
-with entry {}
-
-glob MAX_FLUSH_POSTS = 200;
-
-with entry {}
-
-glob MAX_DETAIL_CHARS = 5000;
-
-with entry {}
-
-glob MAX_FRAMES = 20;
-
-with entry {}
-
-glob ERROR_DEDUP_SECONDS = 3600.0;
-
-with entry {}
-
-glob MAX_LEDGER_ENTRIES = 200;
-
-with entry {}
-
-glob _TIMEOUT_SECONDS = 5.0,
-     STAGES: tuple[str, ...] = ("install", "uninstall", "remember", "retrieve", "other");
-
-with entry {}
-
-glob _READ_COUNTS = frozenset({"result_count", "latency_ms"});
-
-with entry {}
-
-glob _WRITE_COUNTS = frozenset({"recall_file_count", "resource_count", "session_count"});
-
-with entry {}
-
-glob _ALLOWED_PROPERTIES: dict[str, frozenset[str]] = {
-    MEMORY_SEARCH_SUCCEEDED: _READ_COUNTS,
-    MEMORY_SEARCH_FAILED: _READ_COUNTS,
-    MEMORY_LIST_SUCCEEDED: _READ_COUNTS,
-    MEMORY_LIST_FAILED: _READ_COUNTS,
-    MEMORY_COMMIT_SUCCEEDED: _WRITE_COUNTS | {"latency_ms"},
-    MEMORY_COMMIT_FAILED: _WRITE_COUNTS | {"latency_ms"},
-    MEMORY_UPDATE_SUCCEEDED: _WRITE_COUNTS | {"duration_ms"},
-    MEMORY_UPDATE_STARTED: frozenset(),
-    MEMORY_UPDATE_FAILED: frozenset(),
-    CLI_INSTALL_STARTED: frozenset(),
-    INSTALL_GUIDE_OPENED: frozenset(),
-    CLI_INSTALL_SUCCEEDED: frozenset(),
-    CLI_INSTALL_FAILED: frozenset(),
-    UNINSTALL_GUIDE_OPENED: frozenset(),
-    CLI_UNINSTALL_SUCCEEDED: frozenset(),
-    CLI_UNINSTALL_FAILED: frozenset(),
-    AGENT_ERROR_REPORTED: frozenset({"stage", "detail"}),
-    CLI_ERROR: frozenset({"command", "error_type", "frames", "frames_truncated"}),
-    CLI_EVENTS_DROPPED: frozenset({"dropped_count"}),
-};
-
-with entry {}
-
-glob REPORTED_BY_CODE = "code",
+     MEMORY_UPDATE_FAILED = "memory_update_failed",
+     CLI_INSTALL_STARTED = "cli_install_started",
+     INSTALL_GUIDE_OPENED = "install_guide_opened",
+     CLI_INSTALL_SUCCEEDED = "cli_install_succeeded",
+     CLI_INSTALL_FAILED = "cli_install_failed",
+     UNINSTALL_GUIDE_OPENED = "uninstall_guide_opened",
+     CLI_UNINSTALL_SUCCEEDED = "cli_uninstall_succeeded",
+     CLI_UNINSTALL_FAILED = "cli_uninstall_failed",
+     AGENT_ERROR_REPORTED = "agent_error_reported",
+     CLI_ERROR = "cli_error",
+     CLI_EVENTS_DROPPED = "cli_events_dropped",
+     CLIENT_TYPE = "memu_cli",
+     SPOOL_PATH = "~/.memu/events.jsonl",
+     MAX_SPOOL_BYTES = 1024 * 1024,
+     MAX_FLUSH_POSTS = 200,
+     MAX_DETAIL_CHARS = 5000,
+     MAX_FRAMES = 20,
+     ERROR_DEDUP_SECONDS = 3600.0,
+     MAX_LEDGER_ENTRIES = 200,
+     _TIMEOUT_SECONDS = 5.0,
+     STAGES: tuple[str, ...] = ("install", "uninstall", "remember", "retrieve", "other"),
+     _READ_COUNTS = frozenset({"result_count", "latency_ms"}),
+     _WRITE_COUNTS = frozenset({"recall_file_count", "resource_count", "session_count"}),
+     _ALLOWED_PROPERTIES: dict[str, frozenset[str]] = {
+         MEMORY_SEARCH_SUCCEEDED: _READ_COUNTS,
+         MEMORY_SEARCH_FAILED: _READ_COUNTS,
+         MEMORY_LIST_SUCCEEDED: _READ_COUNTS,
+         MEMORY_LIST_FAILED: _READ_COUNTS,
+         MEMORY_COMMIT_SUCCEEDED: _WRITE_COUNTS | {"latency_ms"},
+         MEMORY_COMMIT_FAILED: _WRITE_COUNTS | {"latency_ms"},
+         MEMORY_UPDATE_SUCCEEDED: _WRITE_COUNTS | {"duration_ms"},
+         MEMORY_UPDATE_STARTED: frozenset(),
+         MEMORY_UPDATE_FAILED: frozenset(),
+         CLI_INSTALL_STARTED: frozenset(),
+         INSTALL_GUIDE_OPENED: frozenset(),
+         CLI_INSTALL_SUCCEEDED: frozenset(),
+         CLI_INSTALL_FAILED: frozenset(),
+         UNINSTALL_GUIDE_OPENED: frozenset(),
+         CLI_UNINSTALL_SUCCEEDED: frozenset(),
+         CLI_UNINSTALL_FAILED: frozenset(),
+         AGENT_ERROR_REPORTED: frozenset({"stage", "detail"}),
+         CLI_ERROR: frozenset({"command", "error_type", "frames", "frames_truncated"}),
+         CLI_EVENTS_DROPPED: frozenset({"dropped_count"}),
+     },
+     REPORTED_BY_CODE = "code",
      REPORTED_BY_AGENT = "agent",
      _AGENT_REPORTED: frozenset[str] = frozenset({
          CLI_INSTALL_SUCCEEDED,
@@ -148,21 +76,13 @@ glob REPORTED_BY_CODE = "code",
          CLI_UNINSTALL_FAILED,
          MEMORY_UPDATE_FAILED,
          AGENT_ERROR_REPORTED,
-     });
-
-with entry {}
-
-glob STAGE_FAILURE_EVENTS: dict[str, str] = {
-    "install": CLI_INSTALL_FAILED,
-    "uninstall": CLI_UNINSTALL_FAILED,
-    "remember": MEMORY_UPDATE_FAILED,
-};
-
-with entry {}
-
-glob AGENT_PLATFORMS: dict[str, str] = {"claude-code": "claude_code"};
-
-with entry {}
+     }),
+     STAGE_FAILURE_EVENTS: dict[str, str] = {
+         "install": CLI_INSTALL_FAILED,
+         "uninstall": CLI_UNINSTALL_FAILED,
+         "remember": MEMORY_UPDATE_FAILED,
+     },
+     AGENT_PLATFORMS: dict[str, str] = {"claude-code": "claude_code"};
 
 def _off(value: str | None) -> bool;
 def _on(value: str | None) -> bool;

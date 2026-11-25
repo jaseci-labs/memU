@@ -3,8 +3,7 @@ impl build_postgres_database(
 ) -> PostgresStore {
     dsn = config.metadata_store.dsn;
     if not dsn {
-        msg = "Postgres metadata_store requires a DSN";
-        raise ValueError(msg);
+        raise ValueError("Postgres metadata_store requires a DSN");
     }
     vector_provider = config.vector_index.provider if config.vector_index else None;
     sqla_models: SQLAModels = get_sqlalchemy_models(scope_model=user_model);

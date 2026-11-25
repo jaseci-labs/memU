@@ -3,35 +3,26 @@ import importlib;
 import argparse;
 import sys;
 glob HOST = "codex",
-     VERIFY_COMMAND = "memu-codex verify-resources";
-
-with entry {}
-
-glob AGENTS_MD = "~/.codex/AGENTS.md";
-
-with entry {}
-
-glob SKILLS_DIR = "~/.codex/skills";
-
-with entry {}
-
-glob HOOK = hooks.HookSpec(
-    agent=hooks.HeadlessAgent(
-        argv=(
-            "codex",
-            "exec",
-            "-c",
-            "notify=[]",
-            "--json",
-            "--skip-git-repo-check",
-            "--dangerously-bypass-approvals-and-sandbox",
-            "-C",
-            "{base}",
-            "-",
-        ),
-    ),
-    stream_output=notify_console.stream_agent,
-);
+     VERIFY_COMMAND = "memu-codex verify-resources",
+     AGENTS_MD = "~/.codex/AGENTS.md",
+     SKILLS_DIR = "~/.codex/skills",
+     HOOK = hooks.HookSpec(
+         agent=hooks.HeadlessAgent(
+             argv=(
+                 "codex",
+                 "exec",
+                 "-c",
+                 "notify=[]",
+                 "--json",
+                 "--skip-git-repo-check",
+                 "--dangerously-bypass-approvals-and-sandbox",
+                 "-C",
+                 "{base}",
+                 "-",
+             ),
+         ),
+         stream_output=notify_console.stream_agent,
+     );
 def _register_extra(sub: object);
 glob SPEC: any;
 

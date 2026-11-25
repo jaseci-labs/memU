@@ -24,11 +24,8 @@ with entry {
     prepare = importlib.import_module("memu.hosts.bridging").prepare;
 }
 
-glob ScheduleBackend = Literal["os", "native", "external", "hook"];
-
-with entry {}
-
-glob DOCS = {"install": "INSTALL.md", "task": "BRIDGING_TASK.md", "uninstall": "UNINSTALL.md"},
+glob ScheduleBackend = Literal["os", "native", "external", "hook"],
+     DOCS = {"install": "INSTALL.md", "task": "BRIDGING_TASK.md", "uninstall": "UNINSTALL.md"},
      _TASK_NAME_RE = re.compile("memu-bridging-[a-z0-9]+(?:-[a-z0-9]+)*\\Z"),
      _DOC_TOKEN_RE = re.compile("\\{\\{([a-z_]+)\\}\\}"),
      _DOC_TOKENS = frozenset({
@@ -44,8 +41,6 @@ glob GUIDE_EVENTS = {
     "install": events.INSTALL_GUIDE_OPENED,
     "uninstall": events.UNINSTALL_GUIDE_OPENED,
 };
-
-with entry {}
 
 def _check_host_spec(spec: any);
 
@@ -110,15 +105,12 @@ class HostSpec {
     def render_doc(text: str) -> str;
 }
 
-
 def _layout(spec: HostSpec, args: argparse.Namespace) -> Layout;
 def _refresh_retrieval(spec: HostSpec);
 async def _cmd_prepare(spec: HostSpec, args: argparse.Namespace) -> int;
 async def _cmd_commit(spec: HostSpec, args: argparse.Namespace) -> int;
 def _pending_session_count(layout: Layout) -> int;
 glob MAX_CYCLE_SECONDS = 24 * 60 * 60;
-
-with entry {}
 
 def _elapsed_ms(started: float) -> int;
 def _mark_cycle_start(spec: HostSpec, layout: Layout);

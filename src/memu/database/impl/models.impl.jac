@@ -3,8 +3,7 @@ impl merge_scope_model(
 ) -> Type[TBaseRecord] {
     overlap = set(user_model.model_fields) & set(core_model.model_fields);
     if overlap {
-        msg = f"Scope fields conflict with core model fields: {sorted(overlap)}";
-        raise TypeError(msg);
+        raise TypeError(f"Scope fields conflict with core model fields: {sorted(overlap)}");
     }
     return builtins.type(
         f"{user_model.__name__}{core_model.__name__}{name_suffix}",

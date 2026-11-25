@@ -8,20 +8,16 @@ impl _task_name_pattern(names: tuple[str, ...]) -> str {
 
 impl _check_host_spec(spec: any) {
     if not _TASK_NAME_RE.fullmatch(spec.task_name) {
-        msg = f"invalid task_name: {spec.task_name!r}";
-        raise ValueError(msg);
+        raise ValueError(f"invalid task_name: {spec.task_name!r}");
     }
     if spec.task_name in spec.former_task_names {
-        msg = "task_name must not also appear in former_task_names";
-        raise ValueError(msg);
+        raise ValueError("task_name must not also appear in former_task_names");
     }
     if len(set(spec.former_task_names)) != len(spec.former_task_names) {
-        msg = "former_task_names must not contain duplicates";
-        raise ValueError(msg);
+        raise ValueError("former_task_names must not contain duplicates");
     }
     if any((not name.strip() for name in spec.former_task_names)) {
-        msg = "former_task_names must not contain empty names";
-        raise ValueError(msg);
+        raise ValueError("former_task_names must not contain empty names");
     }
 }
 
@@ -35,13 +31,11 @@ impl HostSpec.render_doc(text: str) -> str {
     };
     unknown = {str(token) for token in _DOC_TOKEN_RE.findall(text)} - _DOC_TOKENS;
     if unknown {
-        msg = f"unknown host-doc token(s): {', '.join(sorted(unknown))}";
-        raise ValueError(msg);
+        raise ValueError(f"unknown host-doc token(s): {', '.join(sorted(unknown))}");
     }
     rendered = _DOC_TOKEN_RE.sub(lambda (`match: any) -> any { values[`match.group(1)] }, text);
     if "{{" in rendered or "}}" in rendered {
-        msg = "unresolved host-doc token";
-        raise ValueError(msg);
+        raise ValueError("unresolved host-doc token");
     }
     return rendered;
 }

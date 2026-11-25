@@ -6,11 +6,8 @@ import time;
 import urllib.request;
 import from collections.abc { Iterable }
 import from pathlib { Path }
-glob DEFAULT_BASE_URL = "https://memu.pro/sdk/instructions";
-
-with entry {}
-
-glob MEMORY_JOB = "memory-job",
+glob DEFAULT_BASE_URL = "https://memu.pro/sdk/instructions",
+     MEMORY_JOB = "memory-job",
      SKILL_JOB = "skill-job",
      RESOURCE_JOB = "resource-job",
      RETRIEVAL_SKILL = "retrieval-skill",
@@ -33,8 +30,6 @@ def _read_cache(path: Path, name: str) -> str | None;
 def _refresh_due(attempt_path: Path, now: float) -> bool;
 def resolve(name: str, embedded: str) -> str;
 glob DEFAULT_DOCS_BASE_URL = "https://memu.pro/sdk/docs";
-
-with entry {}
 
 def _docs_base_url -> str | None;
 def _docs_cache_dir(host: str) -> Path;

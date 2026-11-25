@@ -190,8 +190,7 @@ impl SQLiteRecallFileRepo.update_recall_file(
         );
         row = session.exec(stmt).first();
         if row is None {
-            msg = f"RecallFile with id {recall_file_id} not found";
-            raise KeyError(msg);
+            raise KeyError(f"RecallFile with id {recall_file_id} not found");
         }
         if name is not None {
             row.name = name;

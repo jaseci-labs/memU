@@ -13,8 +13,7 @@ impl DoubaoMultimodalEmbeddingInput.to_dict -> dict[str, Any] {
     } elif self.input_type == "video_url" {
         return {"type": "video_url", "video_url": {"url": self.content}};
     } else {
-        msg = f"Unsupported input type: {self.input_type}";
-        raise ValueError(msg);
+        raise ValueError(f"Unsupported input type: {self.input_type}");
     }
 }
 

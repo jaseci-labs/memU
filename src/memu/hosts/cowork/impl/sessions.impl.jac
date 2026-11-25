@@ -29,8 +29,7 @@ impl _override_roots(value: str) -> list[Path] {
         }
     }
     if missing {
-        msg = f"{_ROOTS_ENV} entries are not directories: {', '.join(missing)}";
-        raise ValueError(msg);
+        raise ValueError(f"{_ROOTS_ENV} entries are not directories: {', '.join(missing)}");
     }
     return roots;
 }

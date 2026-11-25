@@ -1,7 +1,6 @@
 impl MemorizeInput.require_message -> Self {
     if not any((isinstance(item, MessageInput) for item in self.items)) {
-        msg = "memorize input must contain at least one message";
-        raise ValueError(msg);
+        raise ValueError("memorize input must contain at least one message");
     }
     return self;
 }

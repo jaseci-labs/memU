@@ -40,8 +40,7 @@ impl MemoryService._normalize_where(where: Mapping[str, Any] | None) -> dict[str
         }
         field = raw_key.split("__", 1)[0];
         if field not in valid_fields {
-            msg = f"Unknown filter field '{field}' for current user scope";
-            raise ValueError(msg);
+            raise ValueError(f"Unknown filter field '{field}' for current user scope");
         }
         cleaned[raw_key] = value;
     }

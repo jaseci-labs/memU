@@ -29,8 +29,7 @@ impl _merge_models(
 ) -> Type[SQLModel] {
     overlap = set(user_model.model_fields) & set(core_model.model_fields);
     if overlap {
-        msg = f"Scope fields conflict with core model fields: {sorted(overlap)}";
-        raise TypeError(msg);
+        raise TypeError(f"Scope fields conflict with core model fields: {sorted(overlap)}");
     }
     return builtins.type(
         f"{user_model.__name__}{core_model.__name__}{name_suffix}",
@@ -50,8 +49,7 @@ impl build_table_model(
 ) -> Type[SQLModel] {
     overlap = set(user_model.model_fields) & set(core_model.model_fields);
     if overlap {
-        msg = f"Scope fields conflict with core model fields: {sorted(overlap)}";
-        raise TypeError(msg);
+        raise TypeError(f"Scope fields conflict with core model fields: {sorted(overlap)}");
     }
     scope_fields = list(user_model.model_fields.keys());
     (base_table_args, table_kwargs) = _normalize_table_args(

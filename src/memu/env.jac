@@ -8,15 +8,11 @@ import from pathlib { Path }
 import from typing { TYPE_CHECKING, Any, Literal, Optional }
 glob CONFIG_ENV = "~/.memu/config.env";
 
-with entry {}
-
 class ConfigError(RuntimeError) {
     def init(name: str, detail: str | None = None);
 }
 
 glob _ENV_PASSTHROUGH = ("NO_PROXY", "no_proxy");
-
-with entry {}
 
 def read_config(path: Path) -> tuple[str, bool];
 @cache

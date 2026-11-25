@@ -14,13 +14,10 @@ import from contextlib { ExitStack }
 
 import from ctypes { wintypes }
 
-glob _JOB_OBJECT_BASIC_PROCESS_ID_LIST: any = 3;
-
-glob _JOB_OBJECT_EXTENDED_LIMIT_INFORMATION: any = 9;
-
-glob _JOB_OBJECT_LIMIT_ACTIVE_PROCESS: any = 8;
-
-glob _JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE: any = 8192;
+glob _JOB_OBJECT_BASIC_PROCESS_ID_LIST: any = 3,
+     _JOB_OBJECT_EXTENDED_LIMIT_INFORMATION: any = 9,
+     _JOB_OBJECT_LIMIT_ACTIVE_PROCESS: any = 8,
+     _JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE: any = 8192;
 
 class _BasicLimitInformation(ctypes.Structure) {
     static has _fields_: any = (

@@ -12,8 +12,7 @@ with entry {
         import from pgvector.sqlalchemy { VECTOR as Vector_ }
         Vector = Vector_;
     } except ImportError as exc {
-        msg = "pgvector is required for Postgres vector support";
-        raise ImportError(msg) from exc;
+        raise ImportError("pgvector is required for Postgres vector support") from exc;
     }
 }
 

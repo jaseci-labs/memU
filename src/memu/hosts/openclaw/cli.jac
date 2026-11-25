@@ -2,13 +2,8 @@ import argparse;
 import sys;
 import from typing { Any, Optional }
 glob HOST = "openclaw",
-     AGENTS_MD = "~/.openclaw/workspace/AGENTS.md";
-
-with entry {}
-
-glob SKILLS_DIR = "~/.openclaw/skills";
-
-with entry {}
+     AGENTS_MD = "~/.openclaw/workspace/AGENTS.md",
+     SKILLS_DIR = "~/.openclaw/skills";
 
 async def _cmd_register_cron_job(args: argparse.Namespace) -> int;
 def _register_cron_job(sub: Any);

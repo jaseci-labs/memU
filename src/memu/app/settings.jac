@@ -71,9 +71,8 @@ class UserConfig(BaseModel) {
     has model: Type[BaseModel] = Field(default=DefaultUserModel);
 }
 
-glob Key = Annotated[str, StringConstraints(min_length=1)];
-
-glob _ProfilesBase: any;
+glob Key = Annotated[str, StringConstraints(min_length=1)],
+     _ProfilesBase: any;
 
 with entry {
     _ProfilesBase = RootModel[dict[Key, EmbeddingConfig]];

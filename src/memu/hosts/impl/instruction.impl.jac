@@ -205,27 +205,31 @@ impl check_skill_cleanup(skills_dir: Path, binary: str) -> bool {
                 return False;
             }
             if not stat.S_ISDIR(`entry.st_mode) or getattr(`entry, "st_reparse_tag", False) {
-                msg = "Retrieval skill contains links or non-directory paths; preserved for ownership review.";
-                raise ValueError(msg);
+                raise ValueError(
+                    "Retrieval skill contains links or non-directory paths; preserved for ownership review.",
+                );
             }
         }
         receipt = directory / ".memu-owned.json";
         entries = set(directory.iterdir());
         if entries not in ({target}, {target, receipt}) {
-            msg = "Retrieval skill has extra or unrecognized entries; preserved for ownership review.";
-            raise ValueError(msg);
+            raise ValueError(
+                "Retrieval skill has extra or unrecognized entries; preserved for ownership review."
+            );
         }
         for file in entries {
             `entry = file.lstat();
             if not stat.S_ISREG(`entry.st_mode) or getattr(`entry, "st_reparse_tag", False) {
-                msg = "Retrieval skill contains links or non-file entries; preserved for ownership review.";
-                raise ValueError(msg);
+                raise ValueError(
+                    "Retrieval skill contains links or non-file entries; preserved for ownership review.",
+                );
             }
         }
         _check_skill_content(target, binary, recorded=receipt in entries);
     } except (OSError, UnicodeError) as exc {
-        msg = "Cannot verify retrieval skill ownership; files preserved. Check access and file encoding.";
-        raise ValueError(msg) from exc;
+        raise ValueError(
+            "Cannot verify retrieval skill ownership; files preserved. Check access and file encoding.",
+        ) from exc;
     }
     return True;
 }

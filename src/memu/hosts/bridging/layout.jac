@@ -4,9 +4,8 @@ import from dataclasses { dataclass }
 
 import from pathlib { Path }
 
-glob BASE_DIR: any = "~/.memu";
-
-glob TRACK_DIRS: dict[str, str];
+glob BASE_DIR: any = "~/.memu",
+     TRACK_DIRS: dict[str, str];
 
 with entry {
     TRACK_DIRS = {"memory": "memory", "skill": "skill"};

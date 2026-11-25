@@ -24,8 +24,7 @@ impl ClientPool.get(profile: str | None = None) -> TClient {
     }
     cfg = self._profiles.get(name);
     if cfg is None {
-        msg = f"Unknown {self._label} profile '{name}'";
-        raise KeyError(msg);
+        raise KeyError(f"Unknown {self._label} profile '{name}'");
     }
     client = self._builder(cfg);
     self._cache[name] = client;

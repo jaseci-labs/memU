@@ -148,8 +148,7 @@ impl SQLiteResourceRepo.update_resource(
         );
         row = session.exec(stmt).first();
         if row is None {
-            msg = f"Resource with id {resource_id} not found";
-            raise KeyError(msg);
+            raise KeyError(f"Resource with id {resource_id} not found");
         }
         row.local_path = local_path;
         row.caption = caption;

@@ -148,8 +148,7 @@ impl PostgresRecallFileRepo.update_recall_file(
             ),
         );
         if recall_file is None {
-            msg = f"RecallFile with id {recall_file_id} not found";
-            raise KeyError(msg);
+            raise KeyError(f"RecallFile with id {recall_file_id} not found");
         }
         if name is not None {
             recall_file.name = name;

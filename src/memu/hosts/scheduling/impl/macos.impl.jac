@@ -12,8 +12,7 @@ impl _run(argv: list[str], *, data: bytes | None = None) -> subprocess.Completed
 impl _checked(argv: list[str], *, data: bytes | None = None) -> bytes {
     result = _run(argv, data=data);
     if result.returncode {
-        msg = f"{' '.join(argv)}: {result.stderr.decode(errors='replace').strip()}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"{' '.join(argv)}: {result.stderr.decode(errors='replace').strip()}");
     }
     return result.stdout;
 }
@@ -55,8 +54,7 @@ impl _related(text: str) -> bool {
 
 impl _read_file(path: Path) -> bytes {
     if path.is_symlink() {
-        msg = f"Refusing scheduler symlink: {path}";
-        raise ValueError(msg);
+        raise ValueError(f"Refusing scheduler symlink: {path}");
     }
     return path.read_bytes();
 }
@@ -85,8 +83,7 @@ impl _read_cron(user: str | None) -> bytes {
         return b'';
     }
     if result.returncode {
-        msg = f"{' '.join(argv)}: {result.stderr.decode(errors='replace').strip()}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"{' '.join(argv)}: {result.stderr.decode(errors='replace').strip()}");
     }
     return result.stdout;
 }
@@ -125,28 +122,24 @@ impl _plist_registration(path: Path, domains: tuple[str, ...]) -> Registration |
     original = _read_file(path);
     config = plistlib.loads(original);
     if not isinstance(config, dict) {
-        msg = "Plist root must be a dictionary";
-        raise TypeError(msg);
+        raise TypeError("Plist root must be a dictionary");
     }
     args: any = config.get("ProgramArguments", []);
     label = config.get("Label", "");
     if not isinstance(args, list) or not all((isinstance(a, str) for a in args)) {
-        msg = "ProgramArguments must be strings";
-        raise TypeError(msg);
+        raise TypeError("ProgramArguments must be strings");
     }
     if config.get("Program") {
         args = [config["Program"], *args[1:]];
     }
     if _is_bridge(args) {
         if not isinstance(label, str) or not label or "/" in label {
-            msg = "Invalid launchd label";
-            raise ValueError(msg);
+            raise ValueError("Invalid launchd label");
         }
         return Registration(str(path), "launchd", original, path, domains, label);
     }
     if _related(str(label) + " " + " ".join(args)) {
-        msg = f"{path}: unrecognized Claude bridge action (preserved)";
-        raise ValueError(msg);
+        raise ValueError(f"{path}: unrecognized Claude bridge action (preserved)");
     }
     return None;
 }
@@ -225,8 +218,7 @@ impl _job(target: str) -> bytes | None {
         {
             return None;
         }
-        msg = f"Inspect {target}: {result.stderr.decode(errors='replace').strip()}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Inspect {target}: {result.stderr.decode(errors='replace').strip()}");
     }
     return result.stdout;
 }
@@ -238,58 +230,52 @@ impl _unload(target: str) {
     _checked(["/bin/launchctl", "disable", target]);
     state = _job(target);
     if state is not None and re.search(b'(?m)^\\s*pid = [1-9][0-9]*\\s*$', state) {
-        msg = f"{target} is running; future launches disabled. Wait for natural exit and retry.";
-        raise RuntimeError(msg);
+        raise RuntimeError(
+            f"{target} is running; future launches disabled. Wait for natural exit and retry."
+        );
     }
     if state is not None {
         _checked(["/bin/launchctl", "bootout", target]);
     }
     if _job(target) is not None {
-        msg = f"launchd registration remains: {target}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"launchd registration remains: {target}");
     }
 }
 
 impl _remove_launchd(item: Registration) {
     if item.path is not None and item.path.parent == Path("/Library/LaunchAgents") {
-        msg = "Shared LaunchAgent requires all-user domain verification; preserved for manual cleanup";
-        raise RuntimeError(msg);
+        raise RuntimeError(
+            "Shared LaunchAgent requires all-user domain verification; preserved for manual cleanup"
+        );
     }
     if item.path is None {
-        msg = "Expected a scheduler file path";
-        raise ValueError(msg);
+        raise ValueError("Expected a scheduler file path");
     }
     if _read_file(item.path) != item.original {
-        msg = f"Registration changed; retry: {item.source}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Registration changed; retry: {item.source}");
     }
     for domain in item.domains {
         _unload(f"{domain}/{item.label}");
     }
     if _read_file(item.path) != item.original {
-        msg = f"Registration changed; retry: {item.source}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Registration changed; retry: {item.source}");
     }
     item.path.unlink();
     if item.path.exists() {
-        msg = f"Plist remains: {item.path}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Plist remains: {item.path}");
     }
 }
 
 impl _replace_cron_file(item: Registration) {
     if item.path is None {
-        msg = "Expected a scheduler file path";
-        raise ValueError(msg);
+        raise ValueError("Expected a scheduler file path");
     }
     info = item.path.stat();
     if info.st_uid != os.getuid() {
-        msg = f"Run as the owner to change {item.path}";
-        raise PermissionError(msg);
+        raise PermissionError(f"Run as the owner to change {item.path}");
     }
     if _read_file(item.path) != item.original {
-        msg = f"Crontab changed; retry: {item.source}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Crontab changed; retry: {item.source}");
     }
     (fd, name) = tempfile.mkstemp(dir=item.path.parent, prefix=".memu-cron-");
     try {
@@ -300,29 +286,25 @@ impl _replace_cron_file(item: Registration) {
             os.fsync(stream.fileno());
         }
         if _read_file(item.path) != item.original {
-            msg = f"Crontab changed; retry: {item.source}";
-            raise RuntimeError(msg);
+            raise RuntimeError(f"Crontab changed; retry: {item.source}");
         }
         os.replace(name, item.path);
     } finally {
         Path(name).unlink(missing_ok=True);
     }
     if _read_file(item.path) != item.retained {
-        msg = f"Crontab readback differs: {item.source}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Crontab readback differs: {item.source}");
     }
 }
 
 impl _remove_cron(item: Registration) {
     if _read_cron(item.user) != item.original {
-        msg = f"Crontab changed; retry: {item.source}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Crontab changed; retry: {item.source}");
     }
     argv = ["/usr/bin/crontab", *(["-u", item.user] if item.user else []), "-"];
     _checked(argv, data=item.retained);
     if _read_cron(item.user) != item.retained {
-        msg = f"Crontab readback differs: {item.source}";
-        raise RuntimeError(msg);
+        raise RuntimeError(f"Crontab readback differs: {item.source}");
     }
 }
 

@@ -108,8 +108,7 @@ impl PostgresResourceRepo.update_resource(
             ),
         ).first();
         if row is None {
-            msg = f"Resource with id {resource_id} not found";
-            raise KeyError(msg);
+            raise KeyError(f"Resource with id {resource_id} not found");
         }
         row.local_path = local_path;
         row.caption = caption;

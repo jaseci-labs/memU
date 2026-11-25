@@ -6,8 +6,6 @@ glob HOST = "hermes",
      SESSION_ID_ENV = "HERMES_SESSION_ID",
      SOUL_MD = str(hermes_home() / "SOUL.md");
 
-with entry {}
-
 def _register_extra(sub: Any);
 glob SPEC: any;
 

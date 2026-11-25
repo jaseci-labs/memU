@@ -147,8 +147,7 @@ impl _run_managed(
             }
         }
         if process.returncode or not status {
-            msg = f"query extraction runner failed (exit {process.returncode})";
-            raise OSError(msg);
+            raise OSError(f"query extraction runner failed (exit {process.returncode})");
         }
         output.seek(0);
         return (json.loads(status), output.read());

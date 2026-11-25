@@ -12,15 +12,13 @@ impl _decode_cursor(cursor: str | None) -> Optional[tuple[str, str, str]] {
     try {
         decoded = json.loads(base64.urlsafe_b64decode(cursor.encode()).decode());
     } except (binascii.Error, ValueError) as exc {
-        msg = "invalid cursor";
-        raise ValueError(msg) from exc;
+        raise ValueError("invalid cursor") from exc;
     }
     if not isinstance(decoded, list)
         or len(decoded) != 3
         or (not all((isinstance(value, str) for value in decoded)))
     {
-        msg = "invalid cursor";
-        raise ValueError(msg);
+        raise ValueError("invalid cursor");
     }
     return (decoded[0], decoded[1], decoded[2]);
 }
@@ -73,8 +71,7 @@ impl AgenticMixin.list_all_recall_files(
     limit: int = DEFAULT_PAGE_LIMIT,
 ) -> dict[str, Any] {
     if limit < 1 {
-        msg = "limit must be greater than zero";
-        raise ValueError(msg);
+        raise ValueError("limit must be greater than zero");
     }
     store = self._get_database();
     where_filters = self._normalize_where(where);
@@ -359,12 +356,10 @@ impl AgenticMixin._plan_recall_files(
     for item in recall_files {
         name = (item.get("name") or "").strip().lower().replace(" ", "-").replace("_", "-");
         if not name {
-            msg = "recall-file name must not be empty";
-            raise ValueError(msg);
+            raise ValueError("recall-file name must not be empty");
         }
         if any([char in name for char in "/\\\u0000"]) or name in {".", ".."} {
-            msg = "recall-file name must not contain path separators or null bytes";
-            raise ValueError(msg);
+            raise ValueError("recall-file name must not contain path separators or null bytes");
         }
         deduped[item.get("track") or "memory", name] = item;
     }

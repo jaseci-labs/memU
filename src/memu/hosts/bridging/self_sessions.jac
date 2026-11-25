@@ -8,9 +8,8 @@ import from collections.abc { Mapping }
 
 import from pathlib { Path }
 
-glob MAX_REMEMBERED: any = 1000;
-
-glob BRIDGING_RUN_ENV: any;
+glob MAX_REMEMBERED: any = 1000,
+     BRIDGING_RUN_ENV: any;
 
 with entry {
     BRIDGING_RUN_ENV = "MEMU_BRIDGING_RUN";

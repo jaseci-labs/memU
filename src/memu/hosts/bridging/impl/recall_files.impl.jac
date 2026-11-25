@@ -72,8 +72,9 @@ impl read_recall_file(path: Path, track: str) -> dict[str, Any] {
         raise ValueError(msg);
     }
     if track == "memory" and not content.strip() and empty_markers != ["true"] {
-        msg = f"recall file {path.name!r} requires empty: true in frontmatter to submit an empty memory body";
-        raise ValueError(msg);
+        raise ValueError(
+            f"recall file {path.name!r} requires empty: true in frontmatter to submit an empty memory body",
+        );
     }
     return {"name": name, "track": track, "description": description, "content": content};
 }

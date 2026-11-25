@@ -65,8 +65,7 @@ impl SQLiteRepoBase._build_filters(model: Any, where: Mapping[str, Any] | None) 
         (field, op) = [*raw_key.split("__", 1), None][:2];
         column = getattr(model, str(field), None);
         if column is None {
-            msg = f"Unknown filter field '{field}' for model '{model.__name__}'";
-            raise ValueError(msg);
+            raise ValueError(f"Unknown filter field '{field}' for model '{model.__name__}'");
         }
         if op == "in" {
             if isinstance(expected, str) {

@@ -1,23 +1,8 @@
 impl memorize_run(layout: Layout) -> Iterator[bool] {
-    with admission.memorize_run(layout) as admitted {
-        if not admitted {
-            yield False;
-            return;
-        }
-        updates = {"PI_SESSION_ID": str(uuid4()), self_sessions.BRIDGING_RUN_ENV: "1"};
-        previous = {key: os.environ.get(key) for key in updates};
-        os.environ.update(updates);
-        try {
-            yield True;
-        } finally {
-            for (key, value) in previous.items() {
-                if value is None {
-                    os.environ.pop(key, None);
-                } else {
-                    os.environ[key] = value;
-                }
-            }
-        }
+    with admission.memorize_run(
+        layout, env={"PI_SESSION_ID": str(uuid4()), self_sessions.BRIDGING_RUN_ENV: "1"}
+    ) as admitted {
+        yield admitted;
     }
 }
 

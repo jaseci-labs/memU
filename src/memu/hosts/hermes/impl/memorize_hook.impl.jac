@@ -1,26 +1,8 @@
 impl memorize_run(layout: Layout) -> Iterator[bool] {
-    with admission.memorize_run(layout) as admitted {
-        if not admitted {
-            yield False;
-            return;
-        }
-        previous = {
-            key: os.environ.get(key)
-            for key in ("HERMES_SESSION_ID", self_sessions.BRIDGING_RUN_ENV)
-        };
-        os.environ.pop("HERMES_SESSION_ID", None);
-        os.environ[self_sessions.BRIDGING_RUN_ENV] = "1";
-        try {
-            yield True;
-        } finally {
-            for (key, value) in previous.items() {
-                if value is None {
-                    os.environ.pop(key, None);
-                } else {
-                    os.environ[key] = value;
-                }
-            }
-        }
+    with admission.memorize_run(
+        layout, env={"HERMES_SESSION_ID": None, self_sessions.BRIDGING_RUN_ENV: "1"}
+    ) as admitted {
+        yield admitted;
     }
 }
 

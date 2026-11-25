@@ -44,3 +44,13 @@ class TranscriptSource(ABC) {
     def scan_region(path: Path) -> str;
     def session_id(path: Path) -> str;
 }
+
+def _drop_known_fields(value: dict[object, object], fields: frozenset[str]) -> bool;
+def sanitize_agent_record(
+    record: str,
+    *,
+    record_fields: frozenset[str],
+    message_fields: frozenset[str],
+    tool_result_fields: frozenset[str],
+    block_fields: frozenset[str],
+) -> str;

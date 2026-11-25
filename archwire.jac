@@ -527,12 +527,17 @@ graph import {
     src.memu.hosts.base ++> src.memu.hosts.host_cli { TranscriptSource }
     src.memu.hosts.base ++> src.memu.hosts.openclaw.cron_identity { TranscriptSource }
     src.memu.hosts.base ++> src.memu.hosts.openclaw.sessions {
+        sanitize_agent_record,
         RecordKind,
         TranscriptRead,
         TranscriptReadError,
         TranscriptSource,
     }
-    src.memu.hosts.base ++> src.memu.hosts.pi.sessions { RecordKind, TranscriptSource }
+    src.memu.hosts.base ++> src.memu.hosts.pi.sessions {
+        RecordKind,
+        TranscriptSource,
+        sanitize_agent_record,
+    }
     src.memu.hosts.base ++> src.memu.hosts.workbuddy.sessions { RecordKind, TranscriptSource }
     src.memu.hosts.bridging ++> src.memu.hosts.claude_code.cli { Layout }
     src.memu.hosts.bridging ++> src.memu.hosts.claude_code.memorize_hook { Layout }

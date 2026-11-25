@@ -59,3 +59,50 @@ impl TranscriptSource.scan_region(path: Path) -> str {
 impl TranscriptSource.session_id(path: Path) -> str {
     return path.stem;
 }
+
+impl _drop_known_fields(value: dict[object, object], fields: frozenset[str]) -> bool {
+    changed = False;
+    for field in fields {
+        if field in value {
+            del value[field];
+            changed = True;
+        }
+    }
+    return changed;
+}
+
+impl sanitize_agent_record(
+    record: str,
+    *,
+    record_fields: frozenset[str],
+    message_fields: frozenset[str],
+    tool_result_fields: frozenset[str],
+    block_fields: frozenset[str],
+) -> str {
+    try {
+        `entry = json.loads(record);
+    } except json.JSONDecodeError {
+        return record;
+    }
+    if not isinstance(`entry, dict) {
+        return record;
+    }
+    changed = _drop_known_fields(`entry, record_fields);
+    message = `entry.get("message");
+    if not isinstance(message, dict) {
+        return json.dumps(`entry, ensure_ascii=False) if changed else record;
+    }
+    changed |= _drop_known_fields(message, message_fields);
+    if message.get("role") == "toolResult" {
+        changed |= _drop_known_fields(message, tool_result_fields);
+    }
+    content = message.get("content");
+    if isinstance(content, list) {
+        for block in content {
+            if isinstance(block, dict) {
+                changed |= _drop_known_fields(block, block_fields);
+            }
+        }
+    }
+    return json.dumps(`entry, ensure_ascii=False) if changed else record;
+}

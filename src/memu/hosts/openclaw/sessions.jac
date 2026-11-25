@@ -27,9 +27,8 @@ glob logger = logging.getLogger(__name__),
          "usage",
      }),
      _TOOL_RESULT_PRIVATE_FIELDS = frozenset({"details"}),
-     _BLOCK_PRIVATE_FIELDS = frozenset({"partialArgs", "textSignature", "thinkingSignature"});
-def _drop_known_fields(value: dict[object, object], fields: frozenset[str]) -> bool;
-glob _SIDECAR_MARKERS = (".trajectory.", ".checkpoint."),
+     _BLOCK_PRIVATE_FIELDS = frozenset({"partialArgs", "textSignature", "thinkingSignature"}),
+     _SIDECAR_MARKERS = (".trajectory.", ".checkpoint."),
      _STORE_SUBDIR = "agent",
      _STORE_NAME = "openclaw-agent.sqlite",
      _IMPORT_ARCHIVE_DIR = "session-sqlite-import-archive",

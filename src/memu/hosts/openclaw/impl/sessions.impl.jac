@@ -1,14 +1,3 @@
-impl _drop_known_fields(value: dict[object, object], fields: frozenset[str]) -> bool {
-    changed = False;
-    for field in fields {
-        if field in value {
-            del value[field];
-            changed = True;
-        }
-    }
-    return changed;
-}
-
 impl OpenClawTranscriptSource.init(session_dir: str | Path = SESSION_DIR) {
     self._root = Path(os.path.expanduser(str(session_dir)));
     self._stored_paths = set();
@@ -208,32 +197,13 @@ impl OpenClawTranscriptSource.read_incremental(
 
 impl OpenClawTranscriptSource.sanitize(path: Path, record: str) -> str {
     del path;
-    try {
-        `entry = json.loads(record);
-    } except json.JSONDecodeError {
-        return record;
-    }
-    if not isinstance(`entry, dict) {
-        return record;
-    }
-    changed = _drop_known_fields(`entry, _RECORD_PRIVATE_FIELDS);
-    message = `entry.get("message");
-    if not isinstance(message, dict) {
-        return json.dumps(`entry, ensure_ascii=False) if changed else record;
-    }
-    changed |= _drop_known_fields(message, _MESSAGE_PRIVATE_FIELDS);
-    if message.get("role") == "toolResult" {
-        changed |= _drop_known_fields(message, _TOOL_RESULT_PRIVATE_FIELDS);
-    }
-    content = message.get("content");
-    if isinstance(content, list) {
-        for block in content {
-            if isinstance(block, dict) {
-                changed |= _drop_known_fields(block, _BLOCK_PRIVATE_FIELDS);
-            }
-        }
-    }
-    return json.dumps(`entry, ensure_ascii=False) if changed else record;
+    return sanitize_agent_record(
+        record,
+        record_fields=_RECORD_PRIVATE_FIELDS,
+        message_fields=_MESSAGE_PRIVATE_FIELDS,
+        tool_result_fields=_TOOL_RESULT_PRIVATE_FIELDS,
+        block_fields=_BLOCK_PRIVATE_FIELDS,
+    );
 }
 
 impl OpenClawTranscriptSource.classify(record: str) -> RecordKind {

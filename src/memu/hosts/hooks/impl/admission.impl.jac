@@ -42,7 +42,22 @@ impl workspace_lock(base: Path) -> Iterator[bool] {
     }
 }
 
-impl memorize_run(layout: Layout, *, cooldown_seconds: int = COOLDOWN_SECONDS) -> Iterator[bool] {
+impl _apply_env(values: dict[str, str | None]) {
+    for (key, value) in values.items() {
+        if value is None {
+            os.environ.pop(key, None);
+        } else {
+            os.environ[key] = value;
+        }
+    }
+}
+
+impl memorize_run(
+    layout: Layout,
+    *,
+    cooldown_seconds: int = COOLDOWN_SECONDS,
+    env: dict[str, str | None] | None = None,
+) -> Iterator[bool] {
     layout.base.mkdir(parents=True, exist_ok=True);
     with workspace_lock(layout.base) as acquired {
         if not acquired {
@@ -81,6 +96,13 @@ impl memorize_run(layout: Layout, *, cooldown_seconds: int = COOLDOWN_SECONDS) -
         }
         _atomic_write_text(state, json.dumps(now));
         print("=== MEMORIZE status=started ===", flush=True);
-        yield True;
+        overrides = env or {};
+        saved: dict[str, str | None] = {key: os.environ.get(key) for key in overrides};
+        _apply_env(overrides);
+        try {
+            yield True;
+        } finally {
+            _apply_env(saved);
+        }
     }
 }

@@ -1,0 +1,56 @@
+impl select_query(
+    prompt: str,
+    trace: dict[str, Any],
+    *,
+    provider: str | None = None,
+    model: str | None = None,
+    cancel: query_extraction.ExtractionCancellation | None = None,
+) -> str {
+    return query_extraction.select_query(
+        prompt,
+        trace,
+        lambda (text: any) -> any { _extract(text, provider=provider, model=model, cancel=cancel) },
+    );
+}
+
+impl _extract(
+    prompt: str,
+    *,
+    provider: str | None = None,
+    model: str | None = None,
+    cancel: query_extraction.ExtractionCancellation | None = None,
+) -> str {
+    binary = shutil.which("pi");
+    if not binary {
+        raise FileNotFoundError("pi is not on PATH");
+    }
+    argv = [
+        binary,
+        "-p",
+        "--no-session",
+        "--offline",
+        "--no-extensions",
+        "--no-skills",
+        "--no-prompt-templates",
+        "--no-context-files",
+        "--no-tools",
+        "--system-prompt",
+        "Extract the query only. Do not use tools. Return a JSON object containing a nonempty query string.",
+    ];
+    for (name, value) in (("provider", provider), ("model", model)) {
+        if value {
+            argv.extend([f"--{name}", value]);
+        }
+    }
+    with tempfile.TemporaryDirectory(prefix="memu-query-") as directory {
+        output = query_extraction.run_extraction(
+            argv,
+            query_extraction.extraction_instruction(prompt).encode("utf-8"),
+            Path(directory),
+            getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            env={**dict(os.environ), "MEMU_BRIDGING_RUN": "1"},
+            cancel=cancel,
+        );
+    }
+    return query_extraction.validate_query(json.loads(output.decode("utf-8")));
+}

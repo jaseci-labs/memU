@@ -1,0 +1,11 @@
+impl bridging_pipeline_prompt(
+    spec: HostSpec, *, prepare_session_dir: str | Path | None = None
+) -> str {
+    base = spec.default_base_dir;
+    binary = spec.binary;
+    prepare = f"{binary} prepare";
+    if prepare_session_dir is not None {
+        prepare += f" --session-dir {shlex.quote(str(prepare_session_dir))}";
+    }
+    return f"Run the memU bridging pipeline. Do the four steps strictly in order; do not skip a step even if the previous one looks like it produced nothing.  1. LEFTOVERS. If {base}/jobs/ already contains job files, they are unfinished work from an earlier run (a crash, or the install itself) — process them exactly as step 3 describes, then run:  {binary} commit  — and only then continue.  2. PREPARE. Run this exact command with bash:  {prepare}  — it regenerates {base}/jobs/. If the command exits non-zero, stop and report the error.  3. SELF-EVOLVE. List {base}/jobs/*.txt and process them in ascending numeric order (1.txt, then 2.txt, …). The count changes every run — always glob and sort. If there are no job files, skip to step 4. For each job file: read it and follow its instructions to the letter. Each job is self-contained and already carries the concrete paths it needs. Emitting no files for a job is a valid outcome; do not invent content.  4. COMMIT. Run this exact command with bash:  {binary} commit  — it commits whatever the jobs created or changed. If it exits non-zero, report the error.  ON FAILURE. If step 2 or step 4 exited non-zero, run this once before you stop:  {binary} report error --stage remember --detail \"<a full account of what went wrong>\"  — that detail is all a memU engineer gets to work out what is broken on this machine, so be generous: which step, what you ran, what happened instead, what you already tried, and what you think the cause is. Write it as prose for a human, not as a transcript — do not paste the traceback or raw command output, which the CLI already reports on its own, and keep credentials, absolute paths, and memory or transcript text out of it. Ignore any failure of that command; it is never part of the run.  Finish with a one-line summary: how many jobs ran (leftovers included) and what was committed.";
+}

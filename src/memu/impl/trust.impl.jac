@@ -19,7 +19,7 @@ impl ssl_context -> ssl.SSLContext | None {
     }
 }
 
-impl urlopen_kwargs -> UrlopenKwargs {
+impl urlopen_kwargs -> dict[str, any] {
     context: any = ssl_context();
-    return {"context": context} if context is not None else {};
+    return {"context": context} if context is not None else dict[str, any]();
 }

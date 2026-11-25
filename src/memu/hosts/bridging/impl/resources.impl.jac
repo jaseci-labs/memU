@@ -2,7 +2,7 @@ impl verify_resource_log(
     log: Path, resource_file: Path, max_resources: int = max_resources_default_
 ) -> int {
     valid: list[str] = [];
-    seen: set[str] = set[any]();
+    seen: set[str] = set();
 
     if log.is_file() {
         for raw in log.read_text(encoding="utf-8").splitlines() {
@@ -64,7 +64,7 @@ impl prepare_resource_job(
     job_index: int,
     *,
     template: str = template_default_,
-) -> None {
+) {
     instruction: any = template.format(verify_command=verify_command, resource_file=resource_file);
     job_dir.mkdir(parents=True, exist_ok=True);
     (job_dir / f"{job_index}.txt").write_text(instruction, encoding="utf-8");

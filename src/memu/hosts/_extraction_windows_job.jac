@@ -1,16 +1,6 @@
-"""Windows Job Object ownership for a gated query-extraction runner.
-
-The calling hook assigns the runner before allowing it to launch the CLI.
-Explicit cleanup terminates Job members and waits up to two seconds for their
-exits. Hook process exit closes its sole Job handle, triggering termination
-without executing the explicit cleanup wait.
-"""
-
 import builtins;
 
 import from jaclang.comptime { target }
-
-import from __future__ { annotations }
 
 import ctypes;
 
@@ -70,24 +60,19 @@ class _ExtendedLimitInformation(ctypes.Structure) {
 
 def _last_error -> OSError;
 
-"""Own the extraction runner and its descendants in a Windows Job Object."""
 obj WindowsExtractionJob {
     has _handle: any,
         _kernel32: any;
 
     def init;
-
-    """Assign the gated runner before the caller permits it to start a CLI."""
-    def assign(process: subprocess.Popen[bytes]) -> None;
+    def assign(process: subprocess.Popen[bytes]);
 
     def _process_ids -> list[int];
 
     def _open_members(resources: ExitStack) -> list[int];
 
-    def _close_handle(handle: int) -> None;
-
-    """Terminate Job members and wait up to two seconds for their exits."""
-    def close -> None;
+    def _close_handle(handle: int);
+    def close;
 
     def __repr__ -> str;
 

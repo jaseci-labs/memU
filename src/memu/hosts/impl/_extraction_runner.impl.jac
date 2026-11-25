@@ -176,7 +176,7 @@ impl _run(lifetime_fd: int, flags: int) -> dict[str, int | str | None] {
     return {"returncode": returncode};
 }
 
-impl main -> None {
+impl main {
     try {
         lifetime_fd: any;
         flags: any;

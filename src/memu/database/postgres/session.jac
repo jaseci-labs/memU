@@ -1,7 +1,5 @@
 import builtins;
 
-import from __future__ { annotations }
-
 import logging;
 
 import from typing { Any }
@@ -27,7 +25,6 @@ with entry {
     logger = logging.getLogger(__name__);
 }
 
-"""Handle engine lifecycle and session creation for Postgres store."""
 obj SessionManager {
     has _engine: any;
 
@@ -35,7 +32,7 @@ obj SessionManager {
 
     def session -> Session;
 
-    def close -> None;
+    def close;
 
     def __repr__ -> str;
 

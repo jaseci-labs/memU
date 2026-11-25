@@ -11,15 +11,3 @@ impl EmbeddingBackend.build_embedding_payload(
 impl EmbeddingBackend.parse_embedding_response(data: dict[str, Any]) -> list[list[float]] {
     raise NotImplementedError();
 }
-
-impl EmbeddingBackend.__repr__ -> str {
-    return (getattr(builtins.object, "__repr__") as any)(self);
-}
-
-impl EmbeddingBackend.__eq__(other: any) -> bool {
-    return self is other;
-}
-
-impl EmbeddingBackend.__hash__ -> int {
-    return id(self);
-}

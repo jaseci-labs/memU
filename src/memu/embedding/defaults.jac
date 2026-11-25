@@ -1,13 +1,3 @@
-"""Per-provider default embedding models and endpoints.
-
-The single source of provider knowledge for the embedding capability: every
-provider listed here has a real backend under :mod:`memu.embedding.backends`.
-:class:`memu.app.settings.EmbeddingConfig` consults these tables to fill in
-sensible defaults. Verified via provider docs, June 2026.
-"""
-
-import from __future__ { annotations }
-
 glob EMBEDDING_PROVIDER_DEFAULTS: dict[str, str];
 
 glob EMBEDDING_PROVIDER_ENDPOINTS: dict[str, tuple[str, str]];
@@ -31,5 +21,4 @@ with entry {
     EMBEDDING_SDK_BASE_URLS = {"openrouter": "https://openrouter.ai/api/v1"};
 }
 
-"""Return the default embedding model for ``provider`` (``None`` if unknown)."""
 def default_embedding_model(provider: str) -> str | None;

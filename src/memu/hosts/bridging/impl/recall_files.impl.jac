@@ -1,4 +1,4 @@
-impl _atomic_write_text(path: Path, text: str) -> None {
+impl _atomic_write_text(path: Path, text: str) {
     fd: any;
     tmp: any;
     (fd, tmp) = tempfile.mkstemp(dir=`str(path.parent), prefix=".tmp-", suffix=path.suffix) as any;
@@ -78,7 +78,7 @@ impl read_recall_file(path: Path, track: str) -> dict[str, Any] {
     return {"name": name, "track": track, "description": description, "content": content};
 }
 
-impl finalize_recall_file(path: Path, recall_file: dict[str, Any]) -> None {
+impl finalize_recall_file(path: Path, recall_file: dict[str, Any]) {
     if recall_file["track"] != "memory" {
         return;
     }

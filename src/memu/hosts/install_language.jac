@@ -1,5 +1,3 @@
-"""Installer-owned messages; child commands retain their original diagnostics."""
-
 import builtins;
 
 import from contextvars { ContextVar }
@@ -98,5 +96,4 @@ with entry {
     };
 }
 
-"""Translate installer messages without altering protocol status values."""
 def text(message: builtins.str, **values: builtins.str) -> builtins.str;

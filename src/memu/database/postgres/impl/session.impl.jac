@@ -10,7 +10,7 @@ impl SessionManager.session -> Session {
     return Session(self._engine, expire_on_commit=False);
 }
 
-impl SessionManager.close -> None {
+impl SessionManager.close {
     try {
         self._engine.dispose();
     } except Exception {

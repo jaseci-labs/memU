@@ -1,19 +1,6 @@
-"""Run one query-extraction CLI on Windows, Linux, and macOS using only stdlib.
-
-The caller supplies an ASCII JSON argv line followed by the extractor's raw
-stdin. On Linux/macOS, a lifetime pipe monitors the calling hook. This runner
-kills the extractor's process group when the hook or extractor exits;
-descendants that leave that group are outside this cleanup boundary.
-
-On Windows, the caller assigns this gated runner to a kill-on-close Job Object
-before sending the command. The Job owns the runner and its descendants.
-"""
-
 import operator;
 
 import from jaclang.comptime { target }
-
-import from __future__ { annotations }
 
 import errno;
 
@@ -45,7 +32,7 @@ def _wait_posix(process: subprocess.Popen[bytes], lifetime_fd: int) -> int;
 
 def _run(lifetime_fd: int, flags: int) -> dict[str, int | str | None];
 
-def main -> None;
+def main;
 
 with entry:__main__ {
     main();

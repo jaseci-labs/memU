@@ -8,7 +8,7 @@ impl prepare_instruction_jobs(
     *,
     memory_template: str = memory_template_default_,
     skill_template: str = skill_template_default_,
-) -> None {
+) {
     job_dir.mkdir(parents=True, exist_ok=True);
     for stale in job_dir.glob("*.txt") {
         stale.unlink();

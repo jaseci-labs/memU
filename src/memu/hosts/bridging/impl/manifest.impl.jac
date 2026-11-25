@@ -16,7 +16,7 @@ impl _iter_tracked(base_dir: Path, subdirs: list[str]) -> Generator[any, any, an
     }
 }
 
-impl snapshot_tracked(base_dir: Path, subdirs: list[str], manifest_path: Path) -> None {
+impl snapshot_tracked(base_dir: Path, subdirs: list[str], manifest_path: Path) {
     manifest: any = {key: _hash_file(path) for (key, path) in _iter_tracked(base_dir, subdirs)};
     manifest_path.parent.mkdir(parents=True, exist_ok=True);
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8");

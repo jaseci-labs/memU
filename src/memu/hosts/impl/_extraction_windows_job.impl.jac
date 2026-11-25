@@ -63,7 +63,7 @@ impl WindowsExtractionJob.init {
     }
 }
 
-impl WindowsExtractionJob.assign(process: subprocess.Popen[bytes]) -> None {
+impl WindowsExtractionJob.assign(process: subprocess.Popen[bytes]) {
     if self._handle is None {
         msg: any = "extraction job is closed";
         raise OSError(msg);
@@ -82,7 +82,7 @@ impl WindowsExtractionJob._process_ids -> list[int] {
             self._handle, _JOB_OBJECT_BASIC_PROCESS_ID_LIST, buffer, ctypes.sizeof(buffer), None
         ) {
             count: any = wintypes.DWORD.from_buffer(buffer, 4).value;
-            return `list((ctypes.c_size_t * count).from_buffer(buffer, 8));
+            return [int(pid) for pid in (ctypes.c_size_t * count).from_buffer(buffer, 8)];
         }
         error: any = _last_error();
         if getattr(error, "winerror", None) != 234 {
@@ -115,13 +115,13 @@ impl WindowsExtractionJob._open_members(resources: ExitStack) -> list[int] {
     return handles;
 }
 
-impl WindowsExtractionJob._close_handle(handle: int) -> None {
+impl WindowsExtractionJob._close_handle(handle: int) {
     if not self._kernel32.CloseHandle(handle) {
         raise _last_error();
     }
 }
 
-impl WindowsExtractionJob.close -> None {
+impl WindowsExtractionJob.close {
     if self._handle is None {
         return;
     }

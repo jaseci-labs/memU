@@ -11,6 +11,17 @@ graph spaces {
 }
 
 graph import {
+    src.memu.database.sql_common ++> src.memu.database.postgres.schema | src.memu.database.sqlite.schema {
+        build_table_model,
+    }
+    src.memu.database.sql_common ++> src.memu.database.postgres.models { build_table_model }
+    src.memu.database.sql_common ++> src.memu.database.postgres.repositories.base | src.memu.database.sqlite.repositories.base {
+        SQLRepoBase,
+    }
+    src.memu.database.state ++> src.memu.database.sql_common { DatabaseState }
+    src.memu.database.inmemory.repositories.filter ++> src.memu.database.sql_common {
+        matches_where,
+    }
     src.memu.database.postgres.schema --> src.memu.database.postgres.migrations.env { get_metadata }
     tests.test_agentic --> tests.test_commit_concurrency;
     tests.test_agentic --> tests.test_commit_concurrency { FakeEmbeddingClient, make_service }
@@ -222,7 +233,6 @@ graph import {
         RecallFileModel,
         RecallFileSegmentModel,
         ResourceModel,
-        build_table_model,
     }
     include src.memu.database.postgres.postgres ++> src.memu.database.postgres { PostgresStore }
     src.memu.database.postgres.repositories.base ++> src.memu.database.postgres.repositories.recall_file_repo {
@@ -338,7 +348,6 @@ graph import {
         SQLiteRecallFileModel,
         SQLiteRecallFileSegmentModel,
         SQLiteResourceModel,
-        build_sqlite_table_model,
     }
     include src.memu.database.sqlite.repositories.base ++> src.memu.database.sqlite.repositories {
         SQLiteRepoBase,
@@ -409,7 +418,6 @@ graph import {
     src.memu.database.state ++> src.memu.database.postgres.repositories.resource_repo {
         DatabaseState,
     }
-    src.memu.database.state ++> src.memu.database.sqlite.repositories.base { DatabaseState }
     src.memu.database.state ++> src.memu.database.sqlite.repositories.recall_file_repo {
         DatabaseState,
     }

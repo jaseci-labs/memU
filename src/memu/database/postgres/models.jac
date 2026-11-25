@@ -4,8 +4,7 @@ import uuid;
 import from datetime { datetime }
 import from typing { Any }
 import pendulum;
-glob msg: any,
-     Vector: any;
+glob Vector: any;
 
 with entry {
     try {
@@ -84,23 +83,6 @@ class RecallFileSegmentModel(_Mixin, RecallFileSegment) {
         );
 }
 
-def _normalize_table_args(table_args: Any) -> tuple[list[Any], dict[str, Any]];
-def _merge_models(
-    user_model: Type[BaseModel],
-    core_model: Type[SQLModel],
-    *,
-    name_suffix: str,
-    base_attrs: dict[str, Any],
-) -> Type[SQLModel];
-def build_table_model(
-    user_model: Type[BaseModel],
-    core_model: Type[SQLModel],
-    *,
-    tablename: str,
-    metadata: MetaData | None = None,
-    extra_table_args: Optional[tuple[Any, ...]] = None,
-    unique_with_scope: Optional[list[str]] = None,
-) -> Type[SQLModel];
 def build_scoped_models(
     user_model: Type[BaseModel]
 ) -> tuple[Type[SQLModel], Type[SQLModel], Type[SQLModel]];
@@ -110,5 +92,4 @@ glob __all__ = [
     "RecallFileSegmentModel",
     "ResourceModel",
     "build_scoped_models",
-    "build_table_model",
 ];

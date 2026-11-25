@@ -250,6 +250,7 @@ files = [
     "memu/database/sqlite/schema.jac",
     "memu/database/sqlite/session.jac",
     "memu/database/sqlite/sqlite.jac",
+    "memu/database/sql_common.jac",
     "memu/database/state.jac",
     "memu/database/transaction.jac",
     "memu/embedding/__init__.jac",

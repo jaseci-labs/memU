@@ -8,13 +8,13 @@ impl get_sqlite_sqlalchemy_models(
         return cached;
     }
     metadata_obj = MetaData();
-    resource_model = build_sqlite_table_model(
+    resource_model = build_table_model(
         scope, SQLiteResourceModel, tablename="memu_resources", metadata=metadata_obj
     );
-    recall_file_model = build_sqlite_table_model(
+    recall_file_model = build_table_model(
         scope, SQLiteRecallFileModel, tablename="memu_recall_files", metadata=metadata_obj
     );
-    recall_file_segment_model = build_sqlite_table_model(
+    recall_file_segment_model = build_table_model(
         scope,
         SQLiteRecallFileSegmentModel,
         tablename="memu_recall_file_segments",

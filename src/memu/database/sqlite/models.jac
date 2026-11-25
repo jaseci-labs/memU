@@ -68,27 +68,9 @@ class SQLiteRecallFileSegmentModel(_Mixin, RecallFileSegment) {
         embedding: Optional[list[float]] = Field(default=None, sa_type=JSON, nullable=True);
 }
 
-def _normalize_table_args(table_args: Any) -> tuple[list[Any], dict[str, Any]];
-def _merge_models(
-    user_model: Type[BaseModel],
-    core_model: Type[SQLModel],
-    *,
-    name_suffix: str,
-    base_attrs: dict[str, Any],
-) -> Type[SQLModel];
-def build_sqlite_table_model(
-    user_model: Type[BaseModel],
-    core_model: Type[SQLModel],
-    *,
-    tablename: str,
-    metadata: MetaData | None = None,
-    extra_table_args: Optional[tuple[Any, ...]] = None,
-    unique_with_scope: Optional[list[str]] = None,
-) -> Type[SQLModel];
 glob __all__ = [
     "SQLiteBaseModelMixin",
     "SQLiteRecallFileModel",
     "SQLiteRecallFileSegmentModel",
     "SQLiteResourceModel",
-    "build_sqlite_table_model",
 ];

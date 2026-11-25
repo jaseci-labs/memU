@@ -15,7 +15,10 @@ glob HOST = "workbuddy",
          legacy_instruction_paths=(MEMORY_MD,),
          schedule_backend="native",
      );
-def main(argv: Optional[list[str]] = None) -> int;
+
+def main(argv: Optional[list[str]] = None) -> int {
+    return run(SPEC, argv);
+}
 
 with entry:__main__ {
     sys.exit(main());

@@ -386,3 +386,6 @@ Keywords = "agent,agent-harness,agentic,context-engineering,context-window,harne
 
 [lock.pypi]
 accept = ["pydantic", "pydantic-core", "jiter"]
+
+[check.lint]
+select = ["style"]

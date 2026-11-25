@@ -20,7 +20,9 @@ import from sqlalchemy { ForeignKey, MetaData, String, Text }
 import from sqlmodel { Column, DateTime, Field, Index, SQLModel, func }
 
 class TZDateTime(DateTime) {
-    def init(timezone: bool = True, **kw: Any);
+    def init(timezone: bool = True, **kw: Any) {
+        super.init(timezone=timezone, **kw);
+    }
 }
 
 class BaseModelMixin(SQLModel) {
@@ -85,7 +87,17 @@ class RecallFileSegmentModel(_Mixin, RecallFileSegment) {
 
 def build_scoped_models(
     user_model: Type[BaseModel]
-) -> tuple[Type[SQLModel], Type[SQLModel], Type[SQLModel]];
+) -> tuple[Type[SQLModel], Type[SQLModel], Type[SQLModel]] {
+    resource_model = build_table_model(user_model, ResourceModel, tablename="resources");
+    recall_file_model = build_table_model(
+        user_model, RecallFileModel, tablename="recall_files", unique_with_scope=["name"]
+    );
+    recall_file_segment_model = build_table_model(
+        user_model, RecallFileSegmentModel, tablename="recall_file_segments"
+    );
+    return (resource_model, recall_file_model, recall_file_segment_model);
+}
+
 glob __all__ = [
     "BaseModelMixin",
     "RecallFileModel",

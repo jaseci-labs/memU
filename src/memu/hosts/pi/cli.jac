@@ -3,7 +3,12 @@ import from typing { Any, Optional }
 glob HOST = "pi",
      AGENTS_MD = f"{AGENT_DIR}/AGENTS.md",
      SKILLS_DIR = f"{AGENT_DIR}/skills";
-def _register_extra(sub: Any);
+
+def _register_extra(sub: Any) {
+    install.register(sub);
+    hook_install.register(sub);
+}
+
 glob SPEC: any;
 
 with entry {
@@ -39,7 +44,9 @@ with entry {
     );
 }
 
-def main(argv: Optional[list[str]] = None) -> int;
+def main(argv: Optional[list[str]] = None) -> int {
+    return run(SPEC, argv);
+}
 
 with entry:__main__ {
     sys.exit(main());

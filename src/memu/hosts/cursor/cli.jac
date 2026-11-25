@@ -24,7 +24,10 @@ glob HOST = "cursor",
     session), or run `cursor-agent login` once. Note: custom-provider (BYOK)
     models do not work in the CLI - runs bill the Cursor account's plan,""",
      );
-def main(argv: Optional[list[str]] = None) -> int;
+
+def main(argv: Optional[list[str]] = None) -> int {
+    return run(SPEC, argv);
+}
 
 with entry:__main__ {
     sys.exit(main());

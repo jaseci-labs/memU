@@ -35,8 +35,14 @@ with entry {
 class MemorizeInput(InputModel) {
     has schema_version: Literal["1.0"] = "1.0",
         items: list[ConversationItem] = Field(min_length=1);
+
     @model_validator(mode="after")
-    def require_message -> Self;
+    def require_message -> Self {
+        if not any((isinstance(item, MessageInput) for item in self.items)) {
+            raise ValueError("memorize input must contain at least one message");
+        }
+        return self;
+    }
 }
 
 glob MemoryInputItem: any;
@@ -51,8 +57,14 @@ with entry {
     SkillInputItem = Union[MessageInput, ToolCallInput, ToolResultInput];
 }
 
-def project_memory(memorize_input: MemorizeInput) -> list[MemoryInputItem];
-def project_skill(memorize_input: MemorizeInput) -> list[SkillInputItem];
+def project_memory(memorize_input: MemorizeInput) -> list[MemoryInputItem] {
+    return [item for item in memorize_input.items if isinstance(item, MessageInput)];
+}
+
+def project_skill(memorize_input: MemorizeInput) -> list[SkillInputItem] {
+    return list(memorize_input.items);
+}
+
 glob __all__ = [
     "ConversationItem",
     "MemorizeInput",

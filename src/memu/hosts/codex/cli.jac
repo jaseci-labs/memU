@@ -23,7 +23,16 @@ glob HOST = "codex",
          ),
          stream_output=notify_console.stream_agent,
      );
-def _register_extra(sub: object);
+
+def _register_extra(sub: object) {
+    install.register(sub);
+    uninstall.register(sub);
+    cli_prepare.register(sub);
+    prompt_hook.register(sub);
+    memorize_hook.register(sub);
+    prompt_hook_install.register(sub);
+}
+
 glob SPEC: any;
 
 with entry {
@@ -48,8 +57,14 @@ Refresh PATH, verify `codex --version`, then retry `memu-codex install-prompt-ho
     );
 }
 
-def build_parser -> argparse.ArgumentParser;
-def main(argv: Optional[list[str]] = None) -> int;
+def build_parser -> argparse.ArgumentParser {
+    _build = importlib.import_module("memu.hosts.host_cli").build_parser;
+    return _build(SPEC);
+}
+
+def main(argv: Optional[list[str]] = None) -> int {
+    return run(SPEC, argv);
+}
 
 with entry:__main__ {
     sys.exit(main());

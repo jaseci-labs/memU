@@ -19,4 +19,6 @@ with entry {
     EMBEDDING_SDK_BASE_URLS = {"openrouter": "https://openrouter.ai/api/v1"};
 }
 
-def default_embedding_model(provider: str) -> str | None;
+def default_embedding_model(provider: str) -> str | None {
+    return EMBEDDING_PROVIDER_DEFAULTS.get(provider.lower());
+}

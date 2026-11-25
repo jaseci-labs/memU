@@ -28,7 +28,7 @@ Core invariants:
 
 Read the relevant implementation and nearby tests first. Prefer local patterns over new abstractions.
 
-The package is Jac built by neojac (ADR 0026): each module is `<module>.jac` with its bodies in `impl/<module>.impl.jac`, and imports between modules are wires in `archwire.jac`. Check with `neojac check --space memu`; build and run the suite with `neojac test`.
+The package is Jac built by neojac (ADR 0026): each module is one `<module>.jac` with its bodies inline (`[check.lint] select = ["style"]`), and imports between modules are wires in `archwire.jac`. Check with `neojac check --space memu`; build and run the suite with `neojac test`.
 
 ## Implementation Rules
 

@@ -9,7 +9,7 @@
 
 ## 决策 {#decision}
 
-`jac.toml` 承载原 `pyproject.toml` 与 `npm/package.json` 的内容；`archwire.jac` 将包声明为 `cpython` space `memu`，测试和脚本为 `memu_dev`，包内模块间的每个导入都是一条 wire。`src/memu` 下的模块为 Jac：模块声明在 `<module>.jac`，函数体在 `impl/<module>.impl.jac`，符合 neojac 默认 lint。被替换的 Python 源码保留在 `replaced-by-neojac/`，直到包发布的所有平台都完成记录。
+`jac.toml` 承载原 `pyproject.toml` 与 `npm/package.json` 的内容；`archwire.jac` 将包声明为 `cpython` space `memu`，测试和脚本为 `memu_dev`，包内模块间的每个导入都是一条 wire。`src/memu` 下的模块为 Jac，每个模块一个文件，函数体内联：`jac.toml` 选用 `style` lint 规则而非 neojac 默认的 `clean`，后者的 `separate-impls` 会在 `impl/` 附属文件中重复每个签名（约多 1,200 行）。被替换的 Python 源码保留在 `replaced-by-neojac/`，直到包发布的所有平台都完成记录。
 
 三处保持 Python：
 

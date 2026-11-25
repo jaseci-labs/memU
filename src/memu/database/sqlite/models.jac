@@ -9,7 +9,9 @@ import from sqlalchemy { JSON, MetaData, String, Text }
 import from sqlmodel { DateTime, Field, Index, SQLModel, func }
 
 class TZDateTime(DateTime) {
-    def init(timezone: bool = True, **kw: Any);
+    def init(timezone: bool = True, **kw: Any) {
+        super.init(timezone=timezone, **kw);
+    }
 }
 
 class SQLiteBaseModelMixin(SQLModel) {

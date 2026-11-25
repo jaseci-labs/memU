@@ -5,9 +5,16 @@ import from typing { Any, Protocol, runtime_checkable, Optional }
 class RecallFileSegmentRepo(Protocol) {
     has segments: list[RecallFileSegment];
     def list_segments(where: Mapping[str, Any] | None = None) -> list[RecallFileSegment] abst;
+
     def vector_search_segments(
         query_vec: list[float], top_k: int, where: Mapping[str, Any] | None = None
-    ) -> list[tuple[RecallFileSegment, float]];
+    ) -> list[tuple[RecallFileSegment, float]] {
+        pool = self.list_segments(where);
+        by_id = {seg.id: seg for seg in pool};
+        ranked = cosine_topk(query_vec, [(seg.id, seg.embedding) for seg in pool], k=top_k);
+        return [(by_id[seg_id], score) for (seg_id, score) in ranked];
+    }
+
     def list_segments_for_file(recall_file_id: str) -> list[RecallFileSegment] abst;
     def create_segment(
         *,
